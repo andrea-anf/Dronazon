@@ -3,32 +3,22 @@ package Amministrazione;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("Admin")
-public class ServerService {
-
-//    #################### SMARTCITY #################################################
-
-    @Path("getSmartCity")
-    @GET
-    @Produces({"application/json", "application/xml"})
-    public Response getSmartCity(){
-//        return Response.ok(Dictionary.getInstance()).build();
-        return Response.ok().build();
-    }
+@Path("drones")
+public class DroneAndStatisticsService {
 
 //  #################### DRONE #################################################
 
     @Path("addDrone")
     @POST
     @Consumes({"application/json", "application/xml"})
-    public Response addDrone(/*Word word*/){
-        return Response.ok().build();
+    public Response addDrone(String ID, String IP, String port){
+        return Response.ok("nuovo drone in arrivo").build();
     }
 
     @Path("deleteDrone/{drone}")
     @DELETE
     @Produces({"application/json", "application/xml"})
-    public Response deleteWord(@PathParam("drone")String word){
+    public Response deleteWord(@PathParam("drone")String drone){
 /*        Word w = Dictionary.getInstance().getByWord(word);
         if(w != null){
             Dictionary.getInstance().deleteWord(w);
@@ -37,17 +27,17 @@ public class ServerService {
         else{
             return Response.status(Response.Status.NOT_FOUND).build();
         }*/
+        return Response.ok(String.format("elimino il drone %s", drone)).build();
     }
 
-//    #################### STATISTICS #################################################
+//  #################### STATISTICS #################################################
 
-    @Path("addStatistics")
-    @DELETE
+    @Path("addStats")
+    @POST
     @Consumes({"application/json", "application/xml"})
-    public Response removeDrone(/*Word word*/){
-        return Response.ok().build();
+    public Response addStatistics(){
+        return Response.ok("statistiche aggiunte").build();
     }
-
 
 
 }
