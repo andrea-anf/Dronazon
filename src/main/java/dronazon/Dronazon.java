@@ -2,7 +2,6 @@ package dronazon;
 
 import org.eclipse.paho.client.mqttv3.*;
 
-import java.util.Random;
 import java.util.Scanner;
 
 public class Dronazon {
@@ -41,6 +40,10 @@ public class Dronazon {
             coordX = (int)Math.floor(Math.random()*(maxCoord-minCoord+1)+maxCoord);
             coordY = (int)Math.floor(Math.random()*(maxCoord-minCoord+1)+maxCoord);
 
+            /*TODO
+            *  creare messaggo con in ID e coordinate
+            *
+            * */
 //            String payload = "dafare"; //ID, Punto ritiro, punto consegna
 //            MqttMessage message = new MqttMessage(payload.getBytes());
 //
