@@ -1,11 +1,11 @@
 package Amministrazione;
 
-public class Coords {
+public class Coordinates {
     private int x;
     private int y;
 
-    public Coords() {}
-    public Coords(int x, int y) {
+    public Coordinates() {}
+    public Coordinates(int x, int y) {
         this.x = x;
         this.y = y;
     }

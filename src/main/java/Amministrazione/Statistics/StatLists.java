@@ -5,6 +5,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +30,33 @@ public class StatLists {
     }
 
     public synchronized ArrayList<Stat> getLastNStats(int lastNStats) {
-            List<Stat> nStatList = statlist.subList(statlist.size()-Math.min(statlist.size(),lastNStats), statlist.size());
-            return new ArrayList<>(nStatList);
+        List<Stat> nStatList = statlist.subList(statlist.size()-Math.min(statlist.size(),lastNStats), statlist.size());
+        return new ArrayList<>(nStatList);
+    }
+
+//    Media del numero di consegne effettuate dai droni della smart-city tra due timestamp t1 e t2
+    public synchronized String getAvgDeliveries(Timestamp tMin, Timestamp tMax) {
+        int counter=0;
+        int i=0;
+        for (Stat stat : statlist) {
+            if (Timestamp.valueOf(stat.getTs()).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs()).compareTo(tMax)<=0) {
+                counter += stat.getDeliveriesCount();
+                i++;
+            }
+        }
+        return "{ \"averageDeliveries\" : \"" + counter/i+"\"}";
+    }
+//    Media dei chilometri percorsi dai droni della smart-city tra due timestamp t1 e t2
+    public synchronized String getAvgKilometers(Timestamp tMin, Timestamp tMax) {
+        double counter=0;
+        double i=0;
+        for (Stat stat : statlist) {
+            if (Timestamp.valueOf(stat.getTs()).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs()).compareTo(tMax)<=0) {
+                counter += stat.getKilometers();
+                i++;
+            }
+        }
+        return "{ \"averageKilometers\" : \""+counter/i+"\"}";
     }
 
     public synchronized boolean addStat(Stat stat) {
@@ -41,5 +68,5 @@ public class StatLists {
         }
     }
 
-  }
+}
 

@@ -1,13 +1,18 @@
 package Amministrazione.Statistics;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
+
 public class Stat {
-    private int deliveriesCount;
+    private double deliveriesCount;
     private double kilometers;
     private double pollutionLevel;
     private double batteryAvg;
+    private Timestamp timestamp;
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
-    public int getDeliveriesCount() {
+    public double getDeliveriesCount() {
         return deliveriesCount;
     }
     public void setDeliveriesCount(int deliveriesCount) {
@@ -33,5 +38,12 @@ public class Stat {
     }
     public void setBatteryAvg(double batteryAvg) {
         this.batteryAvg = batteryAvg;
+    }
+
+    public String getTs() {
+        return formatter.format(timestamp);
+    }
+    public void setTs(Timestamp ts) {
+        this.timestamp = ts;
     }
 }

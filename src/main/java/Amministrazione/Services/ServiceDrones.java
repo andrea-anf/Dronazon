@@ -1,6 +1,6 @@
 package Amministrazione.Services;
 
-import Amministrazione.Coords;
+import Amministrazione.Coordinates;
 import Amministrazione.Drones.Drone;
 import Amministrazione.Drones.SmartCity;
 import Amministrazione.Statistics.Stat;
@@ -30,7 +30,7 @@ public class ServiceDrones {
 
             if (SmartCity.getInstance().addDrone(drone)) {
 
-                Coords coords = new Coords(ThreadLocalRandom.current().nextInt(0, 9 + 1),ThreadLocalRandom.current().nextInt(0, 9 + 1));
+                Coordinates coords = new Coordinates(ThreadLocalRandom.current().nextInt(0, 9 + 1),ThreadLocalRandom.current().nextInt(0, 9 + 1));
                 drone.setCoords(coords);
                 return Response.ok(SmartCity.getInstance()).build();
             } else {

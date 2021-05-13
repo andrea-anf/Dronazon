@@ -1,17 +1,15 @@
 package Amministrazione.Drones;
 
-import Amministrazione.Coords;
-import com.sun.xml.bind.v2.runtime.Coordinator;
+import Amministrazione.Coordinates;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.awt.Point;
 
 @XmlRootElement
 public class Drone {
     private int id;
     private String port;
     private String address;
-    Coords coords = new Coords();
+    Coordinates coords = new Coordinates();
 
 
     public Drone (){}
@@ -42,11 +40,11 @@ public class Drone {
 
     //    #### COORDINATES ####
 
-    public Coords getCoords() {
+    public Coordinates getCoords() {
         return coords;
     }
 
-    public void setCoords(Coords coords) {
+    public void setCoords(Coordinates coords) {
         this.coords = coords;
     }
 }
