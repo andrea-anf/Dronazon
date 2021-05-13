@@ -1,5 +1,6 @@
-package Amministrazione;
+package Amministrazione.Drones;
 
+import Amministrazione.Coords;
 import com.sun.xml.bind.v2.runtime.Coordinator;
 
 import javax.xml.bind.annotation.XmlRootElement;

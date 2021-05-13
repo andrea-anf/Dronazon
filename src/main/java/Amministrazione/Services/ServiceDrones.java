@@ -1,8 +1,13 @@
-package Amministrazione;
+package Amministrazione.Services;
+
+import Amministrazione.Coords;
+import Amministrazione.Drones.Drone;
+import Amministrazione.Drones.SmartCity;
+import Amministrazione.Statistics.Stat;
+import Amministrazione.Statistics.StatLists;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.awt.Point;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Path("drones")
@@ -22,11 +27,12 @@ public class ServiceDrones {
     public Response addDrone(Drone drone){
         Drone d = SmartCity.getInstance().getById(drone.getId());
         if(d == null) {
-            Coords coords = new Coords(ThreadLocalRandom.current().nextInt(0, 9 + 1),ThreadLocalRandom.current().nextInt(0, 9 + 1));
-            drone.setCoords(coords);
+
             if (SmartCity.getInstance().addDrone(drone)) {
 
-                return Response.ok(SmartCity.getInstance().getSmartCity()).build();
+                Coords coords = new Coords(ThreadLocalRandom.current().nextInt(0, 9 + 1),ThreadLocalRandom.current().nextInt(0, 9 + 1));
+                drone.setCoords(coords);
+                return Response.ok(SmartCity.getInstance()).build();
             } else {
                 return Response.status(Response.Status.NOT_ACCEPTABLE).build();
             }
@@ -43,7 +49,7 @@ public class ServiceDrones {
         Drone w = SmartCity.getInstance().getById(drone);
         if(w != null){
             SmartCity.getInstance().deleteDrone(w);
-            return Response.ok("Drone: " + drone + " has been deleted").build();
+            return Response.status(Response.Status.ACCEPTED).build();
         }
         else{
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -55,8 +61,9 @@ public class ServiceDrones {
     @Path("addStats")
     @POST
     @Consumes({"application/json", "application/xml"})
-    public Response addStatistics(){
-        return Response.ok("statistiche aggiunte").build();
+    public Response addStatistics(Stat stat){
+        StatLists.getInstance().addStat(stat);
+        return Response.ok("successfully added").build();
     }
 
 
