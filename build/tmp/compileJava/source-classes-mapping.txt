@@ -11,15 +11,19 @@ Amministrazione/ServerAmministratore.java
  Amministrazione.ServerAmministratore
 Amministrazione/Drones/SmartCity.java
  Amministrazione.Drones.SmartCity
-Amministrazione/Statistics/Stat.java
- Amministrazione.Statistics.Stat
-Amministrazione/Coordinates.java
- Amministrazione.Coordinates
 Amministrazione/Drones/Drone.java
  Amministrazione.Drones.Drone
+Amministrazione/Coordinates.java
+ Amministrazione.Coordinates
 Amministrazione/Services/ServiceDrones.java
  Amministrazione.Services.ServiceDrones
-Amministrazione/Statistics/StatLists.java
- Amministrazione.Statistics.StatLists
 Amministrazione/Services/ServiceAdmin.java
  Amministrazione.Services.ServiceAdmin
+Amministrazione/Statistics/Stat.java
+ Amministrazione.Statistics.Stat
+Amministrazione/Statistics/StatLists.java
+ Amministrazione.Statistics.StatLists
+Amministrazione/Client/ClientAmministratore.java
+ Amministrazione.Client.ClientAmministratore
+Amministrazione/Client/getSmartCity.java
+ Amministrazione.Client.getSmartCity
