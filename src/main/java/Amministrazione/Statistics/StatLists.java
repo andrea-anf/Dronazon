@@ -38,7 +38,7 @@ public class StatLists {
         int counter=0;
         int i=0;
         for (Stat stat : statlist) {
-            if (Timestamp.valueOf(stat.getTs()).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs()).compareTo(tMax)<=0) {
+            if (Timestamp.valueOf(stat.getTs().replace("T", " ")).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs().replace("T", " ")).compareTo(tMin)>=0 ) {
                 counter += stat.getDeliveriesCount();
                 i++;
             }

@@ -10,7 +10,7 @@ public class Stat {
     private double pollutionLevel;
     private double batteryAvg;
     private Timestamp timestamp;
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public double getDeliveriesCount() {
         return deliveriesCount;
