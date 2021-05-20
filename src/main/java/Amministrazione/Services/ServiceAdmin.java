@@ -42,7 +42,6 @@ public class ServiceAdmin {
     @GET
     @Produces({"application/json", "application/xml"})
     public Response getAvgDeliveries(@PathParam("t1") String t1, @PathParam("t2")String t2) {
-
         Timestamp tMin = Timestamp.valueOf(t1.replace("T", " "));
         Timestamp tMax = Timestamp.valueOf(t2.replace("T", " "));
         return Response.ok(StatLists.getInstance().getAvgDeliveries(tMin,tMax)).build();

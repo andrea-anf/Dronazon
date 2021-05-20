@@ -114,10 +114,13 @@ public class ClientAmministratore {
                     service = "getAvgDeliveries/";
                     String tMin, tMax;
 
-                    System.out.println("[+] Please define starting timestamp in format 'yyyy-mm-ddThh:mm:ss'");
+                    System.out.println("[+] Please define starting timestamp in format 'yyyy-mm-dd hh:mm:ss'");
                     tMin = input2.nextLine();
-                    System.out.println("[+] Please define ending timestamp in format 'yyyy-mm-ddThh:mm:ss'");
+                    tMin = tMin.replace(" ", "%20");
+
+                    System.out.println("[+] Please define ending timestamp in format 'yyyy-mm-dd hh:mm:ss'");
                     tMax = input2.nextLine();
+                    tMax = tMax.replace(" ", "%20");
 
                     ClientConfig clientConfig = new DefaultClientConfig();
                     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
@@ -130,8 +133,8 @@ public class ClientAmministratore {
                     System.out.println("[+]   "+clientResponse.toString());
 
                     String result = clientResponse.getEntity(String.class);
-
-                    System.out.println("result : " + result);
+                    result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
+                    System.out.println("\t[-] " + result);
 
                     System.out.println("\nPress enter to return to the menu...");
                     Scanner wait = new Scanner(System.in);
@@ -143,24 +146,30 @@ public class ClientAmministratore {
                     service = "getAvgKilometers/";
                     String tMin, tMax;
 
-                    System.out.println("[+] Please define starting timestamp in format 'yyyy-mm-ddThh:mm:ss'");
+                    //gets timestamps and formats properly
+                    System.out.println("[+] Please define starting timestamp in format 'yyyy-mm-dd hh:mm:ss'");
                     tMin = input2.nextLine();
-                    System.out.println("[+] Please define ending timestamp in format 'yyyy-mm-ddThh:mm:ss'");
-                    tMax = input2.nextLine();
+                    tMin = tMin.replace(" ", "%20");
 
+                    System.out.println("[+] Please define ending timestamp in format 'yyyy-mm-dd hh:mm:ss'");
+                    tMax = input2.nextLine();
+                    tMax = tMax.replace(" ", "%20");
+
+                    //handles client enabling jackson to do requests
                     ClientConfig clientConfig = new DefaultClientConfig();
                     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
                     clientConfig.getClasses().add(JacksonJsonProvider.class);
                     Client client = Client.create(clientConfig);
 
+                    //builds and sends request
                     WebResource webResource = client.resource(serverAddress+service+tMin+"/"+tMax);
                     ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
                     System.out.println("[+]   "+clientResponse.toString());
 
                     String result = clientResponse.getEntity(String.class);
-
-                    System.out.println("result : " + result);
+                    result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
+                    System.out.println("\t[-] " + result);
 
                     System.out.println("\nPress enter to return to the menu...");
                     Scanner wait = new Scanner(System.in);

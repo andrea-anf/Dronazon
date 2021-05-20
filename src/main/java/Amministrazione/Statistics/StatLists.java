@@ -37,25 +37,44 @@ public class StatLists {
     public synchronized String getAvgDeliveries(Timestamp tMin, Timestamp tMax) {
         int counter=0;
         int i=0;
+
         for (Stat stat : statlist) {
-            if (Timestamp.valueOf(stat.getTs().replace("T", " ")).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs().replace("T", " ")).compareTo(tMin)>=0 ) {
+            Timestamp statTimestamp = Timestamp.valueOf(stat.getTs().replace("T", " "));
+            //check if there are deliveries in the specified range
+            if (statTimestamp.compareTo(tMin)>=0 && statTimestamp.compareTo(tMax)<=0 ) {
                 counter += stat.getDeliveriesCount();
                 i++;
             }
         }
-        return "{ \"averageDeliveries\" : \"" + counter/i+"\"}";
+        //if there are deliveries in the specified range
+        if(counter != 0){
+            return "{ \"averageDeliveries\" : \"" + counter/i+"\"}";
+        }
+        //else zero
+        else{
+            return "{ \"averageDeliveries\" : \"0\"}";
+        }
     }
+
 //    Media dei chilometri percorsi dai droni della smart-city tra due timestamp t1 e t2
     public synchronized String getAvgKilometers(Timestamp tMin, Timestamp tMax) {
         double counter=0;
         double i=0;
+
         for (Stat stat : statlist) {
-            if (Timestamp.valueOf(stat.getTs()).compareTo(tMin)>=0 && Timestamp.valueOf(stat.getTs()).compareTo(tMax)<=0) {
+            Timestamp statTimestamp = Timestamp.valueOf(stat.getTs().replace("T", " "));
+            //check if there are deliveries in the specified range
+            if (statTimestamp.compareTo(tMin)>=0 && statTimestamp.compareTo(tMax)<=0 ) {
                 counter += stat.getKilometers();
                 i++;
             }
         }
-        return "{ \"averageKilometers\" : \""+counter/i+"\"}";
+        if(counter != 0){
+            return "{ \"averageKilometers\" : \""+counter/i+"\"}";
+        }
+        else{
+            return "{ \"averageKilometers\" : \"0\"}";
+        }
     }
 
     public synchronized boolean addStat(Stat stat) {
