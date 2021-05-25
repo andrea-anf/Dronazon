@@ -1,7 +1,6 @@
 package Amministrazione.Client;
 
 import Amministrazione.Drones.Drone;
-import Amministrazione.Drones.SmartCity;
 
 import Amministrazione.Statistics.Stat;
 import com.sun.jersey.api.client.*;
@@ -12,8 +11,6 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 
 import javax.ws.rs.core.MediaType;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Scanner;
 

@@ -9,7 +9,7 @@ public class Drone {
     private int id;
     private String port;
     private String address;
-    Coordinates coords = new Coordinates();
+    private Coordinates coords = new Coordinates();
 
 
     public Drone (){}
