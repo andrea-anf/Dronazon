@@ -1,8 +1,8 @@
 package Amministrazione.Services;
 
 import Amministrazione.Coordinates;
-import Amministrazione.Drones.Drone;
-import Amministrazione.Drones.SmartCity;
+import SmartCity.Drone;
+import SmartCity.SmartCity;
 import Amministrazione.Statistics.Stat;
 import Amministrazione.Statistics.StatLists;
 

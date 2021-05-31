@@ -1,13 +1,11 @@
 package Amministrazione.Services;
 
-import Amministrazione.Drones.SmartCity;
+import SmartCity.SmartCity;
 import Amministrazione.Statistics.StatLists;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Path("admin")
 public class ServiceAdmin {

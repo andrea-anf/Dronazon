@@ -1,6 +1,6 @@
 package Amministrazione.Client;
 
-import Amministrazione.Drones.Drone;
+import SmartCity.Drone;
 
 import Amministrazione.Statistics.Stat;
 import com.sun.jersey.api.client.*;

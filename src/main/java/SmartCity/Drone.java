@@ -1,77 +1,65 @@
 package SmartCity;
 
 import Amministrazione.Coordinates;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
+import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.json.JSONConfiguration;
+import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.util.Random;
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.annotation.*;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Drone {
+    @XmlElement(name = "ID")
     private int id;
-    private int localPort;
+    @XmlElement(name = "local port")
+    private String localPort;
+    @XmlElement(name = "local address")
     private String localAddress;
 
-    private boolean master;
-    private boolean partecipation;
-    private int batteryLevel;
-
+    @XmlElement(name = "local coords")
     private Coordinates coords = new Coordinates();
-    private final String serverAddress = "http://localhost:1338/";
+
+    private boolean master = false;
+    private boolean partecipation = false;
 
 
+    public Drone (){}
 
+    public ClientResponse connect(){
 
+        ClientConfig config = new DefaultClientConfig();
+        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        Client client = Client.create(config);
+        WebResource webResource = client.resource("http://localhost:1338/drones/addDrone");
 
-    public Drone () {
-        Random rand = new Random();
-        try {
-            ServerSocket sock = new ServerSocket(0);
-            this.localPort = sock.getLocalPort();
-            this.id = rand.nextInt(100);
-        }
-        catch (IOException e ){
-            e.printStackTrace();
-        }
+        String input = "{\"ID\": \""+this.id+"\","+
+                "\"local port\":\""+this.localPort+"\"," +
+                "\"local address\":\""+this.localAddress+"\"}";
 
-        this.master = false;
-        this.partecipation = false;
-        this. batteryLevel = 100;
+        ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
+        return response;
     }
 
-    public void doDeliverie(){
-        setBatteryLevel(batteryLevel-10);
-    }
+    //Returns the smartcity, operated before connect() to verify if it's empty
+    public ClientResponse getSmartCity() {
+        ClientConfig clientConfig = new DefaultClientConfig();
+        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
+        clientConfig.getClasses().add(JacksonJsonProvider.class);
+        Client client = Client.create(clientConfig);
 
+        WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
+        ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
-    public Coordinates getCoords() {
-        return coords;
-    }
-
-    public void setCoords(Coordinates coords) {
-        this.coords = coords;
-    }
-
-    //    #### LOCAL PORT ####
-    public int getLocalPort() {
-        return localPort;
-    }
-    public void setLocalPort(int localPort) {
-        this.localPort = localPort;
-    }
-    //    #### LOCAL ADDRESS ####
-    public String getLocalAddress() {
-        return localAddress;
-    }
-    public void setLocalAddress(String localAddress) {
-        this.localAddress = localAddress;
-    }
-
-
-    //    #### SERVER ADDRESS ####
-    public String getServerAddress() {
-        return serverAddress;
+        return response;
     }
 
     //    #### ID ####
@@ -82,27 +70,48 @@ public class Drone {
         this.id = id;
     }
 
-    //    #### MASTER ####
+    //    #### PORT ####
+    public String getLocalPort() {
+        return localPort;
+    }
+    public void setLocalport(String localPort) {
+        this.localPort = localPort;
+    }
+
+    //    #### ADDRESS ####
+    public String getLocalAddress() {
+        return localAddress;
+    }
+    public void setLocalAddress(String localAddress) {
+        this.localAddress = localAddress;
+    }
+
+    //    #### COORDINATES ####
+    public Coordinates getCoords() {
+        return coords;
+    }
+    public void setCoords(Coordinates coords) {
+        this.coords = coords;
+    }
+
+    public void setLocalPort(String localPort) {
+        this.localPort = localPort;
+    }
+
     public boolean isMaster() {
         return master;
     }
+
     public void setMaster(boolean master) {
         this.master = master;
     }
 
-    //    #### PARTECIPATION ####
     public boolean isPartecipation() {
         return partecipation;
     }
+
     public void setPartecipation(boolean partecipation) {
         this.partecipation = partecipation;
     }
-
-    //    #### BATTERY ####
-    public int getBatteryLevel() {
-        return batteryLevel;
-    }
-    public void setBatteryLevel(int batteryLevel) {
-        this.batteryLevel = batteryLevel;
-    }
 }
+
