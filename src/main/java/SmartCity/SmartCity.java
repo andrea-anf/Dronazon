@@ -2,14 +2,12 @@ package SmartCity;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SmartCity {
-    @XmlElement(name = "dronelist")
     private ArrayList<Drone> dronelist;
     private static SmartCity instance;
 
@@ -25,10 +23,6 @@ public class SmartCity {
         return instance;
     }
 
-    public synchronized ArrayList<Drone> getSmartCity() {
-        return new ArrayList<>(dronelist);
-    }
-
     public synchronized boolean addDrone(Drone drone) {
         if (dronelist.contains(drone)) {
             return false;
@@ -39,7 +33,7 @@ public class SmartCity {
     }
 
     public synchronized Drone getById(int drone) {
-        ArrayList<Drone> dronelistCopy = getSmartCity();
+        ArrayList<Drone> dronelistCopy = getDronelist();
 
         for (Drone d : dronelistCopy) {
             if (d.getId() == drone)
@@ -50,7 +44,7 @@ public class SmartCity {
 
 
     public synchronized void deleteDrone(Drone drone) {
-        ArrayList<Drone> dronelistCopy = SmartCity.getInstance().getSmartCity();
+        ArrayList<Drone> dronelistCopy = SmartCity.getInstance().getDronelist();
 
         for (Drone d : dronelistCopy) {
             if (d.getId() == (drone.getId())) {
@@ -59,4 +53,10 @@ public class SmartCity {
         }
     }
 
+    public ArrayList<Drone> getDronelist() {
+        return dronelist;
+    }
+    public void setDronelist(ArrayList<Drone> dronelist) {
+        this.dronelist = dronelist;
+    }
 }

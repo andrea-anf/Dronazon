@@ -2,6 +2,7 @@ package Amministrazione.Services;
 
 import SmartCity.SmartCity;
 import Amministrazione.Statistics.StatLists;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -18,7 +19,7 @@ public class ServiceAdmin {
     @GET
     @Produces({"application/json", "application/xml"})
     public Response getSmartCity(){
-        return Response.ok(SmartCity.getInstance().getSmartCity()).build();
+        return Response.ok(SmartCity.getInstance()).build();
     }
 
     //  Ultime n statistiche globali (con timestamp) relative alla smart-city

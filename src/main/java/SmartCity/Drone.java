@@ -8,6 +8,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.json.JSONConfiguration;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import javax.ws.rs.core.MediaType;
@@ -24,12 +25,11 @@ public class Drone {
     private String localPort;
     @XmlElement(name = "local address")
     private String localAddress;
-
     @XmlElement(name = "local coords")
     private Coordinates coords = new Coordinates();
 
-    private boolean master = false;
-    private boolean partecipation = false;
+    private boolean master;
+    private boolean partecipation;
 
 
     public Drone (){}
@@ -51,10 +51,7 @@ public class Drone {
 
     //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
-        ClientConfig clientConfig = new DefaultClientConfig();
-        clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        clientConfig.getClasses().add(JacksonJsonProvider.class);
-        Client client = Client.create(clientConfig);
+        Client client = Client.create();
 
         WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
         ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);

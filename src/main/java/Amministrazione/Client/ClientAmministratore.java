@@ -3,6 +3,7 @@ package Amministrazione.Client;
 import SmartCity.Drone;
 
 import Amministrazione.Statistics.Stat;
+import SmartCity.SmartCity;
 import com.sun.jersey.api.client.*;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -39,24 +40,20 @@ public class ClientAmministratore {
                 case 0: {
                     service = "getSmartCity";
 
-                    ClientConfig clientConfig = new DefaultClientConfig();
-                    clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-                    clientConfig.getClasses().add(JacksonJsonProvider.class);
-                    Client client = Client.create(clientConfig);
-
+                    Client client = Client.create();
                     WebResource webResource = client.resource(serverAddress+service);
                     ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
                     System.out.println("[+]   "+clientResponse.toString());
 
-                    List<Drone> smartcity = clientResponse.getEntity(new GenericType<List<Drone>>() {});
+                    SmartCity smartcity = clientResponse.getEntity(SmartCity.class);
 
-                    if(smartcity.isEmpty()){
+                    if(smartcity.getDronelist().isEmpty()){
                         System.out.println("    [-] No drones in smartcity");
                     }
                     else{
-                        for (Drone d : smartcity){
-                            System.out.println("    [-]   "+"Name: " + d.getId() + " Coords: (" + d.getCoords().getX()+", " + d.getCoords().getY()+")");
+                        for (Drone d : smartcity.getDronelist()){
+                            System.out.println("    [-]   "+"ID: " + d.getId() + " Coords: (" + d.getCoords().getX()+", " + d.getCoords().getY()+")");
                         }
                     }
 
