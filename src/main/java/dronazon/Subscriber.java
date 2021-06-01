@@ -15,7 +15,7 @@ public class Subscriber {
         String clientId = MqttClient.generateClientId();
         String username = "Susara";
         String password = "123";
-        String topic = "home/sensors/temp";
+        String topic = "dronazon/smartcity/orders/";
         int qos = 2;
 
         Scanner input = new Scanner(System.in);

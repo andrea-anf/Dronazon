@@ -3,18 +3,10 @@ package SmartCity;
 import Amministrazione.Coordinates;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
-import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -30,33 +22,29 @@ public class Drone {
 
     private boolean master;
     private boolean partecipation;
+    private int batteryLevel;
+    private String serverAddress = "http://localhost:1338/";
 
 
     public Drone (){}
 
     public ClientResponse connect(){
 
-        ClientConfig config = new DefaultClientConfig();
-        config.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-        Client client = Client.create(config);
-        WebResource webResource = client.resource("http://localhost:1338/drones/addDrone");
+        Client client = Client.create();
+        WebResource webResource = client.resource(serverAddress+"drones/addDrone");
 
         String input = "{\"ID\": \""+this.id+"\","+
                 "\"local port\":\""+this.localPort+"\"," +
                 "\"local address\":\""+this.localAddress+"\"}";
 
-        ClientResponse response = webResource.type("application/json").post(ClientResponse.class, input);
-        return response;
+        return webResource.type("application/json").post(ClientResponse.class, input);
     }
 
     //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
         Client client = Client.create();
-
         WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
-        ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
-
-        return response;
+        return webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     }
 
     //    #### ID ####
@@ -109,6 +97,21 @@ public class Drone {
 
     public void setPartecipation(boolean partecipation) {
         this.partecipation = partecipation;
+    }
+
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+    public void setBatteryLevel(int batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+    public String getServerAddress() {
+        return serverAddress;
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
     }
 }
 

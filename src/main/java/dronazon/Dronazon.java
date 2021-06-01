@@ -1,8 +1,13 @@
 package dronazon;
 
+import Amministrazione.Coordinates;
 import org.eclipse.paho.client.mqttv3.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Dronazon {
 
@@ -14,16 +19,6 @@ public class Dronazon {
         String clientId = MqttClient.generateClientId();
         String topic = "dronazon/smartcity/orders/";
         String orderID;
-        int coordX=0;
-        int coordY=0;
-        int maxCoord = 9;
-        int minCoord = 0;
-
-        int qos = 2;
-
-        // valori generazione ID ordine
-        int max = 200;
-        int min = 100;
 
 
         try {
@@ -36,27 +31,14 @@ public class Dronazon {
             client.connect(connOpts);
             System.out.println(clientId + " Connected");
 
-            orderID = String.valueOf(Math.floor(Math.random()*(max-min+1)+max));
-            coordX = (int)Math.floor(Math.random()*(maxCoord-minCoord+1)+maxCoord);
-            coordY = (int)Math.floor(Math.random()*(maxCoord-minCoord+1)+maxCoord);
-
-            /*TODO
-            *  creare messaggo con in ID e coordinate
-            *
-            * */
-//            String payload = "dafare"; //ID, Punto ritiro, punto consegna
-//            MqttMessage message = new MqttMessage(payload.getBytes());
-//
-//            Runnable sender = new DronazonSender(client, message, topic, clientId);
-//
-//            Thread thread = new Thread(sender);
-//            thread.start();
-              // Set the QoS on the Message
+            Runnable sender = new DronazonSender(client, topic, clientId);
+            Thread thread = new Thread(sender);
+            thread.start();
 
             if(client.isConnected()){
                 command.hasNextLine();
                 client.disconnect();
-                System.out.println("Publisher " + clientId + " disconnected");
+                System.out.println("Dronazon Publisher disconnected");
             }
 
 
