@@ -40,11 +40,21 @@ public class Drone {
         return webResource.type("application/json").post(ClientResponse.class, input);
     }
 
+    public ClientResponse disconnect(){
+
+        Client client = Client.create();
+        WebResource webResource = client.resource(serverAddress+"drones/deleteDrone/" + this.getId());
+        return webResource.delete(ClientResponse.class);
+
+    }
+
     //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
+
         Client client = Client.create();
         WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
         return webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+
     }
 
     //    #### ID ####

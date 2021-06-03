@@ -1,8 +1,12 @@
 package SmartCity;
 
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.WebResource;
 import com.sun.xml.bind.v2.TODO;
 import org.eclipse.paho.client.mqttv3.*;
 
+import javax.ws.rs.core.MediaType;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
@@ -12,12 +16,12 @@ public class MasterDrone implements Runnable{
     private String clientId = MqttClient.generateClientId();
 
     private String topic = "dronazon/smartcity/orders/";
-    private int droneId;
+    private Drone drone;
     int qos = 2;
 
 
-    public MasterDrone(int id){
-        this.droneId = id;
+    public MasterDrone(Drone drone){
+        this.drone = drone;
     }
 
     public void run(){
@@ -43,12 +47,12 @@ public class MasterDrone implements Runnable{
                     String receivedMessage = new String(message.getPayload());
 
                     System.out.println(
-                            "Master drone " + droneId +
+                            "Master drone " + drone.getId() +
                                     " received a new message!" +
                                     "\n\tTime:    " + time +
                                     "\n\tTopic:   " + topic +
                                     "\n\tMessage: " + receivedMessage +
-                                    "\n\tQoS:     " + message.getQos() + "\n");
+                                    "\n\tQoS:     " + message.getQos());
 
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }
@@ -58,7 +62,7 @@ public class MasterDrone implements Runnable{
                 public void connectionLost(Throwable cause) {
                     System.out.println(
                             "Master drone " +
-                                    droneId +
+                                    drone.getId() +
                                     " has lost the connection! Cause:"
                                     + cause.getMessage() +
                                     "-  Thread PID: "
@@ -73,24 +77,33 @@ public class MasterDrone implements Runnable{
             client.subscribe(topic,qos);
             System.out.println(
                     "\nMaster Drone " +
-                            this.droneId +
+                            drone.getId() +
                             " is now subscribed to topic : " +
                             topic);
 
 
             input.hasNextLine();
             client.disconnect();
+            if(client.isConnected()){
+                client.disconnectForcibly();
+                System.out.println(
+                        "\nMaster Drone " +
+                                drone.getId() +
+                                " is forcing disconnection from broker" +
+                                client.getServerURI());
+            }
+
+            ClientResponse deleteResponse = drone.disconnect();
+            System.out.println("RESPONSE: " + deleteResponse);
+
             System.out.println(
-                    "\nMaster Drone " +
-                            this.droneId +
-                            "Disconnected from broker" +
+                    "Master Drone " +
+                            drone.getId() +
+                            " disconnected from broker " +
                             client.getServerURI());
 
-
-
-
         } catch (MqttException me) {
-// handle exceptions
+            System.out.println(me.getStackTrace());
         }
     }
 }

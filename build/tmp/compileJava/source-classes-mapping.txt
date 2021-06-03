@@ -1,31 +1,31 @@
-SmartCity/SmartCity.java
- SmartCity.SmartCity
-SmartCity/DroneStarter.java
- SmartCity.DroneStarter
+dronazon/Subscriber.java
+ dronazon.Subscriber
+ dronazon.Subscriber$1
+dronazon/DronazonSender.java
+ dronazon.DronazonSender
 Amministrazione/Coordinates.java
  Amministrazione.Coordinates
 Amministrazione/Statistics/StatLists.java
  Amministrazione.Statistics.StatLists
 Amministrazione/ServerAmministratore.java
  Amministrazione.ServerAmministratore
-SmartCity/MasterDrone.java
- SmartCity.MasterDrone
- SmartCity.MasterDrone$1
+dronazon/Dronazon.java
+ dronazon.Dronazon
 Amministrazione/Services/ServiceAdmin.java
  Amministrazione.Services.ServiceAdmin
 Amministrazione/Statistics/Stat.java
  Amministrazione.Statistics.Stat
-Amministrazione/Services/ServiceDrones.java
- Amministrazione.Services.ServiceDrones
+SmartCity/SmartCity.java
+ SmartCity.SmartCity
 Amministrazione/Client/ClientAmministratore.java
  Amministrazione.Client.ClientAmministratore
  Amministrazione.Client.ClientAmministratore$1
-dronazon/Subscriber.java
- dronazon.Subscriber
- dronazon.Subscriber$1
+SmartCity/MasterDrone.java
+ SmartCity.MasterDrone
+ SmartCity.MasterDrone$1
+SmartCity/DroneStarter.java
+ SmartCity.DroneStarter
 SmartCity/Drone.java
  SmartCity.Drone
-dronazon/DronazonSender.java
- dronazon.DronazonSender
-dronazon/Dronazon.java
- dronazon.Dronazon
+Amministrazione/Services/ServiceDrones.java
+ Amministrazione.Services.ServiceDrones

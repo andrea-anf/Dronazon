@@ -47,7 +47,7 @@ public class DroneStarter {
         //if it's the first entry, make it master
         if(dronelist.getDronelist().size() == 0){
             drone.setMaster(true);
-            Runnable sender = new MasterDrone(drone.getId());
+            Runnable sender = new MasterDrone(drone);
             Thread thread = new Thread(sender);
             thread.start();
         }
@@ -55,6 +55,8 @@ public class DroneStarter {
             try {
                 System.out.println("Hit return to stop...");
                 System.in.read();
+                System.out.println(drone.disconnect());
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

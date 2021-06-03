@@ -44,15 +44,14 @@ public class ServiceDrones {
 //  http://localhost:1338/drones/deleteDrone/{id}
     @Path("deleteDrone/{drone}")
     @DELETE
-    @Produces({"application/json", "application/xml"})
-    public Response deleteWord(@PathParam("drone")int drone){
-        Drone w = SmartCity.getInstance().getById(drone);
-        if(w != null){
-            SmartCity.getInstance().deleteDrone(w);
-            return Response.status(Response.Status.ACCEPTED).build();
+    public Response deleteDrone(@PathParam("drone")int droneId){
+        Drone d = SmartCity.getInstance().getById(droneId);
+        if(d != null){
+            SmartCity.getInstance().deleteDrone(d);
+            return Response.status(Response.Status.OK).build();
         }
         else{
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
 
