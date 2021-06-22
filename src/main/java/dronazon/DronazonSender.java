@@ -50,7 +50,7 @@ public class DronazonSender implements Runnable {
                 e.printStackTrace();
             }
             System.out.println("Delivery published");
-            System.out.println("...Press any key to stop service... ");
+            System.out.println("...Press enter to stop the service... ");
 
             try {
                 Thread.sleep(5000);

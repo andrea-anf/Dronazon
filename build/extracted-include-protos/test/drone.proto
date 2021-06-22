@@ -1,0 +1,19 @@
+syntax = "proto3";
+package grpc.drone;
+
+message AddRequest {
+  int32 id = 1;
+  string address =2;
+  string port =3;
+  int32 coordX = 4;
+  int32 coordY = 5;
+}
+
+message AddResponse {
+  int32 response = 1;
+}
+
+service Drone {
+  rpc Add(AddRequest) returns (AddResponse);
+
+}

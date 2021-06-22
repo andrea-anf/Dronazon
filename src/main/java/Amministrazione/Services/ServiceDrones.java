@@ -45,9 +45,10 @@ public class ServiceDrones {
     @Path("deleteDrone/{drone}")
     @DELETE
     public Response deleteDrone(@PathParam("drone")int droneId){
-        Drone d = SmartCity.getInstance().getById(droneId);
+        SmartCity smartCity = SmartCity.getInstance();
+        Drone d = smartCity.getById(droneId);
         if(d != null){
-            SmartCity.getInstance().deleteDrone(d);
+            smartCity.deleteDrone(d);
             return Response.status(Response.Status.OK).build();
         }
         else{

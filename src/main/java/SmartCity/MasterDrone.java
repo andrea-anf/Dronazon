@@ -1,23 +1,23 @@
 package SmartCity;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.xml.bind.v2.TODO;
+
+import io.grpc.Server;
+import io.grpc.ServerBuilder;
 import org.eclipse.paho.client.mqttv3.*;
 
-import javax.ws.rs.core.MediaType;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Scanner;
 
 public class MasterDrone implements Runnable{
-    private MqttClient client;
-    private String broker = "tcp://localhost:1883" ; // default MQTT broker address
-    private String clientId = MqttClient.generateClientId();
+    final private String broker = "tcp://localhost:1883" ; // default MQTT broker address
+    final private String clientId = MqttClient.generateClientId();
 
-    private String topic = "dronazon/smartcity/orders/";
-    private Drone drone;
+    final private String topic = "dronazon/smartcity/orders/";
+    final private Drone drone;
     int qos = 2;
+    private MasterDronelist dronelist;
 
 
     public MasterDrone(Drone drone){
@@ -30,15 +30,23 @@ public class MasterDrone implements Runnable{
 
         try {
 // Create an Mqtt client
-            client = new MqttClient(broker, clientId);
+            MqttClient client = new MqttClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
 
-            System.out.println("\nConnecting to broker " + client.getServerURI() + "...");
+            System.out.println("\n[+] Connecting to broker " + client.getServerURI() + "...");
 
 // Connect the client to the broker (blocking)
             client.connect(connOpts);
-            System.out.println("Successfully connected!");
+            System.out.println("[+] Successfully connected!");
+
+
+
+            Server server = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new MasterDroneService(true)).build();
+            server.start();
+
+            System.out.println("[+] Master started to listen!");
+//            server.awaitTermination();
 
             client.setCallback(new MqttCallback() {
 
@@ -56,8 +64,6 @@ public class MasterDrone implements Runnable{
 
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }
-
-                //TODO: Creare messaggi RPC per distribuire ordini ai droni
 
                 public void connectionLost(Throwable cause) {
                     System.out.println(
@@ -102,7 +108,7 @@ public class MasterDrone implements Runnable{
                             " disconnected from broker " +
                             client.getServerURI());
 
-        } catch (MqttException me) {
+        } catch (MqttException | IOException me) {
             System.out.println(me.getStackTrace());
         }
     }

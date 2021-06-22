@@ -1,5 +1,8 @@
 plugins {
+    id "com.google.protobuf" version "0.8.10"
     id 'java'
+    id "war"
+
 }
 
 group 'org.example'
@@ -45,7 +48,43 @@ dependencies {
 
     //GSON
     compile 'com.google.code.gson:gson:2.7'
+
+    // https://mvnrepository.com/artifact/io.grpc/grpc-all
+    compile group: 'io.grpc', name: 'grpc-all', version: '1.25.0'
+    //end GRPC
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
 }
+
+
+//start GRPC
+sourceSets {
+    main {
+        java {
+            srcDirs 'build/generated/source/proto/main/grpc'
+            srcDirs 'build/generated/source/proto/main/java'
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.10.1'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+        }
+    }
+
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}
+
 
 test {
     useJUnitPlatform()

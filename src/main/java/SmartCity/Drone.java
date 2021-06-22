@@ -21,6 +21,8 @@ public class Drone {
     private Coordinates coords = new Coordinates();
 
     private boolean master;
+    private String masterAddress;
+    private String masterPort;
     private boolean partecipation;
     private int batteryLevel;
     private String serverAddress = "http://localhost:1338/";
@@ -41,20 +43,21 @@ public class Drone {
     }
 
     public ClientResponse disconnect(){
-
         Client client = Client.create();
         WebResource webResource = client.resource(serverAddress+"drones/deleteDrone/" + this.getId());
         return webResource.delete(ClientResponse.class);
-
     }
 
     //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
-
         Client client = Client.create();
         WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
         return webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
+    }
 
+    public ClientResponse sendStats(){
+
+        return null;
     }
 
     //    #### ID ####
@@ -122,6 +125,22 @@ public class Drone {
 
     public void setServerAddress(String serverAddress) {
         this.serverAddress = serverAddress;
+    }
+
+    public String getMasterAddress() {
+        return masterAddress;
+    }
+
+    public void setMasterAddress(String masterAddress) {
+        this.masterAddress = masterAddress;
+    }
+
+    public String getMasterPort() {
+        return masterPort;
+    }
+
+    public void setMasterPort(String masterPort) {
+        this.masterPort = masterPort;
     }
 }
 

@@ -16,14 +16,14 @@ public class SmartCity {
     }
 
     //singleton class
-    public synchronized static SmartCity getInstance() {
+    public static SmartCity getInstance() {
         if (instance == null) {
             instance = new SmartCity();
         }
         return instance;
     }
 
-    public synchronized boolean addDrone(Drone drone) {
+    public boolean addDrone(Drone drone) {
         if (dronelist.contains(drone)) {
             return false;
         } else {
@@ -32,31 +32,30 @@ public class SmartCity {
         }
     }
 
-    public synchronized Drone getById(int drone) {
-        ArrayList<Drone> dronelistCopy = getDronelist();
+    public Drone getById(int drone) {
 
-        for (Drone d : dronelistCopy) {
+        for (Drone d : dronelist) {
             if (d.getId() == drone)
                 return d;
         }
         return null;
     }
 
+    //TODO rivedere come usare i synchronized
+    public synchronized void  deleteDrone(Drone drone) {
+             for (Drone d : dronelist) {
+                 if (d.getId() == (drone.getId())) {
+                         dronelist.remove(d);
+                         break;
+                 }
+             }
 
-    public synchronized void deleteDrone(Drone drone) {
-        ArrayList<Drone> dronelistCopy = SmartCity.getInstance().getDronelist();
-
-        for (Drone d : dronelistCopy) {
-            if (d.getId() == (drone.getId())) {
-                dronelist.remove(d);
-            }
-        }
     }
 
-    public ArrayList<Drone> getDronelist() {
+    public synchronized ArrayList<Drone> getDronelist() {
         return dronelist;
     }
-    public void setDronelist(ArrayList<Drone> dronelist) {
+    public synchronized void setDronelist(ArrayList<Drone> dronelist) {
         this.dronelist = dronelist;
     }
 }
