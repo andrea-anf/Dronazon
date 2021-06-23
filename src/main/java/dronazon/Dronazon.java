@@ -1,13 +1,8 @@
 package dronazon;
 
-import Amministrazione.Coordinates;
 import org.eclipse.paho.client.mqttv3.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Dronazon {
 
@@ -18,7 +13,6 @@ public class Dronazon {
         String broker = "tcp://localhost:1883";
         String clientId = MqttClient.generateClientId();
         String topic = "dronazon/smartcity/orders/";
-        String orderID;
 
 
         try {

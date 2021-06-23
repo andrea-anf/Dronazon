@@ -1,5 +1,8 @@
-package SmartCity;
+package SmartCity.MasterDrone;
 
+import SmartCity.Drone;
+import SmartCity.RPCServices.DroneRPCListeningService;
+import SmartCity.RPCServices.DroneRPCSendingService;
 import com.sun.jersey.api.client.ClientResponse;
 
 import io.grpc.Server;
@@ -18,6 +21,7 @@ public class MasterDrone implements Runnable{
     final private Drone drone;
     int qos = 2;
     private MasterDronelist dronelist;
+    private int nextDrone = -1;
 
 
     public MasterDrone(Drone drone){
@@ -29,20 +33,22 @@ public class MasterDrone implements Runnable{
         Scanner input = new Scanner(System.in);
 
         try {
-// Create an Mqtt client
+            // Create an Mqtt client
             MqttClient client = new MqttClient(broker, clientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-
             System.out.println("\n[+] Connecting to broker " + client.getServerURI() + "...");
 
-// Connect the client to the broker (blocking)
+            // Connect the client to the broker (blocking)
             client.connect(connOpts);
             System.out.println("[+] Successfully connected!");
 
+            //makes master drone listening for RPCs
+            Server server = ServerBuilder
+                    .forPort(Integer.parseInt(drone.getLocalPort()))
+                    .addService(new DroneRPCListeningService(drone))
+                    .build();
 
-
-            Server server = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(true)).build();
             server.start();
 
             System.out.println("[+] Master started to listen!");
@@ -62,6 +68,9 @@ public class MasterDrone implements Runnable{
                                     "\n\tMessage: " + receivedMessage +
                                     "\n\tQoS:     " + message.getQos());
 
+                    DispatchingService delivery = new DispatchingService(dronelist, message);
+                    nextDrone = delivery.findClosest();
+                    DroneRPCSendingService.sendOrder(dronelist.getById(nextDrone), receivedMessage);
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }
 

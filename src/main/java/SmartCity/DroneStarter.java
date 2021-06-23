@@ -1,5 +1,8 @@
 package SmartCity;
 
+import SmartCity.MasterDrone.MasterDrone;
+import SmartCity.RPCServices.DroneRPCListeningService;
+import SmartCity.RPCServices.DroneRPCSendingService;
 import com.sun.jersey.api.client.ClientResponse;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
@@ -25,10 +28,11 @@ public class DroneStarter {
         //if it's the first entry, make it master
         if(dronelist.getDronelist().size() != 0){
 
-            Server server = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new MasterDroneService(false)).build();
+            //makes master drone listening for RPCs
+            Server server = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
             server.start();
 
-            DroneService.addRequest(drone, dronelist);
+            DroneRPCSendingService.addRequest(drone, dronelist);
 
             System.out.println("\n...Press enter to stop...");
             System.in.read();

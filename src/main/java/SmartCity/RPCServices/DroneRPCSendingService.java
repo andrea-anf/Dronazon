@@ -1,10 +1,16 @@
-package SmartCity;
+package SmartCity.RPCServices;
 
+import SmartCity.Drone;
+import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
+import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
+import grpc.drone.DroneOuterClass.Order;
+import grpc.drone.DroneOuterClass.OrderAck;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import static grpc.drone.DroneGrpc.newBlockingStub;
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
@@ -40,6 +46,36 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
             System.out.println("\n[!] No master found");
             System.out.println("[!] Need to starts an election");
         }
+
+    }
+
+    public static void sendOrder(Drone drone, String message){
+        String[] parts = message.split(";");
+        //take id
+        int id = Integer.parseInt(parts[0]);
+
+        //take departure coordinates
+        String[] departureCoords  = parts[1].split(",");
+        int depX = Integer.parseInt(departureCoords[0]);
+        int depY = Integer.parseInt(departureCoords[1]);
+
+        //take destination coordinates
+        String[] destinationCoords  = parts[2].split(",");
+        int destX = Integer.parseInt(destinationCoords[0]);
+        int destY = Integer.parseInt(destinationCoords[1]);
+
+        final ManagedChannel channel = ManagedChannelBuilder.forTarget(drone.getLocalAddress() + drone.getLocalPort()).usePlaintext().build();
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+
+        Order request = Order.newBuilder()
+                .setId(id)
+                .setDepX(depX)
+                .setDepY(depY)
+                .setDestX(destX)
+                .setDestY(destY)
+                .build();
+
+        OrderAck response = stub.sendOrder(request);
 
     }
 }

@@ -1,25 +1,25 @@
-package SmartCity;
+package SmartCity.RPCServices;
 
 import Amministrazione.Coordinates;
+import SmartCity.Drone;
+import SmartCity.MasterDrone.MasterDronelist;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
+import grpc.drone.DroneOuterClass.Order;
+import grpc.drone.DroneOuterClass.OrderAck;
 import io.grpc.stub.StreamObserver;
 
 public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     private boolean master;
 
-    public DroneRPCListeningService(boolean isMaster){
-        master = isMaster;
+    public DroneRPCListeningService(Drone drone){
+        master = drone.isMaster();
     }
 
     @Override
     public void add(AddRequest request, StreamObserver<DroneOuterClass.AddResponse> responseObserver) {
-
-
         AddResponse response;
         if(master){
             //if master, save the new drone and respond with 1
@@ -30,7 +30,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                     "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
             );
 
-            MasterDronelist list = MasterDronelist.getInstance();
+            MasterDronelist masterslist = MasterDronelist.getInstance();
             Drone newDrone = new Drone();
 
             Coordinates coords = new Coordinates();
@@ -38,7 +38,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             coords.setY(request.getCoordY());
 
             newDrone.setCoords(coords);
-            list.addDrone(newDrone);
+            masterslist.addDrone(newDrone);
 
              response = AddResponse.newBuilder()
                     .setResponse(1)
@@ -54,4 +54,9 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
-}
+
+    public void takeOrder(Order request, StreamObserver<AddResponse> responseObserver) {
+        //TODO diminuire batteria del drone e mettere sleep per la consegna, quindi comunicare al master statistiche
+    }
+
+    }
