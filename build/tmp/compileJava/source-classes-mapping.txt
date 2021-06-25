@@ -1,7 +1,8 @@
-SmartCity/MasterDrone/DispatchingService.java
- SmartCity.MasterDrone.DispatchingService
-Amministrazione/Services/ServiceDrones.java
- Amministrazione.Services.ServiceDrones
+Amministrazione/Statistics/Stat.java
+ Amministrazione.Statistics.Stat
+dronazon/Subscriber.java
+ dronazon.Subscriber
+ dronazon.Subscriber$1
 Amministrazione/Coordinates.java
  Amministrazione.Coordinates
 Amministrazione/Statistics/StatLists.java
@@ -27,20 +28,6 @@ grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass$OrderOrBuilder
 Amministrazione/ServerAmministratore.java
  Amministrazione.ServerAmministratore
-SmartCity/Drone.java
- SmartCity.Drone
-SmartCity/RPCServices/DroneRPCSendingService.java
- SmartCity.RPCServices.DroneRPCSendingService
-Amministrazione/Services/ServiceAdmin.java
- Amministrazione.Services.ServiceAdmin
-SmartCity/MasterDrone/MasterDrone.java
- SmartCity.MasterDrone.MasterDrone
- SmartCity.MasterDrone.MasterDrone$1
-SmartCity/MasterDrone/MasterDronelist.java
- SmartCity.MasterDrone.MasterDronelist
-Amministrazione/Client/ClientAmministratore.java
- Amministrazione.Client.ClientAmministratore
- Amministrazione.Client.ClientAmministratore$1
 dronazon/DronazonSender.java
  dronazon.DronazonSender
 grpc/drone/DroneGrpc.java
@@ -54,16 +41,29 @@ grpc/drone/DroneGrpc.java
  grpc.drone.DroneGrpc$DroneMethodDescriptorSupplier
  grpc.drone.DroneGrpc$DroneStub
  grpc.drone.DroneGrpc$MethodHandlers
-Amministrazione/Statistics/Stat.java
- Amministrazione.Statistics.Stat
-dronazon/Subscriber.java
- dronazon.Subscriber
- dronazon.Subscriber$1
+Amministrazione/Services/ServiceAdmin.java
+ Amministrazione.Services.ServiceAdmin
 dronazon/Dronazon.java
  dronazon.Dronazon
+SmartCity/MasterDrone/MasterDronelist.java
+ SmartCity.MasterDrone.MasterDronelist
+SmartCity/MasterDrone/DispatchingService.java
+ SmartCity.MasterDrone.DispatchingService
+Amministrazione/Services/ServiceDrones.java
+ Amministrazione.Services.ServiceDrones
+Amministrazione/Client/ClientAmministratore.java
+ Amministrazione.Client.ClientAmministratore
+ Amministrazione.Client.ClientAmministratore$1
+SmartCity/Drone.java
+ SmartCity.Drone
+SmartCity/RPCServices/DroneRPCSendingService.java
+ SmartCity.RPCServices.DroneRPCSendingService
+SmartCity/SmartCity.java
+ SmartCity.SmartCity
 SmartCity/DroneStarter.java
  SmartCity.DroneStarter
 SmartCity/RPCServices/DroneRPCListeningService.java
  SmartCity.RPCServices.DroneRPCListeningService
-SmartCity/SmartCity.java
- SmartCity.SmartCity
+SmartCity/MasterDrone/MasterDrone.java
+ SmartCity.MasterDrone.MasterDrone
+ SmartCity.MasterDrone.MasterDrone$1

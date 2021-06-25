@@ -7,6 +7,8 @@ import com.sun.jersey.api.client.WebResource;
 
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -26,6 +28,9 @@ public class Drone {
     private boolean partecipation;
     private int batteryLevel;
     private String serverAddress = "http://localhost:1338/";
+
+    //master drone attributes
+    private List<Drone> dronelist = new ArrayList<>();
 
 
     public Drone (){}
@@ -141,6 +146,26 @@ public class Drone {
 
     public void setMasterPort(String masterPort) {
         this.masterPort = masterPort;
+    }
+
+    public List<Drone> getDronelist() {
+        return dronelist;
+    }
+
+    public void setDronelist(List<Drone> dronelist) {
+        this.dronelist = dronelist;
+    }
+
+    public void addToDronelist(Drone drone){
+        this.dronelist.add(drone);
+    }
+    public Drone getById(int id){
+        for(Drone d : this.dronelist){
+            if(d.getId() == id){
+                return d;
+            }
+        }
+        return null;
     }
 }
 

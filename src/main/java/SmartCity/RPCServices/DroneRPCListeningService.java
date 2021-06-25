@@ -12,16 +12,16 @@ import grpc.drone.DroneOuterClass.OrderAck;
 import io.grpc.stub.StreamObserver;
 
 public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
-    private boolean master;
+    private Drone drone;
 
     public DroneRPCListeningService(Drone drone){
-        master = drone.isMaster();
+        this.drone = drone;
     }
 
     @Override
     public void add(AddRequest request, StreamObserver<DroneOuterClass.AddResponse> responseObserver) {
         AddResponse response;
-        if(master){
+        if(drone.isMaster()){
             //if master, save the new drone and respond with 1
             System.out.println("[+] New drone is joining the ring: " +
                     "\n\tID: " + request.getId() +
@@ -29,16 +29,18 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                     "\n\tPort: " + request.getPort() +
                     "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
             );
-
-            MasterDronelist masterslist = MasterDronelist.getInstance();
             Drone newDrone = new Drone();
 
             Coordinates coords = new Coordinates();
             coords.setX(request.getCoordX());
             coords.setY(request.getCoordY());
 
+            newDrone.setId(request.getId());
+            newDrone.setLocalAddress(request.getAddress());
+            newDrone.setLocalPort(request.getPort());
             newDrone.setCoords(coords);
-            masterslist.addDrone(newDrone);
+
+            drone.addToDronelist(newDrone);
 
              response = AddResponse.newBuilder()
                     .setResponse(1)
@@ -59,4 +61,4 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         //TODO diminuire batteria del drone e mettere sleep per la consegna, quindi comunicare al master statistiche
     }
 
-    }
+}

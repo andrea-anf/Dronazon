@@ -11,6 +11,8 @@ import org.eclipse.paho.client.mqttv3.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class MasterDrone implements Runnable{
@@ -18,19 +20,20 @@ public class MasterDrone implements Runnable{
     final private String clientId = MqttClient.generateClientId();
 
     final private String topic = "dronazon/smartcity/orders/";
-    final private Drone drone;
+    private Drone drone;
     int qos = 2;
-    private MasterDronelist dronelist;
-    private int nextDrone = -1;
+    private Drone nextDrone;
 
 
     public MasterDrone(Drone drone){
         this.drone = drone;
+        drone.addToDronelist(drone);
     }
 
     public void run(){
 
         Scanner input = new Scanner(System.in);
+        DispatchingService delivery = new DispatchingService(drone.getDronelist());
 
         try {
             // Create an Mqtt client
@@ -43,19 +46,15 @@ public class MasterDrone implements Runnable{
             client.connect(connOpts);
             System.out.println("[+] Successfully connected!");
 
-            //makes master drone listening for RPCs
+            //######## STARTS TO LISTEN TO OTHER DRONES ########
             Server server = ServerBuilder
                     .forPort(Integer.parseInt(drone.getLocalPort()))
                     .addService(new DroneRPCListeningService(drone))
                     .build();
-
             server.start();
-
             System.out.println("[+] Master started to listen!");
-//            server.awaitTermination();
 
             client.setCallback(new MqttCallback() {
-
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String time = new Timestamp(System.currentTimeMillis()).toString();
                     String receivedMessage = new String(message.getPayload());
@@ -68,9 +67,19 @@ public class MasterDrone implements Runnable{
                                     "\n\tMessage: " + receivedMessage +
                                     "\n\tQoS:     " + message.getQos());
 
-                    DispatchingService delivery = new DispatchingService(dronelist, message);
+                    System.out.println("DRONELIST: ");
+
+                    for(Drone d : drone.getDronelist()){
+                        System.out.println(d.getId()+", ");
+                    }
+
                     nextDrone = delivery.findClosest();
-                    DroneRPCSendingService.sendOrder(dronelist.getById(nextDrone), receivedMessage);
+                    if(nextDrone.getId() == drone.getId()){
+                        System.out.println("YO IT'S ME RECEIVING THE MESSAGE!");
+                    }
+                    else{
+                        DroneRPCSendingService.sendOrder(nextDrone, receivedMessage);
+                    }
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }
 

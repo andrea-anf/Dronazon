@@ -3,8 +3,10 @@ package SmartCity.MasterDrone;
 import SmartCity.Drone;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.List;
+
 public class DispatchingService {
-    MasterDronelist dronelist;
+    List<Drone> dronelist;
     String order;
     String id;
     int depX;
@@ -12,27 +14,25 @@ public class DispatchingService {
     int destX;
     int destY;
 
-    public DispatchingService(MasterDronelist dl, MqttMessage message){
+    public DispatchingService(List<Drone> dl){
         this.dronelist = dl;
-        this.order = message.getPayload().toString();
-
     }
 
-    private void splitMessage(String message){
-        String[] parts = message.split(";");
-        //take id
-        this.id = parts[0];
-
-        //take departure coordinates
-        String[] departureCoords  = parts[1].split(",");
-        this.depX = Integer.parseInt(departureCoords[0]);
-        this.depY = Integer.parseInt(departureCoords[1]);
-
-        //take destination coordinates
-        String[] destinationCoords  = parts[2].split(",");
-        this.destX = Integer.parseInt(destinationCoords[0]);
-        this.destY = Integer.parseInt(destinationCoords[1]);
-    }
+//    private void splitMessage(String message){
+//        String[] parts = message.split(";");
+//        //take id
+//        this.id = parts[0];
+//
+//        //take departure coordinates
+//        String[] departureCoords  = parts[1].split(",");
+//        this.depX = Integer.parseInt(departureCoords[0]);
+//        this.depY = Integer.parseInt(departureCoords[1]);
+//
+//        //take destination coordinates
+//        String[] destinationCoords  = parts[2].split(",");
+//        this.destX = Integer.parseInt(destinationCoords[0]);
+//        this.destY = Integer.parseInt(destinationCoords[1]);
+//    }
 
     private double Distance(int aX, int aY, int bX, int bY){
         double result = -1;
@@ -42,41 +42,42 @@ public class DispatchingService {
         return result;
     }
 
-    public int findClosest(){
+    public Drone findClosest(){
         double closerDistance = 100;
-        int closerDrone = -1;
+        Drone closerDrone = this.dronelist.get(0);
 
-        for(Drone d : this.dronelist.getDronelist()){
-            int droneX = d.getCoords().getX();
-            int droneY = d.getCoords().getY();
+        if(this.dronelist.size() > 1){
+            for(Drone d : this.dronelist){
+                int droneX = d.getCoords().getX();
+                int droneY = d.getCoords().getY();
+                //find distance between drone and departure point
+                double distanceD = Distance(droneX,droneY,depX,depY);
 
-            double distanceD = Distance(droneX,droneY,depX,depY);
+                for(Drone d1 : this.dronelist){
+                    int drone1X = d.getCoords().getX();
+                    int drone1Y = d.getCoords().getY();
 
-            for(Drone d1 : this.dronelist.getDronelist()){
-                int drone1X = d.getCoords().getX();
-                int drone1Y = d.getCoords().getY();
+                    double distanceD1 = Distance(drone1X,drone1Y,depX,depY);
 
-                double distanceD1 = Distance(drone1X,drone1Y,depX,depY);
-
-                //looks for minor distance
-                if(distanceD < distanceD1 && distanceD < closerDistance){
+                    //looks for minor distance between the two drones with the departure point
+                    if(distanceD < distanceD1 && distanceD < closerDistance){
                         closerDistance = distanceD;
-                        closerDrone = d.getId();
+                        closerDrone = d;
                     }
                     //if equals, check who has the lowest battery level
-                    else if (distanceD == closerDistance && d.getId() != closerDrone){
-                        if (d.getBatteryLevel() > dronelist.getById(closerDrone).getBatteryLevel()){
+                    else if (distanceD == closerDistance && d.getId() != closerDrone.getId()){
+                        if (d.getBatteryLevel() > closerDrone.getBatteryLevel()){
                             closerDistance = distanceD;
-                            closerDrone = d.getId();
+                            closerDrone = d;
                         }
-                        else if (d.getBatteryLevel() == dronelist.getById(closerDrone).getBatteryLevel()){
+                        else if (d.getBatteryLevel() == closerDrone.getBatteryLevel()){
                             if(d.getId() <= d1.getId()){
                                 closerDistance = distanceD;
-                                closerDrone = d.getId();
+                                closerDrone = d;
                             }
                             else{
                                 closerDistance = distanceD;
-                                closerDrone = d1.getId();
+                                closerDrone = d1;
                             }
                         }
                     }
@@ -84,6 +85,10 @@ public class DispatchingService {
 
 
             }
+        }
+        else{
+            return dronelist.get(0);
+        }
 
         return closerDrone;
     }

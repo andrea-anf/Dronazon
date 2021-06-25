@@ -9,7 +9,7 @@ public class MasterDronelist {
     private ArrayList<Drone> dronelist;
     private static MasterDronelist instance;
 
-    private MasterDronelist() {
+    public MasterDronelist() {
         dronelist = new ArrayList<>();
     }
 
