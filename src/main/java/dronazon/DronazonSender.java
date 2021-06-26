@@ -1,6 +1,7 @@
 package dronazon;
 
 import Amministrazione.Coordinates;
+import SmartCity.MasterDrone.Order;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -37,9 +38,15 @@ public class DronazonSender implements Runnable {
                     ThreadLocalRandom.current().nextInt(0, 9 + 1));
 
 
-            String payloadDepartureCoords = "(" + DepartureCoords.getX() +"," + DepartureCoords.getY() + ")";
-            String payloadDestinationCoords =  "(" + DestinationCoords.getX() +"," + DestinationCoords.getY() + ")";
-            String payload = payloadId + ";" + payloadDepartureCoords + ";" + payloadDestinationCoords; //ID, Punto ritiro, punto consegna
+//            Order order = new Order();
+//            order.setId(payloadId);
+//            order.setDeparture(DepartureCoords);
+//            order.setDestination(DestinationCoords);
+//
+            String payloadDepartureCoords = DepartureCoords.getX() +"," + DepartureCoords.getY();
+            String payloadDestinationCoords = DestinationCoords.getX() +"," + DestinationCoords.getY();
+            String payload = payloadId + ";" + payloadDepartureCoords + ";" + payloadDestinationCoords;
+
             MqttMessage message = new MqttMessage(payload.getBytes());
             message.setQos(qos);
             System.out.println("\nDronazon is publishing a new delivery: " + message);

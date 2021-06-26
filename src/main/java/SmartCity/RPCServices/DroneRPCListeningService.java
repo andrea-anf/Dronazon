@@ -19,7 +19,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     }
 
     @Override
-    public void add(AddRequest request, StreamObserver<DroneOuterClass.AddResponse> responseObserver) {
+    public void add(AddRequest request, StreamObserver<AddResponse> responseObserver) {
         AddResponse response;
         if(drone.isMaster()){
             //if master, save the new drone and respond with 1
@@ -57,8 +57,21 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onCompleted();
     }
 
-    public void takeOrder(Order request, StreamObserver<AddResponse> responseObserver) {
+    @Override
+    public void sendOrder(Order order, StreamObserver<OrderAck> responseObserver) {
+
+        System.out.println("sto ricevendo l'ordine " + order.getId());
+        DroneOuterClass.OrderAck ack = DroneOuterClass.OrderAck.newBuilder()
+                .setAck(1)
+                .build();
+
+        responseObserver.onNext(ack);
+        responseObserver.onCompleted();
+
         //TODO diminuire batteria del drone e mettere sleep per la consegna, quindi comunicare al master statistiche
     }
+
+
+
 
 }

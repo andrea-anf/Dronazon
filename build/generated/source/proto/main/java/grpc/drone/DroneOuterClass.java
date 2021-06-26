@@ -1423,10 +1423,16 @@ public final class DroneOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    int getId();
+    java.lang.String getId();
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    com.google.protobuf.ByteString
+        getIdBytes();
 
     /**
      * <code>int32 depX = 2;</code>
@@ -1465,6 +1471,7 @@ public final class DroneOuterClass {
       super(builder);
     }
     private Order() {
+      id_ = "";
     }
 
     @java.lang.Override
@@ -1497,9 +1504,10 @@ public final class DroneOuterClass {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              id_ = input.readInt32();
+              id_ = s;
               break;
             }
             case 16: {
@@ -1555,13 +1563,39 @@ public final class DroneOuterClass {
     }
 
     public static final int ID_FIELD_NUMBER = 1;
-    private int id_;
+    private volatile java.lang.Object id_;
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string id = 1;</code>
      * @return The id.
      */
-    public int getId() {
-      return id_;
+    public java.lang.String getId() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        id_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string id = 1;</code>
+     * @return The bytes for id.
+     */
+    public com.google.protobuf.ByteString
+        getIdBytes() {
+      java.lang.Object ref = id_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        id_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int DEPX_FIELD_NUMBER = 2;
@@ -1618,8 +1652,8 @@ public final class DroneOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (id_ != 0) {
-        output.writeInt32(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, id_);
       }
       if (depX_ != 0) {
         output.writeInt32(2, depX_);
@@ -1642,9 +1676,8 @@ public final class DroneOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (id_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, id_);
+      if (!getIdBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, id_);
       }
       if (depX_ != 0) {
         size += com.google.protobuf.CodedOutputStream
@@ -1677,8 +1710,8 @@ public final class DroneOuterClass {
       }
       grpc.drone.DroneOuterClass.Order other = (grpc.drone.DroneOuterClass.Order) obj;
 
-      if (getId()
-          != other.getId()) return false;
+      if (!getId()
+          .equals(other.getId())) return false;
       if (getDepX()
           != other.getDepX()) return false;
       if (getDepY()
@@ -1699,7 +1732,7 @@ public final class DroneOuterClass {
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId();
+      hash = (53 * hash) + getId().hashCode();
       hash = (37 * hash) + DEPX_FIELD_NUMBER;
       hash = (53 * hash) + getDepX();
       hash = (37 * hash) + DEPY_FIELD_NUMBER;
@@ -1841,7 +1874,7 @@ public final class DroneOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        id_ = 0;
+        id_ = "";
 
         depX_ = 0;
 
@@ -1930,8 +1963,9 @@ public final class DroneOuterClass {
 
       public Builder mergeFrom(grpc.drone.DroneOuterClass.Order other) {
         if (other == grpc.drone.DroneOuterClass.Order.getDefaultInstance()) return this;
-        if (other.getId() != 0) {
-          setId(other.getId());
+        if (!other.getId().isEmpty()) {
+          id_ = other.id_;
+          onChanged();
         }
         if (other.getDepX() != 0) {
           setDepX(other.getDepX());
@@ -1974,32 +2008,78 @@ public final class DroneOuterClass {
         return this;
       }
 
-      private int id_ ;
+      private java.lang.Object id_ = "";
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return The id.
        */
-      public int getId() {
-        return id_;
+      public java.lang.String getId() {
+        java.lang.Object ref = id_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          id_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string id = 1;</code>
+       * @return The bytes for id.
+       */
+      public com.google.protobuf.ByteString
+          getIdBytes() {
+        java.lang.Object ref = id_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          id_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string id = 1;</code>
        * @param value The id to set.
        * @return This builder for chaining.
        */
-      public Builder setId(int value) {
-        
+      public Builder setId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
         id_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string id = 1;</code>
        * @return This builder for chaining.
        */
       public Builder clearId() {
         
-        id_ = 0;
+        id_ = getDefaultInstance().getId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string id = 1;</code>
+       * @param value The bytes for id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        id_ = value;
         onChanged();
         return this;
       }
@@ -2695,7 +2775,7 @@ public final class DroneOuterClass {
       "\n\n\002id\030\001 \001(\005\022\017\n\007address\030\002 \001(\t\022\014\n\004port\030\003 \001" +
       "(\t\022\016\n\006coordX\030\004 \001(\005\022\016\n\006coordY\030\005 \001(\005\"\037\n\013Ad" +
       "dResponse\022\020\n\010response\030\001 \001(\005\"M\n\005Order\022\n\n\002" +
-      "id\030\001 \001(\005\022\014\n\004depX\030\002 \001(\005\022\014\n\004depY\030\003 \001(\005\022\r\n\005" +
+      "id\030\001 \001(\t\022\014\n\004depX\030\002 \001(\005\022\014\n\004depY\030\003 \001(\005\022\r\n\005" +
       "destX\030\004 \001(\005\022\r\n\005destY\030\005 \001(\005\"\027\n\010OrderAck\022\013" +
       "\n\003ack\030\001 \001(\0052u\n\005Drone\0226\n\003Add\022\026.grpc.drone" +
       ".AddRequest\032\027.grpc.drone.AddResponse\0224\n\t" +

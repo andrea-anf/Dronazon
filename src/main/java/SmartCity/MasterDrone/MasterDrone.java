@@ -33,7 +33,7 @@ public class MasterDrone implements Runnable{
     public void run(){
 
         Scanner input = new Scanner(System.in);
-        DispatchingService delivery = new DispatchingService(drone.getDronelist());
+        DispatchingService disService = new DispatchingService(drone.getDronelist());
 
         try {
             // Create an Mqtt client
@@ -54,7 +54,7 @@ public class MasterDrone implements Runnable{
             server.start();
             System.out.println("[+] Master started to listen!");
 
-            client.setCallback(new MqttCallback() {
+            client.setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     String time = new Timestamp(System.currentTimeMillis()).toString();
                     String receivedMessage = new String(message.getPayload());
@@ -70,16 +70,22 @@ public class MasterDrone implements Runnable{
                     System.out.println("DRONELIST: ");
 
                     for(Drone d : drone.getDronelist()){
-                        System.out.println(d.getId()+", ");
+                        System.out.print(d.getId()+", ");
                     }
 
-                    nextDrone = delivery.findClosest();
+                    nextDrone = disService.findClosest(receivedMessage);
+
+                    System.out.println("\n[+] Sendind order to: ");
                     if(nextDrone.getId() == drone.getId()){
-                        System.out.println("YO IT'S ME RECEIVING THE MESSAGE!");
+                        System.out.print("Master\n");
                     }
                     else{
-                        DroneRPCSendingService.sendOrder(nextDrone, receivedMessage);
+                        System.out.print(nextDrone.getId() + "\n");
+
+                        Thread oS = new OrderSender(nextDrone, receivedMessage);
+                        oS.start();
                     }
+
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }
 

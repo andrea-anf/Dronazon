@@ -1,5 +1,6 @@
 package SmartCity;
 
+import SmartCity.MasterDrone.DispatchingService;
 import SmartCity.MasterDrone.MasterDrone;
 import SmartCity.RPCServices.DroneRPCListeningService;
 import SmartCity.RPCServices.DroneRPCSendingService;
@@ -29,10 +30,11 @@ public class DroneStarter {
         if(dronelist.getDronelist().size() != 0){
 
             //makes master drone listening for RPCs
-            Server server = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
-            server.start();
+            Server requestsToEnter = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
+            requestsToEnter.start();
 
-            DroneRPCSendingService.addRequest(drone, dronelist);
+
+            DroneRPCSendingService.addDroneRequest(drone, dronelist);
 
             System.out.println("\n...Press enter to stop...");
             System.in.read();

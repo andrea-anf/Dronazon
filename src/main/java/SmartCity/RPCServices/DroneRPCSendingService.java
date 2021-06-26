@@ -15,11 +15,14 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import static grpc.drone.DroneGrpc.newBlockingStub;
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
-    public static void addRequest(Drone drone, SmartCity dronelist){
+    public static void addDroneRequest(Drone drone, SmartCity dronelist){
         boolean found = false;
         System.out.println("[+] Looking for the master...");
         for (Drone d : dronelist.getDronelist()){
-                final ManagedChannel channel = ManagedChannelBuilder.forTarget("localhost:"+d.getLocalPort()).usePlaintext().build();
+                final ManagedChannel channel = ManagedChannelBuilder
+                        .forTarget(d.getLocalAddress() + ":" + d.getLocalPort())
+                        .usePlaintext()
+                        .build();
 
                 DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
                 AddRequest request = AddRequest.newBuilder()
@@ -49,10 +52,10 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
     }
 
-    public static void sendOrder(Drone drone, String message){
+    public static void sendOrderRequest(Drone drone, String message){
         String[] parts = message.split(";");
         //take id
-        int id = Integer.parseInt(parts[0]);
+        String id = parts[0];
 
         //take departure coordinates
         String[] departureCoords  = parts[1].split(",");
@@ -64,7 +67,11 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         int destX = Integer.parseInt(destinationCoords[0]);
         int destY = Integer.parseInt(destinationCoords[1]);
 
-        final ManagedChannel channel = ManagedChannelBuilder.forTarget(drone.getLocalAddress() + drone.getLocalPort()).usePlaintext().build();
+
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(drone.getLocalAddress() + ":" + drone.getLocalPort())
+                .usePlaintext()
+                .build();
         DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
 
         Order request = Order.newBuilder()
@@ -75,7 +82,10 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 .setDestY(destY)
                 .build();
 
-        OrderAck response = stub.sendOrder(request);
-
+        OrderAck order = stub.sendOrder(request);
+        if(order.getAck() == 1 ){
+            System.out.println("Drone " + drone.getId() + "received the order " + id);
+        }
+        channel.shutdown();
     }
 }
