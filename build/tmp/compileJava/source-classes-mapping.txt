@@ -25,6 +25,14 @@ grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass$OrderAck$Builder
  grpc.drone.DroneOuterClass$OrderAckOrBuilder
  grpc.drone.DroneOuterClass$OrderOrBuilder
+ grpc.drone.DroneOuterClass$statsRequest
+ grpc.drone.DroneOuterClass$statsRequest$1
+ grpc.drone.DroneOuterClass$statsRequest$Builder
+ grpc.drone.DroneOuterClass$statsRequestOrBuilder
+ grpc.drone.DroneOuterClass$statsResponse
+ grpc.drone.DroneOuterClass$statsResponse$1
+ grpc.drone.DroneOuterClass$statsResponse$Builder
+ grpc.drone.DroneOuterClass$statsResponseOrBuilder
 SmartCity/MasterDrone/OrderSender.java
  SmartCity.MasterDrone.OrderSender
 Amministrazione/ServerAmministratore.java

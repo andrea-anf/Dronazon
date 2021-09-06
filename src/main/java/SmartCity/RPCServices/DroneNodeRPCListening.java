@@ -15,10 +15,11 @@ public class DroneNodeRPCListening extends DroneGrpc.DroneImplBase {
         this.drone = drone;
     }
 
-    @Override
+    //override to provide this method to DroneImplBase
+/*    @Override
     public void sendOrder(Order order, StreamObserver<OrderAck> responseObserver) {
 
-        System.out.println("sto ricevendo l'ordine " + order.getId());
+        System.out.println("Receiving order " + order.getId());
         DroneOuterClass.OrderAck ack = DroneOuterClass.OrderAck.newBuilder()
                 .setAck(1)
                 .build();
@@ -28,5 +29,5 @@ public class DroneNodeRPCListening extends DroneGrpc.DroneImplBase {
 
 //TODO diminuire batteria del drone e mettere sleep per la consegna, quindi comunicare al master statistiche
 
-    }
+    }*/
 }

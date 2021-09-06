@@ -1,0 +1,10 @@
+TODO:
+
+- notificare uscita dal sistema agli altri droni
+- uscita dal sistema (anche per batteria minore di 15)
+
+
+X gestire l'assegnamento dell'ordine al master
+x gestire l'invio dell'ordine
+x far accettare gli ordini al master
+

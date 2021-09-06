@@ -26,10 +26,10 @@ public class ServiceDrones {
     @Consumes({"application/json", "application/xml"})
     public Response addDrone(Drone drone){
         Drone d = SmartCity.getInstance().getById(drone.getId());
+        System.out.println("[+] Adding new drone: " + drone.getId());
         if(d == null) {
 
             if (SmartCity.getInstance().addDrone(drone)) {
-
                 Coordinates coords = new Coordinates(ThreadLocalRandom.current().nextInt(0, 9 + 1),ThreadLocalRandom.current().nextInt(0, 9 + 1));
                 drone.setCoords(coords);
                 return Response.ok(SmartCity.getInstance()).build();
@@ -47,6 +47,7 @@ public class ServiceDrones {
     public Response deleteDrone(@PathParam("drone")int droneId){
         SmartCity smartCity = SmartCity.getInstance();
         Drone d = smartCity.getById(droneId);
+        System.out.println("[-] Removing drone: " + d.getId());
         if(d != null){
             smartCity.deleteDrone(d);
             return Response.status(Response.Status.OK).build();

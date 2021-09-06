@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class DroneStarter {
     public static void main(String[] args) throws IOException {
+
         System.out.println("\nStarting new drone:");
         Drone drone = new Drone();
         drone.setLocalAddress("localhost");
@@ -26,18 +27,19 @@ public class DroneStarter {
         SmartCity dronelist = responseGetSmartCity.getEntity(SmartCity.class);
         signUpDrone(drone);
 
+
         //if it's the first entry, make it master
         if(dronelist.getDronelist().size() != 0){
 
-            //makes master drone listening for RPCs
-            Server requestsToEnter = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
-            requestsToEnter.start();
-
+            Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
+            listeningService.start();
 
             DroneRPCSendingService.addDroneRequest(drone, dronelist);
 
             System.out.println("\n...Press enter to stop...");
             System.in.read();
+
+
             System.out.println(drone.disconnect());
 
         }
@@ -52,7 +54,8 @@ public class DroneStarter {
     }
 
     public static void signUpDrone(Drone drone){
-        System.out.println("\nStarting drone:" + "\n\tID: " + drone.getId());
+        System.out.println("\nStarting drone:" +
+                "\n\tID: " + drone.getId());
 
         //registers the new drone to the ServerAmministratore
         ClientResponse response = drone.connect();

@@ -26,6 +26,7 @@ public class DronazonSender implements Runnable {
     public void run(){
         while(client.isConnected()){
 
+            //formatting payloads to sends
             String payloadId = new SimpleDateFormat("yyyymmdd_HHmmss")
                     .format(Calendar.getInstance().getTime());
 
@@ -37,33 +38,42 @@ public class DronazonSender implements Runnable {
                     ThreadLocalRandom.current().nextInt(0, 9 + 1),
                     ThreadLocalRandom.current().nextInt(0, 9 + 1));
 
-
 //            Order order = new Order();
 //            order.setId(payloadId);
 //            order.setDeparture(DepartureCoords);
 //            order.setDestination(DestinationCoords);
-//
+
+            //putting together parts of the payloads
             String payloadDepartureCoords = DepartureCoords.getX() +"," + DepartureCoords.getY();
             String payloadDestinationCoords = DestinationCoords.getX() +"," + DestinationCoords.getY();
             String payload = payloadId + ";" + payloadDepartureCoords + ";" + payloadDestinationCoords;
 
+
             MqttMessage message = new MqttMessage(payload.getBytes());
+            //setting quality of service
             message.setQos(qos);
-            System.out.println("\nDronazon is publishing a new delivery: " + message);
+            System.out.println("\n[+] Dronazon is publishing a new delivery: " +
+                    "\n\tID: "+ payloadId +
+                    "\n\tDeparture: ("+payloadDepartureCoords+")" +
+                    "\n\tDestination: ("+payloadDestinationCoords+")"
+            );
 
             try {
+                //sending the order to the broker
                 client.publish(topic, message);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
-            System.out.println("Delivery published");
+            System.out.println("\n\tDelivery published");
             System.out.println("...Press enter to stop the service... ");
 
             try {
+                //set retard between orders
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             if(Thread.interrupted()){
                 break;
             }

@@ -1,7 +1,6 @@
 package SmartCity.MasterDrone;
 
 import SmartCity.Drone;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.List;
 
@@ -10,13 +9,26 @@ public class DispatchingService {
     String order;
     int depX;
     int depY;
+    int masterIndex=0;
 
 
     public DispatchingService(List<Drone> dl){
+
         this.dronelist = dl;
+        int index = 0;
+        for(Drone drone : this.dronelist){
+            if(drone.isMaster()){
+                masterIndex = index;
+            }
+            else{
+                index++;
+            }
+        }
     }
 
-    private void splitMessage(String message){
+
+    //get coordinates
+    private void getCoords(String message){
         String[] parts = message.split(";");
 
         //take departure coordinates
@@ -25,19 +37,25 @@ public class DispatchingService {
         this.depY = Integer.parseInt(departureCoords[1]);
     }
 
-    private double Distance(int aX, int aY, int bX, int bY){
+    //calculate distance between departure and destionation
+    public double Distance(int aX, int aY, int bX, int bY){
         double firstOp = Math.pow(bX-aX, 2);
         double secondOp = Math.pow(bY-aY, 2);
-        return Math.sqrt(firstOp + secondOp);
+        return Math.round((Math.sqrt(firstOp + secondOp)*100.0))/100.0;
     }
 
+    //calculate the closest drone to the departure point
     public Drone findClosest(String message){
-        splitMessage(message);
+        //extract coordinates from the message
+        getCoords(message);
         double closerDistance = 100;
         Drone closerDrone = this.dronelist.get(0);
 
         if(this.dronelist.size() > 1){
             for(Drone d : this.dronelist){
+                if(d.isDelivering()){
+                    continue;
+                }
                 int droneX = d.getCoords().getX();
                 int droneY = d.getCoords().getY();
 
@@ -45,7 +63,10 @@ public class DispatchingService {
                 double distanceD = Distance(droneX,droneY,depX,depY);
 
                 for(Drone d1 : this.dronelist){
-                    if(d1.getId() == d.getId()) continue;
+                    if(d.isDelivering()){
+                        continue;
+                    }
+                    if(d1.getId() == d.getId() || d1.isDelivering()) continue;
                     int drone1X = d1.getCoords().getX();
                     int drone1Y = d1.getCoords().getY();
 
@@ -79,6 +100,7 @@ public class DispatchingService {
             return dronelist.get(0);
         }
 
-        return closerDrone;
+            return closerDrone;
+
     }
 }

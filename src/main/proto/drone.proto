@@ -25,7 +25,21 @@ message OrderAck {
   int32 ack = 1;
 }
 
+message statsRequest {
+  string arrivalTime = 1;
+  string newCoords = 2;
+  double kmTraveled = 3;
+  double airPollution = 4;
+  int32 batteryLevel = 5;
+  bool isQuitting = 6;
+}
+
+message statsResponse {
+  int32 ack = 1;
+}
+
 service Drone {
   rpc Add(AddRequest) returns (AddResponse);
   rpc SendOrder(Order) returns (OrderAck);
+  rpc SendStats(statsRequest) returns (statsResponse);
 }

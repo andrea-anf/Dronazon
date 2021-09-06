@@ -1,6 +1,7 @@
 package SmartCity;
 
 import Amministrazione.Coordinates;
+import SmartCity.MasterDrone.Order;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -22,15 +23,21 @@ public class Drone {
     @XmlElement(name = "local coords")
     private Coordinates coords = new Coordinates();
 
-    private boolean master;
+    //delivery stats
+    private String arrivalTime;
+    private int batteryLevel = 100;
+    private double kmTraveled = 0;
+
     private String masterAddress;
     private String masterPort;
     private boolean partecipation;
-    private int batteryLevel;
     private String serverAddress = "http://localhost:1338/";
+    private boolean delivering = false;
 
     //master drone attributes
+    private boolean master;
     private List<Drone> dronelist = new ArrayList<>();
+    private List<String> orderlist = new ArrayList<>();
 
 
     public Drone (){}
@@ -44,6 +51,7 @@ public class Drone {
                 "\"local port\":\""+this.localPort+"\"," +
                 "\"local address\":\""+this.localAddress+"\"}";
 
+        //make a post request to add drone to ServerAmministratore
         return webResource.type("application/json").post(ClientResponse.class, input);
     }
 
@@ -61,8 +69,24 @@ public class Drone {
     }
 
     public ClientResponse sendStats(){
-
         return null;
+    }
+
+
+    public String getArrivalTime() {
+        return arrivalTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
+    }
+
+    public double getKmTraveled() {
+        return kmTraveled;
+    }
+
+    public void setKmTraveled(double kmTraveled) {
+        this.kmTraveled = kmTraveled;
     }
 
     //    #### ID ####
@@ -159,6 +183,15 @@ public class Drone {
     public void addToDronelist(Drone drone){
         this.dronelist.add(drone);
     }
+
+    public boolean isDelivering() {
+        return delivering;
+    }
+
+    public void setDelivering(boolean delivering) {
+        this.delivering = delivering;
+    }
+
     public Drone getById(int id){
         for(Drone d : this.dronelist){
             if(d.getId() == id){
@@ -166,6 +199,14 @@ public class Drone {
             }
         }
         return null;
+    }
+
+    public List<String> getOrderlist() {
+        return orderlist;
+    }
+
+    public void addToOrderlist(String order) {
+        this.orderlist.add(order);
     }
 }
 

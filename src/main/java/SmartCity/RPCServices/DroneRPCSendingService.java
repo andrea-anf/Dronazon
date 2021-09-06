@@ -15,6 +15,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import static grpc.drone.DroneGrpc.newBlockingStub;
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
+    //looking for master to join the ring?
     public static void addDroneRequest(Drone drone, SmartCity dronelist){
         boolean found = false;
         System.out.println("[+] Looking for the master...");
@@ -25,6 +26,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                         .build();
 
                 DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+                //build RPC request
                 AddRequest request = AddRequest.newBuilder()
                         .setId(drone.getId())
                         .setAddress(drone.getLocalAddress())
@@ -33,6 +35,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                         .setCoordY(drone.getCoords().getY())
                         .build();
 
+                //handle response
                 AddResponse response = stub.add(request);
                 if(response.getResponse() == 1){
                     found = true;
@@ -45,12 +48,13 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 }
                 channel.shutdown();
         }
+        //if no drones are founds, starts an election
         if(found == false){
             System.out.println("\n[!] No master found");
             System.out.println("[!] Need to starts an election");
         }
-
     }
+
 
     public static void sendOrderRequest(Drone drone, String message){
         String[] parts = message.split(";");
@@ -66,7 +70,6 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         String[] destinationCoords  = parts[2].split(",");
         int destX = Integer.parseInt(destinationCoords[0]);
         int destY = Integer.parseInt(destinationCoords[1]);
-
 
         final ManagedChannel channel = ManagedChannelBuilder
                 .forTarget(drone.getLocalAddress() + ":" + drone.getLocalPort())
@@ -84,7 +87,43 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
         OrderAck order = stub.sendOrder(request);
         if(order.getAck() == 1 ){
-            System.out.println("Drone " + drone.getId() + "received the order " + id);
+            System.out.println("Drone " + drone.getId() + " received the order " + id);
+        }
+        channel.shutdown();
+    }
+
+    public static void sendStatsRequest(Drone drone, String message){
+        String[] parts = message.split(";");
+        //take id
+        String id = parts[0];
+
+        //take departure coordinates
+        String[] departureCoords  = parts[1].split(",");
+        int depX = Integer.parseInt(departureCoords[0]);
+        int depY = Integer.parseInt(departureCoords[1]);
+
+        //take destination coordinates
+        String[] destinationCoords  = parts[2].split(",");
+        int destX = Integer.parseInt(destinationCoords[0]);
+        int destY = Integer.parseInt(destinationCoords[1]);
+
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(drone.getLocalAddress() + ":" + drone.getLocalPort())
+                .usePlaintext()
+                .build();
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+
+        Order request = Order.newBuilder()
+                .setId(id)
+                .setDepX(depX)
+                .setDepY(depY)
+                .setDestX(destX)
+                .setDestY(destY)
+                .build();
+
+        OrderAck order = stub.sendOrder(request);
+        if(order.getAck() == 1 ){
+            System.out.println("Drone " + drone.getId() + " received the order " + id);
         }
         channel.shutdown();
     }
