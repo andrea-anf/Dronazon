@@ -2,8 +2,6 @@ package SmartCity.MasterDrone;
 
 import SmartCity.Drone;
 import SmartCity.RPCServices.DroneRPCListeningService;
-import SmartCity.RPCServices.DroneRPCSendingService;
-import SmartCity.SmartCity;
 import com.sun.jersey.api.client.ClientResponse;
 
 import io.grpc.Server;
@@ -12,8 +10,6 @@ import org.eclipse.paho.client.mqttv3.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class MasterDrone implements Runnable{
@@ -23,7 +19,7 @@ public class MasterDrone implements Runnable{
 
     private Drone drone;
     int qos = 2;
-    private Drone nextDrone;
+    private int nextDrone = 0;
 
 
     public MasterDrone(Drone drone){
@@ -34,7 +30,6 @@ public class MasterDrone implements Runnable{
     public void run(){
 
         Scanner input = new Scanner(System.in);
-        DispatchingService disService = new DispatchingService(drone.getDronelist());
 
 
 
@@ -58,22 +53,21 @@ public class MasterDrone implements Runnable{
             client.connect(connOpts);
             System.out.println("[+] Successfully connected!");
 
-
             client.setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
+
+                    //spostare in DispatchingService per gestire coda
                     String time = new Timestamp(System.currentTimeMillis()).toString();
                     String receivedMessage = new String(message.getPayload());
 
                     System.out.println(
-                            "\nMaster drone " + drone.getId() +
-                                    " received a new message!" +
+                            "\n[+] The Master received a message from broker" +
                                     "\n\tTime:    " + time +
                                     "\n\tTopic:   " + topic +
                                     "\n\tMessage: " + receivedMessage +
                                     "\n\tQoS:     " + message.getQos());
 
-
-                    System.out.println("\nDRONELIST: ");
+                    System.out.println("\n[INFO] DRONELIST: ");
                     for(Drone d : drone.getDronelist()){
                         if(d.getId() == drone.getId()){
                             System.out.print("\t# " + d.getId() + "[MASTER]\n");
@@ -82,33 +76,8 @@ public class MasterDrone implements Runnable{
                             System.out.print("\t# " + d.getId() + "\n");
                         }
                     }
-
-                    // 1. check if nextdrone is delivering
-                    // 2. find closest
-                    // 3. find the one with greater ID number
-                    nextDrone = disService.findClosest(receivedMessage);
-                    if(nextDrone.isDelivering()){
-                        drone.addToOrderlist(receivedMessage);
-                        System.out.println("Nobody is ready to delivery, list of remaining order: ");
-                        int count = 0;
-                        for(String order : drone.getOrderlist()) {
-                            count++;
-                            System.out.println("\t#" + count + ": " + order);
-                        }
-                    }
-                    else{
-                        System.out.println("\nSendind order to: ");
-                        if(nextDrone.getId() == drone.getId()){
-                            System.out.print("\tDrone " + nextDrone.getId() + "[MASTER]\n");
-                        }
-                        else{
-                            System.out.print("\tDrone " + nextDrone.getId() + "\n");
-                        }
-                        Thread oS = new OrderSender(nextDrone, receivedMessage);
-                        oS.start();
-                    }
-
-
+                    DispatchingService disService = new DispatchingService(drone.getDronelist());
+                    disService.checkAndSendOrder(drone, receivedMessage);
 
                     System.out.println("\n ***  Press a key to exit *** \n");
                 }

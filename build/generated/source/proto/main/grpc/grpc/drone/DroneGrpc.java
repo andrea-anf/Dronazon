@@ -58,66 +58,35 @@ public final class DroneGrpc {
     return getAddMethod;
   }
 
-  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.Order,
-      grpc.drone.DroneOuterClass.OrderAck> getSendOrderMethod;
+  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.OrderRequest,
+      grpc.drone.DroneOuterClass.OrderResponse> getSendOrderMethod;
 
   @io.grpc.stub.annotations.RpcMethod(
       fullMethodName = SERVICE_NAME + '/' + "SendOrder",
-      requestType = grpc.drone.DroneOuterClass.Order.class,
-      responseType = grpc.drone.DroneOuterClass.OrderAck.class,
+      requestType = grpc.drone.DroneOuterClass.OrderRequest.class,
+      responseType = grpc.drone.DroneOuterClass.OrderResponse.class,
       methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.Order,
-      grpc.drone.DroneOuterClass.OrderAck> getSendOrderMethod() {
-    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.Order, grpc.drone.DroneOuterClass.OrderAck> getSendOrderMethod;
+  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.OrderRequest,
+      grpc.drone.DroneOuterClass.OrderResponse> getSendOrderMethod() {
+    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.OrderRequest, grpc.drone.DroneOuterClass.OrderResponse> getSendOrderMethod;
     if ((getSendOrderMethod = DroneGrpc.getSendOrderMethod) == null) {
       synchronized (DroneGrpc.class) {
         if ((getSendOrderMethod = DroneGrpc.getSendOrderMethod) == null) {
           DroneGrpc.getSendOrderMethod = getSendOrderMethod =
-              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.Order, grpc.drone.DroneOuterClass.OrderAck>newBuilder()
+              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.OrderRequest, grpc.drone.DroneOuterClass.OrderResponse>newBuilder()
               .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
               .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SendOrder"))
               .setSampledToLocalTracing(true)
               .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.drone.DroneOuterClass.Order.getDefaultInstance()))
+                  grpc.drone.DroneOuterClass.OrderRequest.getDefaultInstance()))
               .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.drone.DroneOuterClass.OrderAck.getDefaultInstance()))
+                  grpc.drone.DroneOuterClass.OrderResponse.getDefaultInstance()))
               .setSchemaDescriptor(new DroneMethodDescriptorSupplier("SendOrder"))
               .build();
         }
       }
     }
     return getSendOrderMethod;
-  }
-
-  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.statsRequest,
-      grpc.drone.DroneOuterClass.statsResponse> getSendStatsMethod;
-
-  @io.grpc.stub.annotations.RpcMethod(
-      fullMethodName = SERVICE_NAME + '/' + "SendStats",
-      requestType = grpc.drone.DroneOuterClass.statsRequest.class,
-      responseType = grpc.drone.DroneOuterClass.statsResponse.class,
-      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
-  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.statsRequest,
-      grpc.drone.DroneOuterClass.statsResponse> getSendStatsMethod() {
-    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.statsRequest, grpc.drone.DroneOuterClass.statsResponse> getSendStatsMethod;
-    if ((getSendStatsMethod = DroneGrpc.getSendStatsMethod) == null) {
-      synchronized (DroneGrpc.class) {
-        if ((getSendStatsMethod = DroneGrpc.getSendStatsMethod) == null) {
-          DroneGrpc.getSendStatsMethod = getSendStatsMethod =
-              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.statsRequest, grpc.drone.DroneOuterClass.statsResponse>newBuilder()
-              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "SendStats"))
-              .setSampledToLocalTracing(true)
-              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.drone.DroneOuterClass.statsRequest.getDefaultInstance()))
-              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-                  grpc.drone.DroneOuterClass.statsResponse.getDefaultInstance()))
-              .setSchemaDescriptor(new DroneMethodDescriptorSupplier("SendStats"))
-              .build();
-        }
-      }
-    }
-    return getSendStatsMethod;
   }
 
   /**
@@ -156,16 +125,9 @@ public final class DroneGrpc {
 
     /**
      */
-    public void sendOrder(grpc.drone.DroneOuterClass.Order request,
-        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderAck> responseObserver) {
+    public void sendOrder(grpc.drone.DroneOuterClass.OrderRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderResponse> responseObserver) {
       asyncUnimplementedUnaryCall(getSendOrderMethod(), responseObserver);
-    }
-
-    /**
-     */
-    public void sendStats(grpc.drone.DroneOuterClass.statsRequest request,
-        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.statsResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(getSendStatsMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
@@ -181,16 +143,9 @@ public final class DroneGrpc {
             getSendOrderMethod(),
             asyncUnaryCall(
               new MethodHandlers<
-                grpc.drone.DroneOuterClass.Order,
-                grpc.drone.DroneOuterClass.OrderAck>(
+                grpc.drone.DroneOuterClass.OrderRequest,
+                grpc.drone.DroneOuterClass.OrderResponse>(
                   this, METHODID_SEND_ORDER)))
-          .addMethod(
-            getSendStatsMethod(),
-            asyncUnaryCall(
-              new MethodHandlers<
-                grpc.drone.DroneOuterClass.statsRequest,
-                grpc.drone.DroneOuterClass.statsResponse>(
-                  this, METHODID_SEND_STATS)))
           .build();
     }
   }
@@ -223,18 +178,10 @@ public final class DroneGrpc {
 
     /**
      */
-    public void sendOrder(grpc.drone.DroneOuterClass.Order request,
-        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderAck> responseObserver) {
+    public void sendOrder(grpc.drone.DroneOuterClass.OrderRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(getSendOrderMethod(), getCallOptions()), request, responseObserver);
-    }
-
-    /**
-     */
-    public void sendStats(grpc.drone.DroneOuterClass.statsRequest request,
-        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.statsResponse> responseObserver) {
-      asyncUnaryCall(
-          getChannel().newCall(getSendStatsMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -265,16 +212,9 @@ public final class DroneGrpc {
 
     /**
      */
-    public grpc.drone.DroneOuterClass.OrderAck sendOrder(grpc.drone.DroneOuterClass.Order request) {
+    public grpc.drone.DroneOuterClass.OrderResponse sendOrder(grpc.drone.DroneOuterClass.OrderRequest request) {
       return blockingUnaryCall(
           getChannel(), getSendOrderMethod(), getCallOptions(), request);
-    }
-
-    /**
-     */
-    public grpc.drone.DroneOuterClass.statsResponse sendStats(grpc.drone.DroneOuterClass.statsRequest request) {
-      return blockingUnaryCall(
-          getChannel(), getSendStatsMethod(), getCallOptions(), request);
     }
   }
 
@@ -306,24 +246,15 @@ public final class DroneGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.OrderAck> sendOrder(
-        grpc.drone.DroneOuterClass.Order request) {
+    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.OrderResponse> sendOrder(
+        grpc.drone.DroneOuterClass.OrderRequest request) {
       return futureUnaryCall(
           getChannel().newCall(getSendOrderMethod(), getCallOptions()), request);
-    }
-
-    /**
-     */
-    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.statsResponse> sendStats(
-        grpc.drone.DroneOuterClass.statsRequest request) {
-      return futureUnaryCall(
-          getChannel().newCall(getSendStatsMethod(), getCallOptions()), request);
     }
   }
 
   private static final int METHODID_ADD = 0;
   private static final int METHODID_SEND_ORDER = 1;
-  private static final int METHODID_SEND_STATS = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -347,12 +278,8 @@ public final class DroneGrpc {
               (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.AddResponse>) responseObserver);
           break;
         case METHODID_SEND_ORDER:
-          serviceImpl.sendOrder((grpc.drone.DroneOuterClass.Order) request,
-              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderAck>) responseObserver);
-          break;
-        case METHODID_SEND_STATS:
-          serviceImpl.sendStats((grpc.drone.DroneOuterClass.statsRequest) request,
-              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.statsResponse>) responseObserver);
+          serviceImpl.sendOrder((grpc.drone.DroneOuterClass.OrderRequest) request,
+              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -417,7 +344,6 @@ public final class DroneGrpc {
               .setSchemaDescriptor(new DroneFileDescriptorSupplier())
               .addMethod(getAddMethod())
               .addMethod(getSendOrderMethod())
-              .addMethod(getSendStatsMethod())
               .build();
         }
       }

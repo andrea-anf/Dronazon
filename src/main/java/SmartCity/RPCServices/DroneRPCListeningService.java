@@ -7,8 +7,8 @@ import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
-import grpc.drone.DroneOuterClass.Order;
-import grpc.drone.DroneOuterClass.OrderAck;
+import grpc.drone.DroneOuterClass.OrderRequest;
+import grpc.drone.DroneOuterClass.OrderResponse;
 import io.grpc.stub.StreamObserver;
 
 import java.sql.Timestamp;
@@ -60,21 +60,17 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     }
 
     @Override
-    public void sendOrder(Order order, StreamObserver<OrderAck> responseObserver) {
+    public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         drone.setDelivering(true);
-        System.out.println("Receiving order number " + order.getId());
-        DroneOuterClass.OrderAck ack = DroneOuterClass.OrderAck.newBuilder()
-                .setAck(1)
-                .build();
-
+        System.out.println("\n[+] Receiving order number " + order.getId());
 
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        drone.setDelivering(false);
-        System.out.println("[+] Order " + order.getId() + " delivered." );
+
+        System.out.println("\n[+] Order " + order.getId() + " delivered." );
 
         String arrivalTime = new Timestamp(System.currentTimeMillis()).toString();
         System.out.println("\tArrival time: " + arrivalTime );
@@ -90,8 +86,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         Coordinates initialPoint = drone.getCoords();
         double distanceInitialToDepart = dispatchingInfo.Distance(initialPoint.getX(), initialPoint.getY(), order.getDepX(), order.getDestY());
 
-        //fin distance between departure point and destination point
-
         //set new coordinates
         Coordinates coords = new Coordinates();
         coords.setX(order.getDestX());
@@ -102,14 +96,36 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
 
         //find kilometers traveled
         double distanceDepartToDest = dispatchingInfo.Distance(order.getDepX(), order.getDepY(), order.getDestX(), order.getDestY());
-        System.out.println("\tKilometers traveled: " + distanceDepartToDest+distanceInitialToDepart);
+        double kmTraveled = distanceDepartToDest+distanceInitialToDepart;
+        System.out.println("\tKilometers traveled: " + kmTraveled);
 
+        boolean quitting;
         if(drone.getBatteryLevel() < 15) {
             System.out.println("Low battery level, I need to stop! ");
+            drone.disconnect();
+            quitting = true;
         }
-        responseObserver.onNext(ack);
-        responseObserver.onCompleted();
+        else{
+            quitting = false;
+        }
 
+        DroneOuterClass.OrderResponse stats = DroneOuterClass.OrderResponse.newBuilder()
+                .setArrivalTime(arrivalTime)
+                .setNewCoordX(drone.getCoords().getX())
+                .setNewCoordY(drone.getCoords().getY())
+                .setKmTraveled(kmTraveled)
+                .setAirPollution(5)
+                .setBatteryLevel(drone.getBatteryLevel())
+                .setIsQuitting(quitting)
+                .build();
+
+        drone.setDelivering(false);
+
+        responseObserver.onNext(stats);
+        responseObserver.onCompleted();
+        if(quitting){
+            System.exit(0);
+        }
     }
 
 

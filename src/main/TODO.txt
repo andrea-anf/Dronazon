@@ -1,8 +1,10 @@
 TODO:
 
 - notificare uscita dal sistema agli altri droni
-- uscita dal sistema (anche per batteria minore di 15)
+- trasferire la gestione dell'invio al DispatchingService, così da gestire la coda degli ordini
+- rivedere algoritmo di scelta del drone per l'invio del pacco
 
+-x uscita dal sistema (anche per batteria minore di 15)
 
 X gestire l'assegnamento dell'ordine al master
 x gestire l'invio dell'ordine

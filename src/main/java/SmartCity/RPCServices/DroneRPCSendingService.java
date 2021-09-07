@@ -1,13 +1,14 @@
 package SmartCity.RPCServices;
 
 import SmartCity.Drone;
+import SmartCity.MasterDrone.DispatchingService;
 import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
-import grpc.drone.DroneOuterClass.Order;
-import grpc.drone.DroneOuterClass.OrderAck;
+import grpc.drone.DroneOuterClass.OrderRequest;
+import grpc.drone.DroneOuterClass.OrderResponse;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -56,7 +57,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
     }
 
 
-    public static void sendOrderRequest(Drone drone, String message){
+    public static int sendOrderRequest(Drone master, Drone drone, String message){
         String[] parts = message.split(";");
         //take id
         String id = parts[0];
@@ -77,7 +78,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 .build();
         DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
 
-        Order request = Order.newBuilder()
+        OrderRequest request = OrderRequest.newBuilder()
                 .setId(id)
                 .setDepX(depX)
                 .setDepY(depY)
@@ -85,46 +86,32 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 .setDestY(destY)
                 .build();
 
-        OrderAck order = stub.sendOrder(request);
-        if(order.getAck() == 1 ){
-            System.out.println("Drone " + drone.getId() + " received the order " + id);
-        }
+        OrderResponse order = stub.sendOrder(request);
+        System.out.println("[+] Drone " + drone.getId() + " delivered the order " + id +
+                "\n\tArrival Time: " + order.getArrivalTime() +
+                "\n\tNew Drone Coords.: (" + order.getNewCoordX() + "," + order.getNewCoordY() + ")" +
+                "\n\tKilometers Traveled: " + order.getKmTraveled() +
+                "\n\tAir Pollution: " + order.getAirPollution() +
+                "\n\tBattery left: " + order.getBatteryLevel() +
+                "\n\tDrone is quitting: " + order.getIsQuitting());
+
         channel.shutdown();
+        if(master.getOrderQueue().isEmpty() == false){
+            DispatchingService disService = new DispatchingService(master.getDronelist());
+            String o = master.getOrderQueue().peek();
+            System.out.println("[+] Sending order " + o + " from queue");
+//            master.takeOneOrderQueue();
+            disService.checkAndSendOrder(master, master.takeOneOrderQueue());
+        }
+
+        if(order.getIsQuitting() == true){
+            System.out.println("[+] The drone " + drone.getId() + " lefted the ring.");
+            master.getDronelist().remove(drone);
+            return drone.getId();
+        }
+        else{
+            return 0;
+        }
     }
 
-    public static void sendStatsRequest(Drone drone, String message){
-        String[] parts = message.split(";");
-        //take id
-        String id = parts[0];
-
-        //take departure coordinates
-        String[] departureCoords  = parts[1].split(",");
-        int depX = Integer.parseInt(departureCoords[0]);
-        int depY = Integer.parseInt(departureCoords[1]);
-
-        //take destination coordinates
-        String[] destinationCoords  = parts[2].split(",");
-        int destX = Integer.parseInt(destinationCoords[0]);
-        int destY = Integer.parseInt(destinationCoords[1]);
-
-        final ManagedChannel channel = ManagedChannelBuilder
-                .forTarget(drone.getLocalAddress() + ":" + drone.getLocalPort())
-                .usePlaintext()
-                .build();
-        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
-
-        Order request = Order.newBuilder()
-                .setId(id)
-                .setDepX(depX)
-                .setDepY(depY)
-                .setDestX(destX)
-                .setDestY(destY)
-                .build();
-
-        OrderAck order = stub.sendOrder(request);
-        if(order.getAck() == 1 ){
-            System.out.println("Drone " + drone.getId() + " received the order " + id);
-        }
-        channel.shutdown();
-    }
 }

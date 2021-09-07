@@ -20,7 +20,7 @@ public class DroneStarter {
         Drone drone = new Drone();
         drone.setLocalAddress("localhost");
         drone.setLocalPort(""+ThreadLocalRandom.current().nextInt(1000, 1999 + 1));
-        drone.setId(ThreadLocalRandom.current().nextInt(0, 999 + 1));
+        drone.setId(ThreadLocalRandom.current().nextInt(1, 999 + 1));
 
         ClientResponse responseGetSmartCity = drone.getSmartCity();
         System.out.println(responseGetSmartCity.toString());
@@ -30,7 +30,6 @@ public class DroneStarter {
 
         //if it's the first entry, make it master
         if(dronelist.getDronelist().size() != 0){
-
             Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
             listeningService.start();
 

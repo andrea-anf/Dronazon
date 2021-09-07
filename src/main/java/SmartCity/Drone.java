@@ -9,7 +9,9 @@ import com.sun.jersey.api.client.WebResource;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -37,7 +39,7 @@ public class Drone {
     //master drone attributes
     private boolean master;
     private List<Drone> dronelist = new ArrayList<>();
-    private List<String> orderlist = new ArrayList<>();
+    private Queue<String> orderQueue = new LinkedList<>();
 
 
     public Drone (){}
@@ -72,6 +74,15 @@ public class Drone {
         return null;
     }
 
+    public Queue<String> getOrderQueue() {
+        return orderQueue;
+    }
+    public String takeOneOrderQueue() {
+        return orderQueue.remove();
+    }
+    public void addOrderQueue(String orderQueue) {
+        this.orderQueue.add(orderQueue);
+    }
 
     public String getArrivalTime() {
         return arrivalTime;
@@ -199,14 +210,6 @@ public class Drone {
             }
         }
         return null;
-    }
-
-    public List<String> getOrderlist() {
-        return orderlist;
-    }
-
-    public void addToOrderlist(String order) {
-        this.orderlist.add(order);
     }
 }
 

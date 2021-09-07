@@ -2,29 +2,24 @@ package SmartCity.MasterDrone;
 
 import SmartCity.Drone;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class DispatchingService {
-    List<Drone> dronelist;
-    String order;
-    int depX;
-    int depY;
-    int masterIndex=0;
+    private final List<Drone> dronelist;
+    private List<Drone> activeDrones = new ArrayList<>();
 
+    private String order;
+    private int depX;
+    private int depY;
 
     public DispatchingService(List<Drone> dl){
-
         this.dronelist = dl;
-        int index = 0;
-        for(Drone drone : this.dronelist){
-            if(drone.isMaster()){
-                masterIndex = index;
-            }
-            else{
-                index++;
-            }
-        }
     }
+
+
 
 
     //get coordinates
@@ -44,63 +39,97 @@ public class DispatchingService {
         return Math.round((Math.sqrt(firstOp + secondOp)*100.0))/100.0;
     }
 
-    //calculate the closest drone to the departure point
-    public Drone findClosest(String message){
-        //extract coordinates from the message
-        getCoords(message);
-        double closerDistance = 100;
-        Drone closerDrone = this.dronelist.get(0);
-
-        if(this.dronelist.size() > 1){
-            for(Drone d : this.dronelist){
-                if(d.isDelivering()){
-                    continue;
-                }
-                int droneX = d.getCoords().getX();
-                int droneY = d.getCoords().getY();
-
-                //find distance between drone and departure point
-                double distanceD = Distance(droneX,droneY,depX,depY);
-
-                for(Drone d1 : this.dronelist){
-                    if(d.isDelivering()){
-                        continue;
-                    }
-                    if(d1.getId() == d.getId() || d1.isDelivering()) continue;
-                    int drone1X = d1.getCoords().getX();
-                    int drone1Y = d1.getCoords().getY();
-
-                    double distanceD1 = Distance(drone1X,drone1Y,depX,depY);
-
-                    //looks for minor distance between the two drones with the departure point
-                    if(distanceD < distanceD1 && distanceD < closerDistance){
-                        closerDistance = distanceD;
-                        closerDrone = d;
-                    }
-                    //if equals, check who has the lowest battery level
-                    else if (distanceD == closerDistance && d.getId() != closerDrone.getId()){
-                        if (d.getBatteryLevel() > closerDrone.getBatteryLevel()){
-                            closerDistance = distanceD;
-                            closerDrone = d;
-                        }
-                        else if (d.getBatteryLevel() == closerDrone.getBatteryLevel()){
-                            if(d.getId() < closerDrone.getId()){
-                                closerDistance = distanceD;
-                                closerDrone = d;
-                            }
-
-                        }
-                    }
-                }
-
+    public void checkAndSendOrder(Drone master, String message){
+        int droneId = findClosest(message);
+        order = message;
+        if(droneId == 0){
+            master.addOrderQueue(message);
+            System.out.println("[!] Nobody is ready to delivery! Order Queue:");
+            int i=0;
+            for(String o : master.getOrderQueue()){
+                System.out.println("#"+i + ": " + o);
+                i++;
 
             }
         }
         else{
-            return dronelist.get(0);
+            System.out.print("\nSending order " + order + " to ");
+            if(droneId == master.getId()){
+                System.out.print("Drone " + droneId + "[MASTER]\n");
+            }
+            else{
+                System.out.print("Drone " + droneId + "\n");
+            }
+            Thread oS = new OrderSender(master, master.getById(droneId), message);
+            oS.start();
+        }
+    }
+
+    public int findClosest(String message){
+        Drone closerDrone;
+        getCoords(message);
+        double closerDistance = 100;
+
+        //find only active drones
+        for(Drone drone : this.dronelist){
+            if(drone.isDelivering() == false){
+                activeDrones.add(drone);
+            }
+        }
+        if(activeDrones.size()==0){
+            return 0;
+        }
+        else if(activeDrones.size() == 1){
+            return activeDrones.get(0).getId();
+        }
+        else {
+            closerDrone = activeDrones.get(0);
+            for (Drone drone1 : this.activeDrones) {
+                //find distance with departure point
+                int drone1X = drone1.getCoords().getX();
+                int drone1Y = drone1.getCoords().getY();
+                double distance1 = Distance(drone1X, drone1Y, this.depX, this.depY);
+
+                for (Drone drone2 : this.activeDrones) {
+                    if (drone1.getId() == drone2.getId()) {
+                        continue;
+                    }
+                    int drone2X = drone2.getCoords().getX();
+                    int drone2Y = drone2.getCoords().getY();
+                    double distance2 = Distance(drone2X, drone2Y, this.depX, this.depY);
+
+                    if (distance1 < distance2) {
+                        continue;
+                    } else if (distance1 == distance2) {
+                        if (drone1.getBatteryLevel() < drone2.getBatteryLevel()) {
+                            closerDrone = drone2;
+                            closerDistance = distance2;
+
+                        } else if (drone1.getBatteryLevel() == drone2.getBatteryLevel()) {
+                            if (drone1.getId() < drone2.getId()) {
+                                closerDrone = drone2;
+                                closerDistance = distance2;
+
+                            } else {
+                                closerDrone = drone1;
+                                closerDistance = distance1;
+                            }
+                        } else {
+                            closerDrone = drone1;
+                            closerDistance = distance1;
+                        }
+                    } else {
+                        if(distance2 < closerDistance){
+                            closerDistance = distance2;
+                            closerDrone = drone2;
+                        }
+                    }
+                }
+
+            }
         }
 
-            return closerDrone;
-
+        return closerDrone.getId();
     }
+
 }
