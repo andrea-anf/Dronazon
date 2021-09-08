@@ -9,6 +9,7 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
+import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -16,6 +17,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class DroneStarter {
     public static void main(String[] args) throws IOException {
 
+        Scanner input = new Scanner(System.in);
         System.out.println("\nStarting new drone:");
         Drone drone = new Drone();
         drone.setLocalAddress("localhost");
@@ -36,10 +38,8 @@ public class DroneStarter {
             DroneRPCSendingService.addDroneRequest(drone, dronelist);
 
             System.out.println("\n...Press enter to stop...");
-            System.in.read();
-
-
-            System.out.println(drone.disconnect());
+            input.nextLine();
+            quitDrone(drone);
 
         }
         else{
@@ -49,6 +49,25 @@ public class DroneStarter {
             thread.start();
         }
 
+
+    }
+
+    public static void quitDrone(Drone drone){
+
+        //wait delivery finish to quit
+        synchronized (drone.getDeliveryLock()){
+            while(drone.isDelivering()){
+                try {
+                    drone.getDeliveryLock().wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            ClientResponse deleteResponse = drone.disconnect();
+            System.out.println("\nRESPONSE: " + deleteResponse);
+
+            System.exit(0);
+        }
 
     }
 

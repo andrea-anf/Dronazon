@@ -48,12 +48,20 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                     .setResponse(1)
                     .build();
 
+            if(drone.getOrderQueue().isEmpty() == false){
+                DispatchingService disService = new DispatchingService(drone.getDronelist());
+                String o = drone.getOrderQueue().peek();
+                System.out.println("[+] Sending order " + o + " from queue");
+//            master.takeOneOrderQueue();
+                disService.checkAndSendOrder(drone, drone.takeOneOrderQueue());
+            }
         }
         else{
             response = AddResponse.newBuilder()
                     .setResponse(0)
                     .build();
         }
+
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
@@ -65,7 +73,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         System.out.println("\n[+] Receiving order number " + order.getId());
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -99,14 +107,16 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         double kmTraveled = distanceDepartToDest+distanceInitialToDepart;
         System.out.println("\tKilometers traveled: " + kmTraveled);
 
-        boolean quitting;
+        drone.increseDeliveryCompleted();
+        System.out.println("\tCompleted deliveries: " + drone.getDeliveryCompleted());
+
+
         if(drone.getBatteryLevel() < 15) {
             System.out.println("Low battery level, I need to stop! ");
-            drone.disconnect();
-            quitting = true;
-        }
-        else{
-            quitting = false;
+            synchronized (drone.getDeliveryLock()){
+                drone.getDeliveryLock().notify();
+            }
+            drone.setQuitting(true);
         }
 
         DroneOuterClass.OrderResponse stats = DroneOuterClass.OrderResponse.newBuilder()
@@ -116,16 +126,17 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 .setKmTraveled(kmTraveled)
                 .setAirPollution(5)
                 .setBatteryLevel(drone.getBatteryLevel())
-                .setIsQuitting(quitting)
+                .setIsQuitting(drone.isQuitting())
+                .setDeliveryCompleted(drone.getDeliveryCompleted())
                 .build();
 
         drone.setDelivering(false);
+        synchronized (drone.getDeliveryLock()){
+            drone.getDeliveryLock().notify();
+        }
 
         responseObserver.onNext(stats);
         responseObserver.onCompleted();
-        if(quitting){
-            System.exit(0);
-        }
     }
 
 

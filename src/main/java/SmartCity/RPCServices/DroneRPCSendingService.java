@@ -2,6 +2,7 @@ package SmartCity.RPCServices;
 
 import SmartCity.Drone;
 import SmartCity.MasterDrone.DispatchingService;
+import SmartCity.MasterDrone.Statistics;
 import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
@@ -11,9 +12,7 @@ import grpc.drone.DroneOuterClass.OrderRequest;
 import grpc.drone.DroneOuterClass.OrderResponse;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import static grpc.drone.DroneGrpc.newBlockingStub;
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
     //looking for master to join the ring?
@@ -93,13 +92,24 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 "\n\tKilometers Traveled: " + order.getKmTraveled() +
                 "\n\tAir Pollution: " + order.getAirPollution() +
                 "\n\tBattery left: " + order.getBatteryLevel() +
+                "\n\tCompleted Deliveries: " + order.getDeliveryCompleted() +
                 "\n\tDrone is quitting: " + order.getIsQuitting());
 
+        Statistics stats = new Statistics();
+        stats.addToKmTravelledList(order.getKmTraveled());
+        stats.addToAirPollutionList(order.getAirPollution());
+        stats.addToBatteryLeftList(order.getBatteryLevel());
+        stats.addToDeliveryList(order.getDeliveryCompleted());
+        master.setStats(stats);
+
         channel.shutdown();
+
+
+
         if(master.getOrderQueue().isEmpty() == false){
             DispatchingService disService = new DispatchingService(master.getDronelist());
             String o = master.getOrderQueue().peek();
-            System.out.println("[+] Sending order " + o + " from queue");
+            System.out.println("\n[QUEUE] Sending order " + o + " from queue");
 //            master.takeOneOrderQueue();
             disService.checkAndSendOrder(master, master.takeOneOrderQueue());
         }

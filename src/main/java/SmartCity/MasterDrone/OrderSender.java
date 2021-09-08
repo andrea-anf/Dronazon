@@ -18,26 +18,24 @@ public class OrderSender extends Thread{
 
     public void run(){
         drone.setDelivering(true);
-        System.out.println("[!!] Drone " +drone.getId() + " is delivering: " + drone.isDelivering());
         int responseDrone;
         try {
+            //returns 0 if ok
+            //returns IDdrone if it need to stops
+            //return negative if drone doesn't finish the order
             responseDrone = DroneRPCSendingService.sendOrderRequest(master, drone, order);
         }catch (StatusRuntimeException sre){
-            System.out.println("EXCEPTIONNNNNN");
             responseDrone = -1;
         }
         drone.setDelivering(false);
-        if(responseDrone > 0){
-            if(responseDrone != master.getId()){
+
+        if(responseDrone > 0) {
+            if (responseDrone != master.getId()) {
                 master.getDronelist().remove(drone);
             }
-        }else if (responseDrone < 0){
-            master.getDronelist().remove(drone);
-            master.addOrderQueue(order);
         }
-    }
-
-    public boolean isEndSending() {
-        return endSending;
+//        else if (responseDrone < 0){
+//            master.getDronelist().remove(drone);
+//        }
     }
 }

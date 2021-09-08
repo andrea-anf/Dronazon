@@ -41,7 +41,6 @@ public class SmartCity {
         return null;
     }
 
-    //TODO rivedere come usare i synchronized
     public synchronized void  deleteDrone(Drone drone) {
              for (Drone d : dronelist) {
                  if (d.getId() == (drone.getId())) {

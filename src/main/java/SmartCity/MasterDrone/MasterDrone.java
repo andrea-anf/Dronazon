@@ -21,7 +21,6 @@ public class MasterDrone implements Runnable{
     int qos = 2;
     private int nextDrone = 0;
 
-
     public MasterDrone(Drone drone){
         this.drone = drone;
         drone.addToDronelist(drone);
@@ -30,8 +29,6 @@ public class MasterDrone implements Runnable{
     public void run(){
 
         Scanner input = new Scanner(System.in);
-
-
 
         try {
 
@@ -61,7 +58,7 @@ public class MasterDrone implements Runnable{
                     String receivedMessage = new String(message.getPayload());
 
                     System.out.println(
-                            "\n[+] The Master received a message from broker" +
+                            "\n\n[+] New order" +
                                     "\n\tTime:    " + time +
                                     "\n\tTopic:   " + topic +
                                     "\n\tMessage: " + receivedMessage +

@@ -2,6 +2,7 @@ package SmartCity;
 
 import Amministrazione.Coordinates;
 import SmartCity.MasterDrone.Order;
+import SmartCity.MasterDrone.Statistics;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
@@ -29,20 +30,25 @@ public class Drone {
     private String arrivalTime;
     private int batteryLevel = 100;
     private double kmTraveled = 0;
+    private int deliveryCompleted = 0;
+    private Statistics stats;
 
+    //ring information
     private String masterAddress;
     private String masterPort;
     private boolean partecipation;
     private String serverAddress = "http://localhost:1338/";
     private boolean delivering = false;
+    private boolean quitting = false;
 
     //master drone attributes
     private boolean master;
     private List<Drone> dronelist = new ArrayList<>();
     private Queue<String> orderQueue = new LinkedList<>();
 
-
+    private final Object deliveryLock = new Object();
     public Drone (){}
+
 
     public ClientResponse connect(){
 
@@ -72,6 +78,15 @@ public class Drone {
 
     public ClientResponse sendStats(){
         return null;
+    }
+
+
+    public boolean isQuitting() {
+        return quitting;
+    }
+
+    public void setQuitting(boolean quitting) {
+        this.quitting = quitting;
     }
 
     public Queue<String> getOrderQueue() {
@@ -210,6 +225,27 @@ public class Drone {
             }
         }
         return null;
+    }
+
+    public int getDeliveryCompleted() {
+        return deliveryCompleted;
+    }
+
+    public void increseDeliveryCompleted() {
+        this.deliveryCompleted++;
+    }
+
+    // stats handling
+    public Statistics getStats() {
+        return stats;
+    }
+
+    public void setStats(Statistics stats) {
+        this.stats = stats;
+    }
+
+    public Object getDeliveryLock() {
+        return deliveryLock;
     }
 }
 

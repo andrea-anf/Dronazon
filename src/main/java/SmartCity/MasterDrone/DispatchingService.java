@@ -44,12 +44,11 @@ public class DispatchingService {
         order = message;
         if(droneId == 0){
             master.addOrderQueue(message);
-            System.out.println("[!] Nobody is ready to delivery! Order Queue:");
+            System.out.println("\n[QUEUE] Nobody is ready to delivery! Order Queue:");
             int i=0;
             for(String o : master.getOrderQueue()){
-                System.out.println("#"+i + ": " + o);
+                System.out.println("\t#"+i + ": " + o);
                 i++;
-
             }
         }
         else{
