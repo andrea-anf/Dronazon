@@ -73,10 +73,24 @@ public class MasterDrone implements Runnable{
                             System.out.print("\t# " + d.getId() + "\n");
                         }
                     }
-                    DispatchingService disService = new DispatchingService(drone.getDronelist());
-                    disService.checkAndSendOrder(drone, receivedMessage);
 
-                    System.out.println("\n ***  Press a key to exit *** \n");
+                    DispatchingService disService = new DispatchingService(drone.getDronelist());
+
+                    if(drone.getOrderQueue().size() > 0){
+                        drone.addOrderQueue(receivedMessage);
+                    }
+                    else{
+                        disService.checkAndSendOrder(drone, receivedMessage);
+                    }
+
+                    if(drone.getOrderQueue().size() > 0){
+                        String o = drone.getOrderQueue().peek();
+                        System.out.println("\n[QUEUE] Trying to send order " + o + " from queue");
+                        disService.checkAndSendOrder(drone, drone.takeOneOrderQueue());
+                    }
+
+
+                    System.out.println("\n ***  Press enter to exit *** \n");
                 }
 
                 public void connectionLost(Throwable cause) {
@@ -104,25 +118,8 @@ public class MasterDrone implements Runnable{
 
             //waiting to break connection with broker
             input.hasNextLine();
-            client.disconnect();
-            if(client.isConnected()){
-                //if still connected force disconnection
-                client.disconnectForcibly();
-                System.out.println(
-                        "\nMaster Drone " +
-                                drone.getId() +
-                                " is forcing disconnection from broker" +
-                                client.getServerURI());
-            }
+            drone.quitDrone(client);
 
-            ClientResponse deleteResponse = drone.disconnect();
-            System.out.println("RESPONSE: " + deleteResponse);
-
-            System.out.println(
-                    "Master Drone " +
-                            drone.getId() +
-                            " disconnected from broker " +
-                            client.getServerURI());
 
         } catch (MqttException | IOException me) {
             System.out.println(me.getStackTrace());

@@ -1,6 +1,7 @@
 package SmartCity.RPCServices;
 
 import Amministrazione.Coordinates;
+import SensoreInquinamento.Measurement;
 import SmartCity.Drone;
 import SmartCity.MasterDrone.DispatchingService;
 import grpc.drone.DroneGrpc;
@@ -70,15 +71,15 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         drone.setDelivering(true);
-        System.out.println("\n[+] Receiving order number " + order.getId());
+        System.out.println("\n[ORDER] Receiving order number " + order.getId());
 
         try {
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        System.out.println("\n[+] Order " + order.getId() + " delivered." );
+        System.out.println("\n[ORDER] Order " + order.getId() + " delivered." );
 
         String arrivalTime = new Timestamp(System.currentTimeMillis()).toString();
         System.out.println("\tArrival time: " + arrivalTime );
@@ -101,23 +102,36 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         drone.setCoords(coords);
         System.out.println("\tNew coords: (" + drone.getCoords().getX() + "," + drone.getCoords().getY() + ")");
 
-
         //find kilometers traveled
         double distanceDepartToDest = dispatchingInfo.Distance(order.getDepX(), order.getDepY(), order.getDestX(), order.getDestY());
         double kmTraveled = distanceDepartToDest+distanceInitialToDepart;
         System.out.println("\tKilometers traveled: " + kmTraveled);
 
+        //add a new delivery to the total
         drone.increseDeliveryCompleted();
         System.out.println("\tCompleted deliveries: " + drone.getDeliveryCompleted());
 
+        //show air pollution
+        System.out.println("\tPollution registered: " +
+                drone.getPm10().getBuffer().readAllAndClean());
+//        for(Measurement measure : drone.getPm10().getBuffer().readAllAndClean()){
+//            System.out.print("\n\t\tID: " + measure.getId() +
+//                    "\n\t\tType: " + measure.getType() +
+//                    "\n\t\tTimestamp: " + measure.getTimestamp() +
+//                    "\n\t\tValue: " + measure.getValue());
+//        }
+
+        drone.setDelivering(false);
 
         if(drone.getBatteryLevel() < 15) {
-            System.out.println("Low battery level, I need to stop! ");
-            synchronized (drone.getDeliveryLock()){
-                drone.getDeliveryLock().notify();
-            }
+            System.out.println("[BATTERY] Low battery level, I need to stop! ");
             drone.setQuitting(true);
+            if(drone.isMaster()){
+            }
         }
+
+
+
 
         DroneOuterClass.OrderResponse stats = DroneOuterClass.OrderResponse.newBuilder()
                 .setArrivalTime(arrivalTime)
@@ -130,10 +144,14 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 .setDeliveryCompleted(drone.getDeliveryCompleted())
                 .build();
 
-        drone.setDelivering(false);
         synchronized (drone.getDeliveryLock()){
             drone.getDeliveryLock().notify();
         }
+
+        if(drone.isQuitting() && !drone.isMaster()){
+            drone.quitDrone();
+        }
+
 
         responseObserver.onNext(stats);
         responseObserver.onCompleted();

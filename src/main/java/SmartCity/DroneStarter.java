@@ -1,5 +1,8 @@
 package SmartCity;
 
+import SensoreInquinamento.Buffer;
+import SensoreInquinamento.Measurement;
+import SensoreInquinamento.PM10Simulator;
 import SmartCity.MasterDrone.DispatchingService;
 import SmartCity.MasterDrone.MasterDrone;
 import SmartCity.RPCServices.DroneRPCListeningService;
@@ -9,6 +12,8 @@ import io.grpc.Server;
 import io.grpc.ServerBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,13 +42,16 @@ public class DroneStarter {
 
             DroneRPCSendingService.addDroneRequest(drone, dronelist);
 
+            drone.getPm10().start();
+
             System.out.println("\n...Press enter to stop...");
             input.nextLine();
-            quitDrone(drone);
+            drone.quitDrone();
 
         }
         else{
             drone.setMaster(true);
+            drone.getPm10().start();
             Runnable sender = new MasterDrone(drone);
             Thread thread = new Thread(sender);
             thread.start();
@@ -52,24 +60,7 @@ public class DroneStarter {
 
     }
 
-    public static void quitDrone(Drone drone){
 
-        //wait delivery finish to quit
-        synchronized (drone.getDeliveryLock()){
-            while(drone.isDelivering()){
-                try {
-                    drone.getDeliveryLock().wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            ClientResponse deleteResponse = drone.disconnect();
-            System.out.println("\nRESPONSE: " + deleteResponse);
-
-            System.exit(0);
-        }
-
-    }
 
     public static void signUpDrone(Drone drone){
         System.out.println("\nStarting drone:" +

@@ -95,6 +95,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 "\n\tCompleted Deliveries: " + order.getDeliveryCompleted() +
                 "\n\tDrone is quitting: " + order.getIsQuitting());
 
+
         Statistics stats = new Statistics();
         stats.addToKmTravelledList(order.getKmTraveled());
         stats.addToAirPollutionList(order.getAirPollution());
@@ -106,15 +107,8 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
 
 
-        if(master.getOrderQueue().isEmpty() == false){
-            DispatchingService disService = new DispatchingService(master.getDronelist());
-            String o = master.getOrderQueue().peek();
-            System.out.println("\n[QUEUE] Sending order " + o + " from queue");
-//            master.takeOneOrderQueue();
-            disService.checkAndSendOrder(master, master.takeOneOrderQueue());
-        }
 
-        if(order.getIsQuitting() == true){
+        if(order.getIsQuitting()){
             System.out.println("[+] The drone " + drone.getId() + " lefted the ring.");
             master.getDronelist().remove(drone);
             return drone.getId();

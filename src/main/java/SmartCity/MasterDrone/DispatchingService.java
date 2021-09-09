@@ -19,9 +19,6 @@ public class DispatchingService {
         this.dronelist = dl;
     }
 
-
-
-
     //get coordinates
     private void getCoords(String message){
         String[] parts = message.split(";");
@@ -45,14 +42,14 @@ public class DispatchingService {
         if(droneId == 0){
             master.addOrderQueue(message);
             System.out.println("\n[QUEUE] Nobody is ready to delivery! Order Queue:");
-            int i=0;
+            int i=1;
             for(String o : master.getOrderQueue()){
                 System.out.println("\t#"+i + ": " + o);
                 i++;
             }
         }
         else{
-            System.out.print("\nSending order " + order + " to ");
+            System.out.print("\n[ORDER] Sending order " + order + " to ");
             if(droneId == master.getId()){
                 System.out.print("Drone " + droneId + "[MASTER]\n");
             }
