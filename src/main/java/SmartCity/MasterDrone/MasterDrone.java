@@ -42,15 +42,15 @@ public class MasterDrone implements Runnable{
 
 
             // CONNECTING AS MQTT CLIENT
-            MqttClient client = new MqttClient(broker, clientId);
+            drone.setClient(new MqttClient(broker, clientId));
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            System.out.println("\n[+] Connecting to broker " + client.getServerURI() + "...");
+            System.out.println("\n[+] Connecting to broker " + drone.getClient().getServerURI() + "...");
             // Connect the client to the broker (blocking)
-            client.connect(connOpts);
+            drone.getClient().connect(connOpts);
             System.out.println("[+] Successfully connected!");
 
-            client.setCallback(new  MqttCallback() {
+            drone.getClient().setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
 
                     //spostare in DispatchingService per gestire coda
@@ -78,19 +78,15 @@ public class MasterDrone implements Runnable{
 
                     if(drone.getOrderQueue().size() > 0){
                         drone.addOrderQueue(receivedMessage);
+                        String o = drone.getOrderQueue().peek();
+                        System.out.println("\n[QUEUE] Trying to send order " + o + " from queue");
+                        disService.checkAndSendOrder(drone, drone.takeOneOrderQueue());
                     }
                     else{
                         disService.checkAndSendOrder(drone, receivedMessage);
                     }
 
-                    if(drone.getOrderQueue().size() > 0){
-                        String o = drone.getOrderQueue().peek();
-                        System.out.println("\n[QUEUE] Trying to send order " + o + " from queue");
-                        disService.checkAndSendOrder(drone, drone.takeOneOrderQueue());
-                    }
-
-
-                    System.out.println("\n ***  Press enter to exit *** \n");
+                    System.out.println("\n***  Press enter to exit ***\n");
                 }
 
                 public void connectionLost(Throwable cause) {
@@ -109,7 +105,7 @@ public class MasterDrone implements Runnable{
             });
 
             //subscribing to broker
-            client.subscribe(topic,qos);
+            drone.getClient().subscribe(topic,qos);
             System.out.println(
                     "\nMaster Drone " +
                             drone.getId() +
@@ -118,8 +114,7 @@ public class MasterDrone implements Runnable{
 
             //waiting to break connection with broker
             input.hasNextLine();
-            drone.quitDrone(client);
-
+            drone.quitDrone();
 
         } catch (MqttException | IOException me) {
             System.out.println(me.getStackTrace());

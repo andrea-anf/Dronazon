@@ -11,6 +11,7 @@ import grpc.drone.DroneOuterClass.AddResponse;
 import grpc.drone.DroneOuterClass.OrderRequest;
 import grpc.drone.DroneOuterClass.OrderResponse;
 import io.grpc.stub.StreamObserver;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.sql.Timestamp;
 
@@ -124,14 +125,18 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         drone.setDelivering(false);
 
         if(drone.getBatteryLevel() < 15) {
-            System.out.println("[BATTERY] Low battery level, I need to stop! ");
+            System.out.println("\n[BATTERY] Low battery level, I need to stop!");
             drone.setQuitting(true);
-            if(drone.isMaster()){
-            }
+
+//            //if master - disconnect from broker
+//            if(drone.isMaster()){
+//                try {
+//                    drone.getClient().disconnect();
+//                } catch (MqttException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
-
-
-
 
         DroneOuterClass.OrderResponse stats = DroneOuterClass.OrderResponse.newBuilder()
                 .setArrivalTime(arrivalTime)
@@ -149,9 +154,12 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         }
 
         if(drone.isQuitting() && !drone.isMaster()){
-            drone.quitDrone();
+            try {
+                drone.quitDrone();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
         }
-
 
         responseObserver.onNext(stats);
         responseObserver.onCompleted();

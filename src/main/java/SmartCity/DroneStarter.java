@@ -10,6 +10,7 @@ import SmartCity.RPCServices.DroneRPCSendingService;
 import com.sun.jersey.api.client.ClientResponse;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,7 +47,11 @@ public class DroneStarter {
 
             System.out.println("\n...Press enter to stop...");
             input.nextLine();
-            drone.quitDrone();
+            try {
+                drone.quitDrone();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
 
         }
         else{

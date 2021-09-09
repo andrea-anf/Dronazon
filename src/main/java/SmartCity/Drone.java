@@ -34,7 +34,7 @@ public class Drone {
 
     //delivery stats
     private String arrivalTime;
-    private int batteryLevel = 100;
+    private int batteryLevel = 40;
     private double kmTraveled = 0;
     private int deliveryCompleted = 0;
     private Statistics stats;
@@ -298,7 +298,7 @@ public class Drone {
     }
 
     //TERMINATING DRONES
-    public void quitDrone(){
+    public void quitDrone() throws MqttException {
 
         //wait delivery finish to quit
         synchronized (this.getDeliveryLock()){
@@ -309,47 +309,46 @@ public class Drone {
                     e.printStackTrace();
                 }
             }
-            ClientResponse deleteResponse = this.disconnect();
-            System.out.println("\n[QUIT] RESPONSE: " + deleteResponse);
 
-            System.exit(0);
-        }
-    }
-    public void quitDrone(MqttClient client) throws MqttException {
+            if(this.isMaster()){
+                //disconnect from broker
+                this.getClient().disconnect();
+                System.out.println("[QUIT] Master Drone " +
+                        this.getId() +
+                        " disconnected from broker " +
+                        client.getServerURI());
 
-        //wait delivery finish to quit
-        synchronized (this.getDeliveryLock()){
-            while(this.isDelivering()){
-                try {
-                    this.getDeliveryLock().wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            //disconnect from broker
-            client.disconnect();
-            System.out.println("[QUIT] Master Drone " +
-                    this.getId() +
-                    " disconnected from broker " +
-                    client.getServerURI());
+                if(this.getOrderQueue().size() > 0 && this.getDronelist().size() > 1){
+                    DispatchingService disService = new DispatchingService(this.getDronelist());
+                    System.out.println("\n[QUEUE] Sending orders from queue");
 
-
-            synchronized (this.getOrderQueueLock()) {
-                while (this.getOrderQueue().size()>0) {
-                    try {
-                        this.getOrderQueueLock().wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    while(this.getOrderQueue().size()>0){
+                        this.setDelivering(true);
+                        String o = this.getOrderQueue().peek();
+                        disService.checkAndSendOrder(this, this.takeOneOrderQueue());
+                        try {
+                            Thread.sleep(3000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
-                System.out.println("\n[QUIT] The drone has sent all the remaining orders");
 
-                ClientResponse deleteResponse = this.disconnect();
-                System.out.println("\n[QUIT] RESPONSE: " + deleteResponse);
-                System.exit(0);
+//                synchronized (this.getOrderQueueLock()) {
+//                    while (this.getOrderQueue().size()>0) {
+//                        try {
+//                            this.getOrderQueueLock().wait();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                    System.out.println("\n[QUIT] The drone has sent all the remaining orders");
+//                }
             }
 
-
+            ClientResponse deleteResponse = this.disconnect();
+            System.out.println("\n[QUIT] RESPONSE: " + deleteResponse);
+            System.exit(0);
         }
     }
 }

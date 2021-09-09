@@ -3,6 +3,7 @@ package SmartCity.MasterDrone;
 import SmartCity.Drone;
 import SmartCity.RPCServices.DroneRPCSendingService;
 import io.grpc.StatusRuntimeException;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class OrderSender extends Thread{
     private Drone master;
@@ -31,7 +32,16 @@ public class OrderSender extends Thread{
 
         if(responseDrone > 0) {
             if (responseDrone != master.getId()) {
+                System.out.println("[+] The drone " + drone.getId() + " lefted the ring.");
                 master.getDronelist().remove(drone);
+            }
+            else{
+                try {
+                    System.out.println("[+] The master is going to quit");
+                    master.quitDrone();
+                } catch (MqttException e) {
+                    e.printStackTrace();
+                }
             }
         }
 //        else if (responseDrone < 0){

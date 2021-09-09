@@ -86,7 +86,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 .build();
 
         OrderResponse order = stub.sendOrder(request);
-        System.out.println("[+] Drone " + drone.getId() + " delivered the order " + id +
+        System.out.println("\n[ORDER] Drone " + drone.getId() + " delivered the order " + id +
                 "\n\tArrival Time: " + order.getArrivalTime() +
                 "\n\tNew Drone Coords.: (" + order.getNewCoordX() + "," + order.getNewCoordY() + ")" +
                 "\n\tKilometers Traveled: " + order.getKmTraveled() +
@@ -105,12 +105,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
         channel.shutdown();
 
-
-
-
         if(order.getIsQuitting()){
-            System.out.println("[+] The drone " + drone.getId() + " lefted the ring.");
-            master.getDronelist().remove(drone);
             return drone.getId();
         }
         else{
