@@ -1,5 +1,4 @@
 TODO:
-- finire uscita dal sistema (master)
 - gestione e invio statistiche
 - far mostrare statistiche ogni 10sec ai droni normali
 - far inviare statistiche ogni 10 sec al master

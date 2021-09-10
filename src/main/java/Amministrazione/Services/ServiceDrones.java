@@ -2,6 +2,7 @@ package Amministrazione.Services;
 
 import Amministrazione.Coordinates;
 import SmartCity.Drone;
+import SmartCity.MasterDrone.Statistics;
 import SmartCity.SmartCity;
 import Amministrazione.Statistics.Stat;
 import Amministrazione.Statistics.StatLists;
@@ -62,7 +63,11 @@ public class ServiceDrones {
     @Path("addStats")
     @POST
     @Consumes({"application/json", "application/xml"})
-    public Response addStatistics(Stat stat){
+    public Response addStatistics(Statistics statistics){
+        Stat stat = new Stat();
+        stat.setBatteryAvg(statistics.getAvgBatteryLeft());
+        stat.setKilometers(statistics.getAvgKmTraveled());
+        stat.setDeliveriesCount(statistics.readAvgDelivery());
         StatLists.getInstance().addStat(stat);
         return Response.ok("successfully added").build();
     }

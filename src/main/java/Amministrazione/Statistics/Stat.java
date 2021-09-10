@@ -15,7 +15,7 @@ public class Stat {
     public double getDeliveriesCount() {
         return deliveriesCount;
     }
-    public void setDeliveriesCount(int deliveriesCount) {
+    public void setDeliveriesCount(double deliveriesCount) {
         this.deliveriesCount = deliveriesCount;
     }
 

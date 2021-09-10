@@ -32,10 +32,10 @@ public class Drone {
 
     //delivery stats
     private String arrivalTime;
-    private int batteryLevel = 40;
+    private int batteryLevel = 100;
     private double kmTraveled = 0;
     private int deliveryCompleted = 0;
-    private Statistics stats;
+    private Statistics statistics = new Statistics();
 
     //ring information
     private String masterAddress;
@@ -99,12 +99,20 @@ public class Drone {
     //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
         Client client = Client.create();
-        WebResource webResource = client.resource("http://localhost:1338/admin/getSmartCity");
+        WebResource webResource = client.resource(serverAddress + "admin/getSmartCity");
         return webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
     }
 
     public ClientResponse sendStats(){
-        return null;
+        Client client = Client.create();
+        WebResource webResource = client.resource(serverAddress+"drones/addStats");
+
+        String input = "{\"ID\": \""+this.id+"\","+
+                "\"local port\":\""+this.localPort+"\"," +
+                "\"local address\":\""+this.localAddress+"\"}";
+
+        //make a post request to add drone to ServerAmministratore
+        return webResource.type("application/json").post(ClientResponse.class, input);
     }
 
 
@@ -215,15 +223,6 @@ public class Drone {
     public void addToDronelist(Drone drone){
         this.dronelist.add(drone);
     }
-
-    //DELIVERING STATE
-    public boolean isDelivering() {
-        return delivering;
-    }
-    public void setDelivering(boolean delivering) {
-        this.delivering = delivering;
-    }
-
     public Drone getById(int id){
         for(Drone d : this.dronelist){
             if(d.getId() == id){
@@ -233,12 +232,18 @@ public class Drone {
         return null;
     }
 
+    //DELIVERING STATE
+    public boolean isDelivering() {
+        return delivering;
+    }
+    public void setDelivering(boolean delivering) {
+        this.delivering = delivering;
+    }
+
+
     //STATISTICS
     public Statistics getStats() {
-        return stats;
-    }
-    public void setStats(Statistics stats) {
-        this.stats = stats;
+        return statistics;
     }
 
     public String getArrivalTime() {
@@ -315,32 +320,32 @@ public class Drone {
                             client.getServerURI());
                 }
 
-                if(this.getOrderQueue().size() > 0){
-                    synchronized (this.getDronelistLock()) {
-                        while (this.getDronelist().size() < 2) {
-                                System.out.println("\n[QUIT] Waiting for drones to send reamining orders: ");
-                                int i=1;
-                                for(String order : this.getOrderQueue()){
-                                    System.out.println(i+"# " + order);
-                                }
-                                this.getDronelistLock().wait();
-
-                        }
-
-                        System.out.println("\n[QUIT] Sending orders from queue");
-                        while(this.getOrderQueue().size()>0){
-                            DispatchingService disService = new DispatchingService(this.getDronelist());
-                            String o = this.getOrderQueue().peek();
-                            disService.checkAndSendOrder(this, this.takeOneOrderQueue());
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                }
+//                if(this.getOrderQueue().size() > 0){
+//                    synchronized (this.getDronelistLock()) {
+//                        while (this.getDronelist().size() < 2) {
+//                                System.out.println("\n[QUIT] Waiting for drones to send reamining orders: ");
+//                                int i=1;
+//                                for(String order : this.getOrderQueue()){
+//                                    System.out.println(i+"# " + order);
+//                                }
+//                                this.getDronelistLock().wait();
+//
+//                        }
+//
+//                        System.out.println("\n[QUIT] Sending orders from queue");
+//                        while(this.getOrderQueue().size()>0){
+//                            DispatchingService disService = new DispatchingService(this.getDronelist());
+//                            String o = this.getOrderQueue().peek();
+//                            disService.checkAndSendOrder(this, this.takeOneOrderQueue());
+//                            try {
+//                                Thread.sleep(3000);
+//                            } catch (InterruptedException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                }
 
 
             }

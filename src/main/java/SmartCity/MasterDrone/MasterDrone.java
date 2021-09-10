@@ -64,7 +64,7 @@ public class MasterDrone implements Runnable{
                                     "\n\tMessage: " + receivedMessage +
                                     "\n\tQoS:     " + message.getQos());
 
-                    System.out.println("\n[INFO] DRONELIST: ");
+                    System.out.println("\n[INFO] DRONELIST:");
                     for(Drone d : drone.getDronelist()){
                         if(d.getId() == drone.getId()){
                             System.out.print("\t# " + d.getId() + "[MASTER]\n");
@@ -74,8 +74,9 @@ public class MasterDrone implements Runnable{
                         }
                     }
 
-                    DispatchingService disService = new DispatchingService(drone.getDronelist());
 
+
+                    DispatchingService disService = new DispatchingService(drone.getDronelist());
                     if(drone.getOrderQueue().size() > 0){
                         drone.addOrderQueue(receivedMessage);
                         String o = drone.getOrderQueue().peek();

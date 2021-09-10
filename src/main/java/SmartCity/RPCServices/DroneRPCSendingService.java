@@ -1,11 +1,8 @@
 package SmartCity.RPCServices;
 
 import SmartCity.Drone;
-import SmartCity.MasterDrone.DispatchingService;
-import SmartCity.MasterDrone.Statistics;
 import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
-import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
 import grpc.drone.DroneOuterClass.OrderRequest;
@@ -94,22 +91,29 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 "\n\tBattery left: " + order.getBatteryLevel() +
                 "\n\tCompleted Deliveries: " + order.getDeliveryCompleted() +
                 "\n\tDrone is quitting: " + order.getIsQuitting());
-
-
-        Statistics stats = new Statistics();
-        stats.addToKmTravelledList(order.getKmTraveled());
-        stats.addToAirPollutionList(order.getAirPollution());
-        stats.addToBatteryLeftList(order.getBatteryLevel());
-        stats.addToDeliveryList(order.getDeliveryCompleted());
-        master.setStats(stats);
-
         channel.shutdown();
+
+        master.getStats().addToAirPollutionList(order.getAirPollution());
+        master.getStats().addToKmTraveledList(order.getKmTraveled());
+        master.getStats().addToBatteryLeftList(order.getBatteryLevel());
+        if(!drone.isMaster()){
+            master.getById(drone.getId()).increseDeliveryCompleted();
+        }
+
+            System.out.println("\n[INFO] STATISTICS:" +
+                    "\n\tAverage air pollution: " + master.getStats().getAvgAirPollution() +
+                    "\n\tAverage km travelled: " + master.getStats().getAvgKmTraveled() +
+                    "\n\tAverage battery left: " + master.getStats().getAvgBatteryLeft() +
+                    "\n\tAverage delivery completed: " + master.getStats().getAvgDelivery(master.getDronelist()));
+
         master.getById(drone.getId()).setDelivering(false);
 
         if(order.getIsQuitting()){
             return drone.getId();
         }
         else{
+
+
             return 0;
         }
     }

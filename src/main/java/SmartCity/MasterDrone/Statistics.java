@@ -1,15 +1,21 @@
 package SmartCity.MasterDrone;
 
+import SmartCity.Drone;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Statistics {
 
     private List<Double> deliveryList = new ArrayList<>();
-    private List<Double> kmTravelledList = new ArrayList<>();
+    private List<Double> kmTraveledList = new ArrayList<>();
     private List<Double> airPollutionList = new ArrayList<>();
     private List<Double> batteryLeftList = new ArrayList<>();
 
+    private double avgDelivery = 0;
+    private double avgKmTraveled = 0;
+    private double avgAirPollution = 0;
+    private double avgBatteryLeft = 0;
 
 
     public void addToBatteryLeftList(double batteryLeftAmount){
@@ -20,7 +26,8 @@ public class Statistics {
         for(double batteryLeft : batteryLeftList){
             count = count + batteryLeft;
         }
-        return (count/batteryLeftList.size());
+        avgBatteryLeft = (count/batteryLeftList.size());
+        return avgBatteryLeft;
     }
 
     public void addToAirPollutionList(double airPollutionAmount){
@@ -31,28 +38,37 @@ public class Statistics {
         for(double pollution : airPollutionList){
             count = count + pollution;
         }
-        return (count/airPollutionList.size());
+        avgAirPollution = (count/airPollutionList.size());
+        return avgAirPollution;
     }
 
     public void addToDeliveryList(double deliveryAmount) {
         this.deliveryList.add(deliveryAmount);
     }
-    public double getAvgDelivery(){
+    public double getAvgDelivery(List<Drone> dronelist){
         double count = 0;
-        for(double delivery : deliveryList){
-            count = count + delivery;
+        for(Drone drone : dronelist){
+            count += drone.getDeliveryCompleted();
         }
-        return (count/deliveryList.size());
+        avgDelivery = (count/dronelist.size());
+        return avgDelivery;
     }
 
-    public void addToKmTravelledList(double kmAmount){
-        this.kmTravelledList.add(kmAmount);
+    public void addToKmTraveledList(double kmAmount){
+        this.kmTraveledList.add(kmAmount);
     }
-    public double getAvgKmTravelled(){
+    public double getAvgKmTraveled(){
         double count = 0;
-        for(double km : kmTravelledList){
+        for(double km : kmTraveledList){
             count = count + km;
         }
-        return (count/kmTravelledList.size());
+        avgKmTraveled = (count/ kmTraveledList.size());
+        return avgKmTraveled;
     }
+
+    public double readAvgDelivery(){
+        return avgDelivery;
+    }
+
+
 }

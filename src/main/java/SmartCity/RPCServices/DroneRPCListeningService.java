@@ -98,8 +98,9 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         drone.setCoords(coords);
         System.out.println("\tNew coords: (" + drone.getCoords().getX() + "," + drone.getCoords().getY() + ")");
 
-        //find kilometers traveled
+        //find distance between departure point and destination point
         double distanceDepartToDest = dispatchingInfo.Distance(order.getDepX(), order.getDepY(), order.getDestX(), order.getDestY());
+        //find kilometers traveled
         double kmTraveled = distanceDepartToDest+distanceInitialToDepart;
         System.out.println("\tKilometers traveled: " + kmTraveled);
 
@@ -122,15 +123,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         if(drone.getBatteryLevel() < 15) {
             System.out.println("\n[BATTERY] Low battery level, I need to stop!");
             drone.setQuitting(true);
-
-//            //if master - disconnect from broker
-//            if(drone.isMaster()){
-//                try {
-//                    drone.getClient().disconnect();
-//                } catch (MqttException e) {
-//                    e.printStackTrace();
-//                }
-//            }
         }
 
         DroneOuterClass.OrderResponse stats = DroneOuterClass.OrderResponse.newBuilder()
