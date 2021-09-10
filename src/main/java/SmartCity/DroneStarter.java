@@ -49,7 +49,7 @@ public class DroneStarter {
             input.nextLine();
             try {
                 drone.quitDrone();
-            } catch (MqttException e) {
+            } catch (MqttException | InterruptedException e) {
                 e.printStackTrace();
             }
 

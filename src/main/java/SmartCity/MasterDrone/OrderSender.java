@@ -18,7 +18,6 @@ public class OrderSender extends Thread{
     }
 
     public void run(){
-        drone.setDelivering(true);
         int responseDrone;
         try {
             //returns 0 if ok
@@ -28,7 +27,6 @@ public class OrderSender extends Thread{
         }catch (StatusRuntimeException sre){
             responseDrone = -1;
         }
-        drone.setDelivering(false);
 
         if(responseDrone > 0) {
             if (responseDrone != master.getId()) {
@@ -39,7 +37,7 @@ public class OrderSender extends Thread{
                 try {
                     System.out.println("[+] The master is going to quit");
                     master.quitDrone();
-                } catch (MqttException e) {
+                } catch (MqttException | InterruptedException e) {
                     e.printStackTrace();
                 }
             }

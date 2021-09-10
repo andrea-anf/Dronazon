@@ -104,6 +104,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         master.setStats(stats);
 
         channel.shutdown();
+        master.getById(drone.getId()).setDelivering(false);
 
         if(order.getIsQuitting()){
             return drone.getId();

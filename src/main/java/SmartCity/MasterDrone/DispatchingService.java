@@ -37,6 +37,7 @@ public class DispatchingService {
     }
 
     public void checkAndSendOrder(Drone master, String message){
+
         int droneId = findClosest(message);
         order = message;
         if(droneId == 0){
@@ -49,6 +50,7 @@ public class DispatchingService {
             }
         }
         else{
+            master.getById(droneId).setDelivering(true);
             System.out.print("\n[ORDER] Sending order " + order + " to ");
             if(droneId == master.getId()){
                 System.out.print("Drone " + droneId + "[MASTER]\n");

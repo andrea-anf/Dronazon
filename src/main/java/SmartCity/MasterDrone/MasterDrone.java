@@ -116,7 +116,7 @@ public class MasterDrone implements Runnable{
             input.hasNextLine();
             drone.quitDrone();
 
-        } catch (MqttException | IOException me) {
+        } catch (MqttException | IOException | InterruptedException me) {
             System.out.println(me.getStackTrace());
         }
     }

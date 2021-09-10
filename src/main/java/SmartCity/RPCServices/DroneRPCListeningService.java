@@ -50,12 +50,8 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                     .setResponse(1)
                     .build();
 
-            if(drone.getOrderQueue().isEmpty() == false){
-                DispatchingService disService = new DispatchingService(drone.getDronelist());
-                String o = drone.getOrderQueue().peek();
-                System.out.println("[+] Sending order " + o + " from queue");
-//            master.takeOneOrderQueue();
-                disService.checkAndSendOrder(drone, drone.takeOneOrderQueue());
+            synchronized (drone.getDronelistLock()){
+                drone.getDronelistLock().notify();
             }
         }
         else{
@@ -71,7 +67,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
 
     @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
-        drone.setDelivering(true);
         System.out.println("\n[ORDER] Receiving order number " + order.getId());
 
         try {
@@ -156,7 +151,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         if(drone.isQuitting() && !drone.isMaster()){
             try {
                 drone.quitDrone();
-            } catch (MqttException e) {
+            } catch (MqttException | InterruptedException e) {
                 e.printStackTrace();
             }
         }

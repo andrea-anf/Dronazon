@@ -1,7 +1,6 @@
 TODO:
-
-- uscita dal sistema (master)
-- inserire ordini direttamente nella coda e poi inviarli
-- gestione statistiche
+- finire uscita dal sistema (master)
+- gestione e invio statistiche
 - far mostrare statistiche ogni 10sec ai droni normali
 - far inviare statistiche ogni 10 sec al master
+- implementare chiamata per invio statistiche al server
