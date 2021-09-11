@@ -1,23 +1,11 @@
-grpc/drone/DroneGrpc.java
- grpc.drone.DroneGrpc
- grpc.drone.DroneGrpc$1
- grpc.drone.DroneGrpc$DroneBaseDescriptorSupplier
- grpc.drone.DroneGrpc$DroneBlockingStub
- grpc.drone.DroneGrpc$DroneFileDescriptorSupplier
- grpc.drone.DroneGrpc$DroneFutureStub
- grpc.drone.DroneGrpc$DroneImplBase
- grpc.drone.DroneGrpc$DroneMethodDescriptorSupplier
- grpc.drone.DroneGrpc$DroneStub
- grpc.drone.DroneGrpc$MethodHandlers
-dronazon/DronazonSender.java
- dronazon.DronazonSender
+SmartCity/MasterDrone/DispatchingService.java
+ SmartCity.MasterDrone.DispatchingService
+SensoreInquinamento/Measurement.java
+ SensoreInquinamento.Measurement
 SensoreInquinamento/Simulator.java
  SensoreInquinamento.Simulator
 SensoreInquinamento/Buffer.java
  SensoreInquinamento.Buffer
-dronazon/Subscriber.java
- dronazon.Subscriber
- dronazon.Subscriber$1
 grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass
  grpc.drone.DroneOuterClass$1
@@ -37,48 +25,59 @@ grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass$OrderResponse$1
  grpc.drone.DroneOuterClass$OrderResponse$Builder
  grpc.drone.DroneOuterClass$OrderResponseOrBuilder
-SensoreInquinamento/PM10Simulator.java
- SensoreInquinamento.PM10Simulator
-Amministrazione/ServerAmministratore.java
- Amministrazione.ServerAmministratore
-Amministrazione/Statistics/Stat.java
- Amministrazione.Statistics.Stat
-Amministrazione/Coordinates.java
- Amministrazione.Coordinates
-SensoreInquinamento/Measurement.java
- SensoreInquinamento.Measurement
-SmartCity/MasterDrone/Order.java
- SmartCity.MasterDrone.Order
-dronazon/Dronazon.java
- dronazon.Dronazon
-Amministrazione/Client/ClientAmministratore.java
- Amministrazione.Client.ClientAmministratore
- Amministrazione.Client.ClientAmministratore$1
-SmartCity/MasterDrone/DispatchingService.java
- SmartCity.MasterDrone.DispatchingService
-SmartCity/SmartCity.java
- SmartCity.SmartCity
-SmartCity/RPCServices/DroneRPCListeningService.java
- SmartCity.RPCServices.DroneRPCListeningService
 SmartCity/MasterDrone/OrderSender.java
  SmartCity.MasterDrone.OrderSender
 SmartCity/Drone.java
  SmartCity.Drone
  SmartCity.Drone$1
-SmartCity/RPCServices/DroneRPCSendingService.java
- SmartCity.RPCServices.DroneRPCSendingService
-SmartCity/DroneStarter.java
- SmartCity.DroneStarter
+SmartCity/MasterDrone/Statistics.java
+ SmartCity.MasterDrone.Statistics
 SmartCity/MasterDrone/MasterDrone.java
  SmartCity.MasterDrone.MasterDrone
  SmartCity.MasterDrone.MasterDrone$1
-SmartCity/MasterDrone/Statistics.java
- SmartCity.MasterDrone.Statistics
 SmartCity/MasterDrone/MasterDronelist.java
  SmartCity.MasterDrone.MasterDronelist
-Amministrazione/Statistics/StatLists.java
- Amministrazione.Statistics.StatLists
+SmartCity/MasterDrone/Order.java
+ SmartCity.MasterDrone.Order
+dronazon/DronazonSender.java
+ dronazon.DronazonSender
+dronazon/Subscriber.java
+ dronazon.Subscriber
+ dronazon.Subscriber$1
+dronazon/Dronazon.java
+ dronazon.Dronazon
+SmartCity/DroneStarter.java
+ SmartCity.DroneStarter
+grpc/drone/DroneGrpc.java
+ grpc.drone.DroneGrpc
+ grpc.drone.DroneGrpc$1
+ grpc.drone.DroneGrpc$DroneBaseDescriptorSupplier
+ grpc.drone.DroneGrpc$DroneBlockingStub
+ grpc.drone.DroneGrpc$DroneFileDescriptorSupplier
+ grpc.drone.DroneGrpc$DroneFutureStub
+ grpc.drone.DroneGrpc$DroneImplBase
+ grpc.drone.DroneGrpc$DroneMethodDescriptorSupplier
+ grpc.drone.DroneGrpc$DroneStub
+ grpc.drone.DroneGrpc$MethodHandlers
+SmartCity/RPCServices/DroneRPCListeningService.java
+ SmartCity.RPCServices.DroneRPCListeningService
+SmartCity/SmartCity.java
+ SmartCity.SmartCity
+Amministrazione/Coordinates.java
+ Amministrazione.Coordinates
+Amministrazione/ServerAmministratore.java
+ Amministrazione.ServerAmministratore
+SmartCity/RPCServices/DroneRPCSendingService.java
+ SmartCity.RPCServices.DroneRPCSendingService
+SensoreInquinamento/PM10Simulator.java
+ SensoreInquinamento.PM10Simulator
 Amministrazione/Services/ServiceDrones.java
  Amministrazione.Services.ServiceDrones
+Amministrazione/Statistics/StatsList.java
+ Amministrazione.Statistics.StatsList
+Amministrazione/Statistics/Stat.java
+ Amministrazione.Statistics.Stat
 Amministrazione/Services/ServiceAdmin.java
  Amministrazione.Services.ServiceAdmin
+Amministrazione/Client/ClientAmministratore.java
+ Amministrazione.Client.ClientAmministratore

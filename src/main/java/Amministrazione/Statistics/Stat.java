@@ -1,16 +1,25 @@
 package Amministrazione.Statistics;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Stat {
+    @XmlElement(name = "avgDeliveries")
     private double deliveriesCount;
+    @XmlElement(name = "avgKmTraveled")
     private double kilometers;
+    @XmlElement(name = "avgAirPollution")
     private double pollutionLevel;
+    @XmlElement(name = "avgBatteryLeft")
     private double batteryAvg;
-    private Timestamp timestamp;
-    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    @XmlElement(name = "timestamp")
+    private String timestamp;
 
     public double getDeliveriesCount() {
         return deliveriesCount;
@@ -40,10 +49,10 @@ public class Stat {
         this.batteryAvg = batteryAvg;
     }
 
-    public String getTs() {
-        return formatter.format(timestamp);
+    public String getTimestamp() {
+        return timestamp;
     }
-    public void setTs(Timestamp ts) {
+    public void setTimestamp(String ts) {
         this.timestamp = ts;
     }
 }

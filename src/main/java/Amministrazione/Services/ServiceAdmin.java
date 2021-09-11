@@ -2,8 +2,7 @@ package Amministrazione.Services;
 
 import Amministrazione.Statistics.Stat;
 import SmartCity.SmartCity;
-import Amministrazione.Statistics.StatLists;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import Amministrazione.Statistics.StatsList;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -30,9 +29,8 @@ public class ServiceAdmin {
     @GET
     @Produces({"application/json", "application/xml"})
     public Response getLastNStats(@PathParam("lastN")int lastN) {
-        if(lastN != 0){
-            List<Stat> stats = StatLists.getInstance().getLastNStats(5);
-            return Response.ok(StatLists.getInstance().getLastNStats(lastN)).build();
+        if(lastN > 0){
+            return Response.ok(StatsList.getInstance()).build();
         }
         else{
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
@@ -43,7 +41,7 @@ public class ServiceAdmin {
     @GET
     @Produces({"application/json", "application/xml"})
     public Response getAllStats() {
-            return Response.ok(StatLists.getInstance().getAllStats()).build();
+            return Response.ok(StatsList.getInstance().getAllStats()).build();
     }
 
 
@@ -57,7 +55,7 @@ public class ServiceAdmin {
     public Response getAvgDeliveries(@PathParam("t1") String t1, @PathParam("t2")String t2) {
         Timestamp tMin = Timestamp.valueOf(t1.replace("T", " "));
         Timestamp tMax = Timestamp.valueOf(t2.replace("T", " "));
-        return Response.ok(StatLists.getInstance().getAvgDeliveries(tMin,tMax)).build();
+        return Response.ok(StatsList.getInstance().getAvgDeliveries(tMin,tMax)).build();
     }
 
     //  Media dei chilometri percorsi dai droni della smart-city tra due timestamp t1 e t2
@@ -68,5 +66,5 @@ public class ServiceAdmin {
     public Response getAvgKilometers(@PathParam("t1")String t1, @PathParam("t2")String t2){
         Timestamp tMin = Timestamp.valueOf(t1.replace("T", " "));
         Timestamp tMax = Timestamp.valueOf(t2.replace("T", " "));
-        return Response.ok(StatLists.getInstance().getAvgKilometers(tMin,tMax)).build();    }
+        return Response.ok(StatsList.getInstance().getAvgKilometers(tMin,tMax)).build();    }
 }

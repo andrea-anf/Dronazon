@@ -1,5 +1,6 @@
 package Amministrazione.Client;
 
+import Amministrazione.Statistics.StatsList;
 import SmartCity.Drone;
 
 import Amministrazione.Statistics.Stat;
@@ -12,6 +13,7 @@ import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
 
 
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -71,10 +73,7 @@ public class ClientAmministratore {
                     System.out.println("[+] Please define how many stats you want to see: ");
                     n = input2.nextInt();
 
-                    ClientConfig clientConfig = new DefaultClientConfig();
-                    clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
-                    clientConfig.getClasses().add(JacksonJsonProvider.class);
-                    Client client = Client.create(clientConfig);
+                    Client client = Client.create();
 
                     WebResource webResource = client.resource(serverAddress+service+n);
                     ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
@@ -82,14 +81,14 @@ public class ClientAmministratore {
                     System.out.println("[+]   " + clientResponse.toString());
 
                     if(clientResponse.getStatus() == 200){
-                        List<Stat> statlist = clientResponse.getEntity(new GenericType<List<Stat>>() {});
+                        StatsList statlist = clientResponse.getEntity(StatsList.class);
 
-                        if(statlist.isEmpty()){
+                        if(statlist.getAllStats().size() == 0){
                             System.out.println("    [-] No stats available");
                         }
                         else{
-                            for (Stat s : statlist){
-                                System.out.println("\n    [-]\tTimestamp: " + s.getTs().replaceFirst("T", " at ")
+                            for (Stat s : statlist.getLastNStats(n)){
+                                System.out.println("\n    [-]\tTimestamp: " + s.getTimestamp()
                                         +"\n\t\tDeliveries count: " + s.getDeliveriesCount()
                                         +"\n\t\tKilometers traveled: " + s.getKilometers()
                                         +"\n\t\tPollution level: " + s.getPollutionLevel()
@@ -183,7 +182,7 @@ public class ClientAmministratore {
                 }
 
                 break;
-                default: System.out.println("\nUnexpected value! Closing the program");
+                default: System.out.println("\nUnexpected value! Try again");
             }
         }
     }

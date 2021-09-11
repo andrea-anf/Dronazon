@@ -1,6 +1,5 @@
 package Amministrazione.Statistics;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -11,26 +10,33 @@ import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StatLists {
+public class StatsList {
     @XmlElement(name = "statlist")
     private ArrayList<Stat> statlist;
-    private static StatLists instance;
+    private static StatsList instance;
 
-    private StatLists() {
+    private StatsList() {
         statlist = new ArrayList<>();
     }
 
     //singleton class
-    public synchronized static StatLists getInstance() {
+    public synchronized static StatsList getInstance() {
         if (instance == null) {
-            instance = new StatLists();
+            instance = new StatsList();
         }
         return instance;
     }
 
-    public synchronized List<Stat> getAllStats() {
-        List<Stat> nStatList = statlist;
-        return nStatList;
+    public synchronized  Stat getByTs(String ts){
+        for(Stat s : this.statlist){
+            if(s.getTimestamp() == ts){
+                return s;
+            }
+        }
+        return null;
+    }
+    public synchronized ArrayList<Stat> getAllStats() {
+        return new ArrayList<>(statlist);
     }
 
     public synchronized ArrayList<Stat> getLastNStats(int lastNStats) {
@@ -44,7 +50,7 @@ public class StatLists {
         int i=0;
 
         for (Stat stat : statlist) {
-            Timestamp statTimestamp = Timestamp.valueOf(stat.getTs().replace("T", " "));
+            Timestamp statTimestamp = Timestamp.valueOf(stat.getTimestamp().replace("T", " "));
             //check if there are deliveries in the specified range
             if (statTimestamp.compareTo(tMin)>=0 && statTimestamp.compareTo(tMax)<=0 ) {
                 counter += stat.getDeliveriesCount();
@@ -67,7 +73,7 @@ public class StatLists {
         double i=0;
 
         for (Stat stat : statlist) {
-            Timestamp statTimestamp = Timestamp.valueOf(stat.getTs().replace("T", " "));
+            Timestamp statTimestamp = Timestamp.valueOf(stat.getTimestamp().replace("T", " "));
             //check if there are deliveries in the specified range
             if (statTimestamp.compareTo(tMin)>=0 && statTimestamp.compareTo(tMax)<=0 ) {
                 counter += stat.getKilometers();

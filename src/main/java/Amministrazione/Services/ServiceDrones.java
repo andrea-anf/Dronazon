@@ -2,17 +2,13 @@ package Amministrazione.Services;
 
 import Amministrazione.Coordinates;
 import SmartCity.Drone;
-import SmartCity.MasterDrone.Statistics;
 import SmartCity.SmartCity;
 import Amministrazione.Statistics.Stat;
-import Amministrazione.Statistics.StatLists;
+import Amministrazione.Statistics.StatsList;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Path("drones")
@@ -67,19 +63,14 @@ public class ServiceDrones {
     @Path("addStats")
     @POST
     @Consumes({"application/json", "application/xml"})
-    public Response addStatistics(Statistics statistics) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        Date parsedDate = dateFormat.parse(statistics.getTs());
-        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+    public Response addStatistics(Stat st) throws ParseException {
 
-        Stat stat = new Stat();
-        stat.setBatteryAvg(statistics.getAvgBatteryLeft());
-        stat.setKilometers(statistics.getAvgKmTraveled());
-        stat.setDeliveriesCount(statistics.readAvgDelivery());
-        stat.setPollutionLevel(statistics.getAvgAirPollution());
-        stat.setTs(timestamp);
-
-        StatLists.getInstance().addStat(stat);
+        if(StatsList.getInstance().getByTs(st.getTimestamp()) == st){
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+        else{
+            StatsList.getInstance().addStat(st);
+        }
 
         return Response.ok("successfully added").build();
     }
