@@ -9,6 +9,10 @@ import Amministrazione.Statistics.StatLists;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Path("drones")
@@ -63,12 +67,20 @@ public class ServiceDrones {
     @Path("addStats")
     @POST
     @Consumes({"application/json", "application/xml"})
-    public Response addStatistics(Statistics statistics){
+    public Response addStatistics(Statistics statistics) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        Date parsedDate = dateFormat.parse(statistics.getTs());
+        Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+
         Stat stat = new Stat();
         stat.setBatteryAvg(statistics.getAvgBatteryLeft());
         stat.setKilometers(statistics.getAvgKmTraveled());
         stat.setDeliveriesCount(statistics.readAvgDelivery());
+        stat.setPollutionLevel(statistics.getAvgAirPollution());
+        stat.setTs(timestamp);
+
         StatLists.getInstance().addStat(stat);
+
         return Response.ok("successfully added").build();
     }
 

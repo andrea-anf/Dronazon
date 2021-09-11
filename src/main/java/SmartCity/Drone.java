@@ -13,6 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -105,11 +106,16 @@ public class Drone {
 
     public ClientResponse sendStats(){
         Client client = Client.create();
-        WebResource webResource = client.resource(serverAddress+"drones/addStats");
+        WebResource webResource = client.resource(serverAddress+"drones/addStats/");
 
-        String input = "{\"ID\": \""+this.id+"\","+
-                "\"local port\":\""+this.localPort+"\"," +
-                "\"local address\":\""+this.localAddress+"\"}";
+        String timestamp = new Timestamp(System.currentTimeMillis()).toString();
+
+        String input =
+                "{\"avgKmTraveled\": \"" + this.getStats().getAvgKmTraveled()+"\","+
+                "\"avgAirPollution\":\"" + this.getStats().getAvgAirPollution()+"\"," +
+                "\"avgBatteryLeft\":\"" + this.getStats().getAvgBatteryLeft()+"\"," +
+                "\"avgDeliveries\":\"" + this.getStats().getAvgDelivery(dronelist) +"\"," +
+                "\"timestamp\":\"" + timestamp +"\"}";
 
         //make a post request to add drone to ServerAmministratore
         return webResource.type("application/json").post(ClientResponse.class, input);
@@ -303,6 +309,8 @@ public class Drone {
     //TERMINATING DRONES
     public void quitDrone() throws MqttException, InterruptedException {
 
+        System.out.println("[DRONE] Drone " + this.getId() + " want to quit");
+
         //wait delivery finish to quit
         synchronized (this.getDeliveryLock()){
             while(this.isDelivering()){
@@ -314,7 +322,7 @@ public class Drone {
                 //disconnect from broker
                 if(this.getClient().isConnected()){
                     this.getClient().disconnect();
-                    System.out.println("[QUIT] Master Drone " +
+                    System.out.println("[BROKER] Master Drone " +
                             this.getId() +
                             " disconnected from broker " +
                             client.getServerURI());
@@ -351,7 +359,7 @@ public class Drone {
             }
 
             ClientResponse deleteResponse = this.disconnect();
-            System.out.println("\n[QUIT] RESPONSE: " + deleteResponse);
+            System.out.println("\n[SERVER] RESPONSE: " + deleteResponse);
             System.exit(0);
         }
     }

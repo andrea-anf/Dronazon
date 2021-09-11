@@ -77,6 +77,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
 
         System.out.println("\n[ORDER] Order " + order.getId() + " delivered." );
 
+        //set arrival time
         String arrivalTime = new Timestamp(System.currentTimeMillis()).toString();
         System.out.println("\tArrival time: " + arrivalTime );
 

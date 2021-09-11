@@ -79,22 +79,25 @@ public class ClientAmministratore {
                     WebResource webResource = client.resource(serverAddress+service+n);
                     ClientResponse clientResponse = webResource.type(MediaType.APPLICATION_JSON).get(ClientResponse.class);
 
-                    System.out.println("[+]   "+clientResponse.toString());
+                    System.out.println("[+]   " + clientResponse.toString());
 
-                    List<Stat> statlist = clientResponse.getEntity(new GenericType<List<Stat>>() {});
+                    if(clientResponse.getStatus() == 200){
+                        List<Stat> statlist = clientResponse.getEntity(new GenericType<List<Stat>>() {});
 
-                    if(statlist.isEmpty()){
-                        System.out.println("    [-] No stats available");
-                    }
-                    else{
-                        for (Stat s : statlist){
-                            System.out.println("\n    [-]\tTimestamp: " + s.getTs().replaceFirst("T", " at ")
-                                    +"\n\t\tDeliveries count: " + s.getDeliveriesCount()
-                                    +"\n\t\tKilometers traveled: " + s.getKilometers()
-                                    +"\n\t\tPollution level: " + s.getPollutionLevel()
-                                    +"\n\t\tBattery average: " + s.getBatteryAvg());
+                        if(statlist.isEmpty()){
+                            System.out.println("    [-] No stats available");
+                        }
+                        else{
+                            for (Stat s : statlist){
+                                System.out.println("\n    [-]\tTimestamp: " + s.getTs().replaceFirst("T", " at ")
+                                        +"\n\t\tDeliveries count: " + s.getDeliveriesCount()
+                                        +"\n\t\tKilometers traveled: " + s.getKilometers()
+                                        +"\n\t\tPollution level: " + s.getPollutionLevel()
+                                        +"\n\t\tBattery average: " + s.getBatteryAvg());
+                            }
                         }
                     }
+
 
                     System.out.println("\nPress enter to return to the menu...");
                     Scanner wait = new Scanner(System.in);
@@ -126,9 +129,12 @@ public class ClientAmministratore {
 
                     System.out.println("[+]   "+clientResponse.toString());
 
-                    String result = clientResponse.getEntity(String.class);
-                    result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
-                    System.out.println("\t[-] " + result);
+                    if(clientResponse.getStatus() == 200){
+                        String result = clientResponse.getEntity(String.class);
+                        result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
+                        System.out.println("\t[-] " + result);
+
+                    }
 
                     System.out.println("\nPress enter to return to the menu...");
                     Scanner wait = new Scanner(System.in);
@@ -161,9 +167,11 @@ public class ClientAmministratore {
 
                     System.out.println("[+]   "+clientResponse.toString());
 
-                    String result = clientResponse.getEntity(String.class);
-                    result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
-                    System.out.println("\t[-] " + result);
+                    if(clientResponse.getStatus() == 200){
+                        String result = clientResponse.getEntity(String.class);
+                        result = result.replaceAll("[^a-zA-Z0-9 ^:.]", "");
+                        System.out.println("\t[-] " + result);
+                    }
 
                     System.out.println("\nPress enter to return to the menu...");
                     Scanner wait = new Scanner(System.in);
@@ -175,7 +183,7 @@ public class ClientAmministratore {
                 }
 
                 break;
-                default: System.out.println("\nValore non accettato, uscita dal programma!");
+                default: System.out.println("\nUnexpected value! Closing the program");
             }
         }
     }

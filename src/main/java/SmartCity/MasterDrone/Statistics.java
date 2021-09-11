@@ -2,21 +2,41 @@ package SmartCity.MasterDrone;
 
 import SmartCity.Drone;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.NONE)
 public class Statistics {
+
+    @XmlElement(name = "avgDeliveries")
+    private double avgDelivery = 0;
+    @XmlElement(name = "avgKmTraveled")
+    private double avgKmTraveled = 0;
+    @XmlElement(name = "avgAirPollution")
+    private double avgAirPollution = 0;
+    @XmlElement(name = "avgBatteryLeft")
+    private double avgBatteryLeft = 0;
+    @XmlElement(name = "timestamp")
+    private String ts;
 
     private List<Double> deliveryList = new ArrayList<>();
     private List<Double> kmTraveledList = new ArrayList<>();
     private List<Double> airPollutionList = new ArrayList<>();
     private List<Double> batteryLeftList = new ArrayList<>();
 
-    private double avgDelivery = 0;
-    private double avgKmTraveled = 0;
-    private double avgAirPollution = 0;
-    private double avgBatteryLeft = 0;
+    public String getTs() {
+        return ts;
+    }
 
+    public void setTs(String ts) {
+        this.ts = ts;
+    }
 
     public void addToBatteryLeftList(double batteryLeftAmount){
         this.batteryLeftList.add(batteryLeftAmount);

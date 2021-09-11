@@ -51,7 +51,7 @@ public class DispatchingService {
         }
         else{
             master.getById(droneId).setDelivering(true);
-            System.out.print("\n[ORDER] Sending order " + order + " to ");
+            System.out.print("[ORDER] Sending order " + order + " to ");
             if(droneId == master.getId()){
                 System.out.print("Drone " + droneId + "[MASTER]\n");
             }

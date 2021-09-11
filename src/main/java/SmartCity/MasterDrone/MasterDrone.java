@@ -38,17 +38,17 @@ public class MasterDrone implements Runnable{
                     .addService(new DroneRPCListeningService(drone))
                     .build();
             server.start();
-            System.out.println("[+] Master started to listen!");
+            System.out.println("\n[RING] Master started to listen!");
 
 
             // CONNECTING AS MQTT CLIENT
             drone.setClient(new MqttClient(broker, clientId));
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            System.out.println("\n[+] Connecting to broker " + drone.getClient().getServerURI() + "...");
+            System.out.println("[BROKER] Connecting to broker " + drone.getClient().getServerURI() + "...");
             // Connect the client to the broker (blocking)
             drone.getClient().connect(connOpts);
-            System.out.println("[+] Successfully connected!");
+            System.out.println("[BROKER] Successfully connected!");
 
             drone.getClient().setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -58,7 +58,7 @@ public class MasterDrone implements Runnable{
                     String receivedMessage = new String(message.getPayload());
 
                     System.out.println(
-                            "\n\n[+] New order" +
+                            "\n\n[BROKER] New order" +
                                     "\n\tTime:    " + time +
                                     "\n\tTopic:   " + topic +
                                     "\n\tMessage: " + receivedMessage +
@@ -92,7 +92,7 @@ public class MasterDrone implements Runnable{
 
                 public void connectionLost(Throwable cause) {
                     System.out.println(
-                            "Master drone " +
+                            "[BROKER] Master drone " +
                                     drone.getId() +
                                     " has lost the connection! Cause:"
                                     + cause.getMessage() +
@@ -108,7 +108,7 @@ public class MasterDrone implements Runnable{
             //subscribing to broker
             drone.getClient().subscribe(topic,qos);
             System.out.println(
-                    "\nMaster Drone " +
+                    "\n[BROKER] Master Drone " +
                             drone.getId() +
                             " is now subscribed to topic : " +
                             topic);

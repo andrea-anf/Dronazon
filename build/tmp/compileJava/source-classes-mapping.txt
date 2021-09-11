@@ -41,8 +41,8 @@ SensoreInquinamento/PM10Simulator.java
  SensoreInquinamento.PM10Simulator
 Amministrazione/ServerAmministratore.java
  Amministrazione.ServerAmministratore
-Amministrazione/Services/ServiceAdmin.java
- Amministrazione.Services.ServiceAdmin
+Amministrazione/Statistics/Stat.java
+ Amministrazione.Statistics.Stat
 Amministrazione/Coordinates.java
  Amministrazione.Coordinates
 SensoreInquinamento/Measurement.java
@@ -51,12 +51,15 @@ SmartCity/MasterDrone/Order.java
  SmartCity.MasterDrone.Order
 dronazon/Dronazon.java
  dronazon.Dronazon
+Amministrazione/Client/ClientAmministratore.java
+ Amministrazione.Client.ClientAmministratore
+ Amministrazione.Client.ClientAmministratore$1
 SmartCity/MasterDrone/DispatchingService.java
  SmartCity.MasterDrone.DispatchingService
-Amministrazione/Services/ServiceDrones.java
- Amministrazione.Services.ServiceDrones
-Amministrazione/Statistics/StatLists.java
- Amministrazione.Statistics.StatLists
+SmartCity/SmartCity.java
+ SmartCity.SmartCity
+SmartCity/RPCServices/DroneRPCListeningService.java
+ SmartCity.RPCServices.DroneRPCListeningService
 SmartCity/MasterDrone/OrderSender.java
  SmartCity.MasterDrone.OrderSender
 SmartCity/Drone.java
@@ -64,6 +67,8 @@ SmartCity/Drone.java
  SmartCity.Drone$1
 SmartCity/RPCServices/DroneRPCSendingService.java
  SmartCity.RPCServices.DroneRPCSendingService
+SmartCity/DroneStarter.java
+ SmartCity.DroneStarter
 SmartCity/MasterDrone/MasterDrone.java
  SmartCity.MasterDrone.MasterDrone
  SmartCity.MasterDrone.MasterDrone$1
@@ -71,14 +76,9 @@ SmartCity/MasterDrone/Statistics.java
  SmartCity.MasterDrone.Statistics
 SmartCity/MasterDrone/MasterDronelist.java
  SmartCity.MasterDrone.MasterDronelist
-Amministrazione/Client/ClientAmministratore.java
- Amministrazione.Client.ClientAmministratore
- Amministrazione.Client.ClientAmministratore$1
-Amministrazione/Statistics/Stat.java
- Amministrazione.Statistics.Stat
-SmartCity/DroneStarter.java
- SmartCity.DroneStarter
-SmartCity/RPCServices/DroneRPCListeningService.java
- SmartCity.RPCServices.DroneRPCListeningService
-SmartCity/SmartCity.java
- SmartCity.SmartCity
+Amministrazione/Statistics/StatLists.java
+ Amministrazione.Statistics.StatLists
+Amministrazione/Services/ServiceDrones.java
+ Amministrazione.Services.ServiceDrones
+Amministrazione/Services/ServiceAdmin.java
+ Amministrazione.Services.ServiceAdmin

@@ -1,9 +1,5 @@
 package SmartCity;
 
-import SensoreInquinamento.Buffer;
-import SensoreInquinamento.Measurement;
-import SensoreInquinamento.PM10Simulator;
-import SmartCity.MasterDrone.DispatchingService;
 import SmartCity.MasterDrone.MasterDrone;
 import SmartCity.RPCServices.DroneRPCListeningService;
 import SmartCity.RPCServices.DroneRPCSendingService;
@@ -24,14 +20,16 @@ public class DroneStarter {
     public static void main(String[] args) throws IOException {
 
         Scanner input = new Scanner(System.in);
-        System.out.println("\nStarting new drone:");
         Drone drone = new Drone();
         drone.setLocalAddress("localhost");
         drone.setLocalPort(""+ThreadLocalRandom.current().nextInt(1000, 1999 + 1));
         drone.setId(ThreadLocalRandom.current().nextInt(1, 999 + 1));
 
+        System.out.println("\n[DRONE] Starting drone:" + "\n\tID: " + drone.getId());
+
+
         ClientResponse responseGetSmartCity = drone.getSmartCity();
-        System.out.println(responseGetSmartCity.toString());
+        System.out.println("[SERVER] " + responseGetSmartCity.toString());
         SmartCity dronelist = responseGetSmartCity.getEntity(SmartCity.class);
         signUpDrone(drone);
 
@@ -68,8 +66,6 @@ public class DroneStarter {
 
 
     public static void signUpDrone(Drone drone){
-        System.out.println("\nStarting drone:" +
-                "\n\tID: " + drone.getId());
 
         //registers the new drone to the ServerAmministratore
         ClientResponse response = drone.connect();
@@ -78,11 +74,11 @@ public class DroneStarter {
         }
         //returns list with active drones and sets coords
         SmartCity updatedDronelist = response.getEntity(SmartCity.class);
-        System.out.println("\nSmartCity:");
+        System.out.println("\n[SERVER] SmartCity:");
         for (Drone d : updatedDronelist.getDronelist()){
             System.out.println(
                     "\tID: " + d.getId() +
-                            "\t | Coords: (" + d.getCoords().getX()+","+ d.getCoords().getY() + ")" +
+                            "\t| Coords: (" + d.getCoords().getX()+","+ d.getCoords().getY() + ")" +
                             "\tAddress: " + d.getLocalAddress()+
                             "\tPort: " + d.getLocalPort());
             if(d.getId() == drone.getId()){

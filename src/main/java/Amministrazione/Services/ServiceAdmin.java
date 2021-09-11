@@ -1,5 +1,6 @@
 package Amministrazione.Services;
 
+import Amministrazione.Statistics.Stat;
 import SmartCity.SmartCity;
 import Amministrazione.Statistics.StatLists;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
@@ -7,6 +8,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Path("admin")
 public class ServiceAdmin {
@@ -29,12 +31,24 @@ public class ServiceAdmin {
     @Produces({"application/json", "application/xml"})
     public Response getLastNStats(@PathParam("lastN")int lastN) {
         if(lastN != 0){
+            List<Stat> stats = StatLists.getInstance().getLastNStats(5);
             return Response.ok(StatLists.getInstance().getLastNStats(lastN)).build();
         }
         else{
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }
     }
+
+    @Path("getAllStats")
+    @GET
+    @Produces({"application/json", "application/xml"})
+    public Response getAllStats() {
+            return Response.ok(StatLists.getInstance().getAllStats()).build();
+    }
+
+
+
+
     //  Media del numero di consegne effettuate dai droni della smart-city tra due timestamp t1 e t2
     //  http://localhost:1338/admin/getAvgDeliveries/{t1}/{t2} ---> t1,t2 strings of type yyyy-MM-ddTHH:mm:ss
     @Path("getAvgDeliveries/{t1}/{t2}")

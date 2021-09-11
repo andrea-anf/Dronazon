@@ -2,6 +2,7 @@ package SmartCity.RPCServices;
 
 import SmartCity.Drone;
 import SmartCity.SmartCity;
+import com.sun.jersey.api.client.ClientResponse;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
@@ -105,6 +106,15 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                     "\n\tAverage km travelled: " + master.getStats().getAvgKmTraveled() +
                     "\n\tAverage battery left: " + master.getStats().getAvgBatteryLeft() +
                     "\n\tAverage delivery completed: " + master.getStats().getAvgDelivery(master.getDronelist()));
+
+        System.out.println("\n[SERVER] Sending global statistics to the server");
+
+        ClientResponse response = drone.sendStats();
+        if (response.getStatus() != 200) {
+            throw new RuntimeException("[SERVER] Failed : HTTP error code : " + response.getStatus());
+        }
+
+//        System.out.print("[SERVER] " + response);
 
         master.getById(drone.getId()).setDelivering(false);
 

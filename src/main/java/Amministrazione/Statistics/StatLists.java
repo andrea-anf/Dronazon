@@ -28,6 +28,11 @@ public class StatLists {
         return instance;
     }
 
+    public synchronized List<Stat> getAllStats() {
+        List<Stat> nStatList = statlist;
+        return nStatList;
+    }
+
     public synchronized ArrayList<Stat> getLastNStats(int lastNStats) {
         List<Stat> nStatList = statlist.subList(statlist.size()-Math.min(statlist.size(),lastNStats), statlist.size());
         return new ArrayList<>(nStatList);
