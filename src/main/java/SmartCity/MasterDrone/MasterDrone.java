@@ -50,6 +50,12 @@ public class MasterDrone implements Runnable{
             drone.getClient().connect(connOpts);
             System.out.println("[BROKER] Successfully connected!");
 
+
+            //START TO SEND STATISTICS TO SERVER
+            Runnable sender = new StatsSender(drone);
+            Thread thread = new Thread(sender);
+            thread.start();
+
             drone.getClient().setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
 
@@ -67,10 +73,18 @@ public class MasterDrone implements Runnable{
                     System.out.println("\n[INFO] DRONELIST:");
                     for(Drone d : drone.getDronelist()){
                         if(d.getId() == drone.getId()){
-                            System.out.print("\t# " + d.getId() + "[MASTER]\n");
+                            if(d.isDelivering()){
+                                System.out.print("\t# " + d.getId() + " [BUSY] [MASTER] \n");
+                            }else{
+                                System.out.print("\t# " + d.getId() + " [MASTER]\n");
+                            }
                         }
                         else{
-                            System.out.print("\t# " + d.getId() + "\n");
+                            if(d.isDelivering()){
+                                System.out.print("\t# " + d.getId() + " [BUSY]\n");
+                            }else{
+                                System.out.print("\t# " + d.getId() + "\n");
+                            }
                         }
                     }
 

@@ -84,14 +84,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 .build();
 
         OrderResponse order = stub.sendOrder(request);
-        System.out.println("\n[ORDER] Drone " + drone.getId() + " delivered the order " + id +
-                "\n\tArrival Time: " + order.getArrivalTime() +
-                "\n\tNew Drone Coords.: (" + order.getNewCoordX() + "," + order.getNewCoordY() + ")" +
-                "\n\tKilometers Traveled: " + order.getKmTraveled() +
-                "\n\tAir Pollution: " + order.getAirPollution() +
-                "\n\tBattery left: " + order.getBatteryLevel() +
-                "\n\tCompleted Deliveries: " + order.getDeliveryCompleted() +
-                "\n\tDrone is quitting: " + order.getIsQuitting());
+
         channel.shutdown();
 
         master.getStats().addToAirPollutionList(order.getAirPollution());
@@ -99,22 +92,16 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         master.getStats().addToBatteryLeftList(order.getBatteryLevel());
         if(!drone.isMaster()){
             master.getById(drone.getId()).increseDeliveryCompleted();
+
+            System.out.println("\n[ORDER] Drone " + drone.getId() + " delivered the order " + id +
+                    "\n\tArrival Time: " + order.getArrivalTime() +
+                    "\n\tNew Drone Coords.: (" + order.getNewCoordX() + "," + order.getNewCoordY() + ")" +
+                    "\n\tKilometers Traveled: " + order.getKmTraveled() +
+                    "\n\tAir Pollution: " + order.getAirPollution() +
+                    "\n\tBattery left: " + order.getBatteryLevel() +
+                    "\n\tCompleted Deliveries: " + order.getDeliveryCompleted() +
+                    "\n\tDrone is quitting: " + order.getIsQuitting());
         }
-
-            System.out.println("\n[INFO] STATISTICS:" +
-                    "\n\tAverage air pollution: " + master.getStats().getAvgAirPollution() +
-                    "\n\tAverage km travelled: " + master.getStats().getAvgKmTraveled() +
-                    "\n\tAverage battery left: " + master.getStats().getAvgBatteryLeft() +
-                    "\n\tAverage delivery completed: " + master.getStats().getAvgDelivery(master.getDronelist()));
-
-        System.out.println("\n[SERVER] Sending global statistics to the server");
-
-        ClientResponse response = drone.sendStats();
-        if (response.getStatus() != 200) {
-            throw new RuntimeException("[SERVER] Failed : HTTP error code : " + response.getStatus());
-        }
-
-//        System.out.print("[SERVER] " + response);
 
         master.getById(drone.getId()).setDelivering(false);
 
@@ -122,7 +109,6 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
             return drone.getId();
         }
         else{
-
 
             return 0;
         }
