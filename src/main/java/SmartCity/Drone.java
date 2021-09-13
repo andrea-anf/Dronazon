@@ -1,10 +1,8 @@
 package SmartCity;
 
 import Amministrazione.Coordinates;
-import SensoreInquinamento.Buffer;
-import SensoreInquinamento.Measurement;
-import SensoreInquinamento.PM10Simulator;
-import SmartCity.MasterDrone.DispatchingService;
+import SmartCity.SensoreInquinamento.Buffer;
+import SmartCity.SensoreInquinamento.Measurement;
 import SmartCity.MasterDrone.Statistics;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -43,40 +41,49 @@ public class Drone {
     private String masterPort;
     private boolean partecipation;
     private String serverAddress = "http://localhost:1338/";
-    private boolean delivering = false;
     private boolean quitting = false;
+    private int nextDroneID = 0;
+    private int nextNextDroneID = 0;
+    private boolean masterPrevDrone = false;
 
     //master drone attributes
     private boolean master;
     private MqttClient client;
     private List<Drone> dronelist = new ArrayList<>();
     private Queue<String> orderQueue = new LinkedList<>();
+    private boolean delivering = false;
+
 
     //locks
     private final Object deliveryLock = new Object();
     private final Object dronelistLock = new Object();
 
-
-    //inquinamento
-    Buffer buffer = new Buffer() {
-        private List<Measurement> buff= new ArrayList<>();
-        @Override
-        public void addMeasurement(Measurement m) {
-            this.buff.add(m);
-        }
-
-        @Override
-        public List<Measurement> readAllAndClean() {
-            List<Measurement> tempBuff = buff;
-            buff.clear();
-            return tempBuff;
-        }
-    };
-
-    PM10Simulator pm10 = new PM10Simulator(buffer);
-
-
     public Drone (){}
+
+
+    public int getNextDroneID() {
+        return nextDroneID;
+    }
+
+    public void setNextDroneID(int nextDroneID) {
+        this.nextDroneID = nextDroneID;
+    }
+
+    public int getNextNextDroneID() {
+        return nextNextDroneID;
+    }
+
+    public void setNextNextDroneID(int nextNextDroneID) {
+        this.nextNextDroneID = nextNextDroneID;
+    }
+
+    public boolean isMasterPrevDrone() {
+        return masterPrevDrone;
+    }
+
+    public void setMasterPrevDrone(boolean masterPrevDrone) {
+        this.masterPrevDrone = masterPrevDrone;
+    }
 
     //HTTP REQUESTS
     public ClientResponse connect(){
@@ -97,7 +104,6 @@ public class Drone {
         return webResource.delete(ClientResponse.class);
     }
 
-    //Returns the smartcity, operated before connect() to verify if it's empty
     public ClientResponse getSmartCity() {
         Client client = Client.create();
         WebResource webResource = client.resource(serverAddress + "admin/getSmartCity");
@@ -213,7 +219,6 @@ public class Drone {
     public MqttClient getClient() {
         return client;
     }
-
     public void setClient(MqttClient client) {
         this.client = client;
     }
@@ -287,13 +292,31 @@ public class Drone {
         this.quitting = quitting;
     }
 
+    Buffer buff = new Buffer() {
+        List<Measurement> misures = new ArrayList<>();
 
-    //AIR POLLUTION PM10
-    public void startPm10(PM10Simulator pm10) {
-        pm10.start();
-    }
-    public PM10Simulator getPm10() {
-        return this.pm10;
+        @Override
+        public void addMeasurement(Measurement m) {
+
+            misures.add(m);
+        }
+
+        @Override
+        public List<Measurement> readAllAndClean() {
+            List<Measurement> mis = new ArrayList<>();
+            //sliding windows with 50% overlap and window with size=8
+            for(int i=0; i<8; i++){
+                mis.add(misures.get(i));
+                if(i < 4){
+                    misures.remove(i);
+                }
+            }
+            return mis;
+        }
+    };
+
+    public Buffer getBuff() {
+        return buff;
     }
 
 
@@ -305,6 +328,7 @@ public class Drone {
     public Object getDronelistLock() {
         return dronelistLock;
     }
+
 
     //TERMINATING DRONES
     public void quitDrone() throws MqttException, InterruptedException {
@@ -355,11 +379,27 @@ public class Drone {
 //
 //                }
 
+                System.out.println("\n[STATISTICS]" +
+                        "\n\tAverage air pollution: " + this.getStats().getAvgAirPollution() +
+                        "\n\tAverage km traveled: " + this.getStats().getAvgKmTraveled() +
+                        "\n\tAverage battery left: " + this.getStats().getAvgBatteryLeft() +
+                        "\n\tAverage delivery completed: " + this.getStats().getAvgDelivery(this.getDronelist()));
+
+
+                System.out.println("\n[STATISTICS] Sending global statistics to the server");
+
+                ClientResponse response = this.sendStats();
+                if (response.getStatus() != 200) {
+                    throw new RuntimeException("[STATISTICS] Failed : HTTP error code : " + response.getStatus());
+                }
+
+                System.out.println("[STATISTICS] " + response);
 
             }
 
+            System.out.println("\n[DRONE] Sending request to quit to the server");
             ClientResponse deleteResponse = this.disconnect();
-            System.out.println("\n[SERVER] RESPONSE: " + deleteResponse);
+            System.out.println("[DRONE]: " + deleteResponse);
             System.exit(0);
         }
     }

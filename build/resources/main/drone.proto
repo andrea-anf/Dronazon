@@ -11,6 +11,9 @@ message AddRequest {
 
 message AddResponse {
   int32 response = 1;
+  int32 nextDrone = 2;
+  int32 nextNextDrone = 3;
+  bool masterPrevDrone = 4;
 }
 
 message OrderRequest {
@@ -20,7 +23,6 @@ message OrderRequest {
   int32 destX = 4;
   int32 destY = 5;
 }
-
 message OrderResponse {
   string arrivalTime = 1;
   int32 newCoordX = 2;
@@ -30,7 +32,10 @@ message OrderResponse {
   int32 batteryLevel = 6;
   bool isQuitting = 7;
   int32 deliveryCompleted = 8;
+}
 
+message SendNextNext {
+  int32 nextNextDrone = 1;
 }
 
 

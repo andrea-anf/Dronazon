@@ -1,9 +1,9 @@
 package SmartCity.RPCServices;
 
 import Amministrazione.Coordinates;
-import SensoreInquinamento.Measurement;
 import SmartCity.Drone;
-import SmartCity.MasterDrone.DispatchingService;
+import SmartCity.MasterDrone.Orders.DispatchingService;
+import SmartCity.SensoreInquinamento.Measurement;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
@@ -25,39 +25,57 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     @Override
     public void add(AddRequest request, StreamObserver<AddResponse> responseObserver) {
         AddResponse response;
+        Drone newDrone = new Drone();
+
+        Coordinates coords = new Coordinates();
+        coords.setX(request.getCoordX());
+        coords.setY(request.getCoordY());
+
+        newDrone.setId(request.getId());
+        newDrone.setLocalAddress(request.getAddress());
+        newDrone.setLocalPort(request.getPort());
+        newDrone.setCoords(coords);
+
+        drone.addToDronelist(newDrone);
+        System.out.println("[RING] New drone is joining the ring: " +
+                "\n\tID: " + request.getId() +
+                "\n\tAddress: " + request.getAddress() +
+                "\n\tPort: " + request.getPort() +
+                "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
+        );
+        boolean isPrevToMaster = false;
+        if(drone.getDronelist().size() == 2){
+            isPrevToMaster = true;
+        }
+
         if(drone.isMaster()){
             //if master, save the new drone and respond with 1
-            System.out.println("[+] New drone is joining the ring: " +
-                    "\n\tID: " + request.getId() +
-                    "\n\tAddress: " + request.getAddress() +
-                    "\n\tPort: " + request.getPort() +
-                    "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
-            );
-            Drone newDrone = new Drone();
-
-            Coordinates coords = new Coordinates();
-            coords.setX(request.getCoordX());
-            coords.setY(request.getCoordY());
-
-            newDrone.setId(request.getId());
-            newDrone.setLocalAddress(request.getAddress());
-            newDrone.setLocalPort(request.getPort());
-            newDrone.setCoords(coords);
-
-            drone.addToDronelist(newDrone);
-
              response = AddResponse.newBuilder()
                     .setResponse(1)
+                     .setNextDrone(drone.getNextDroneID())
+                     .setNextNextDrone(drone.getNextNextDroneID())
+                     .setMasterPrevDrone(isPrevToMaster)
                     .build();
+
+             drone.setNextNextDroneID(drone.getNextDroneID());
+             drone.setNextDroneID(newDrone.getId());
+
 
             synchronized (drone.getDronelistLock()){
                 drone.getDronelistLock().notify();
             }
         }
         else{
+
+
+            if(drone.isMasterPrevDrone()){
+                drone.setNextNextDroneID(newDrone.getId());
+            }
+
             response = AddResponse.newBuilder()
                     .setResponse(0)
                     .build();
+
         }
 
 
@@ -102,22 +120,23 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         //find distance between departure point and destination point
         double distanceDepartToDest = dispatchingInfo.Distance(order.getDepX(), order.getDepY(), order.getDestX(), order.getDestY());
         //find kilometers traveled
-        double kmTraveled = distanceDepartToDest+distanceInitialToDepart;
-        System.out.println("\tKilometers traveled: " + kmTraveled);
+        double totalDistance = distanceDepartToDest+distanceInitialToDepart;
+
+        drone.setKmTraveled(drone.getKmTraveled() + totalDistance);
+        System.out.println("\tKilometers traveled: " + totalDistance);
 
         //add a new delivery to the total
         drone.increseDeliveryCompleted();
         System.out.println("\tCompleted deliveries: " + drone.getDeliveryCompleted());
 
-        //show air pollution
-        System.out.println("\tPollution registered: " +
-                drone.getPm10().getBuffer().readAllAndClean());
-//        for(Measurement measure : drone.getPm10().getBuffer().readAllAndClean()){
-//            System.out.print("\n\t\tID: " + measure.getId() +
-//                    "\n\t\tType: " + measure.getType() +
-//                    "\n\t\tTimestamp: " + measure.getTimestamp() +
-//                    "\n\t\tValue: " + measure.getValue());
-//        }
+        double count=0;
+        for(Measurement val : drone.getBuff().readAllAndClean()){
+            count += val.getValue();
+        }
+        double airPollution = count/8;
+        System.out.println("\tAvg Pollution: " + airPollution );
+
+
 
         drone.setDelivering(false);
 
@@ -130,8 +149,8 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 .setArrivalTime(arrivalTime)
                 .setNewCoordX(drone.getCoords().getX())
                 .setNewCoordY(drone.getCoords().getY())
-                .setKmTraveled(kmTraveled)
-                .setAirPollution(5)
+                .setKmTraveled(totalDistance)
+                .setAirPollution(airPollution)
                 .setBatteryLevel(drone.getBatteryLevel())
                 .setIsQuitting(drone.isQuitting())
                 .setDeliveryCompleted(drone.getDeliveryCompleted())

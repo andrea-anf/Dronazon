@@ -1,13 +1,11 @@
-SmartCity/MasterDrone/DispatchingService.java
- SmartCity.MasterDrone.DispatchingService
+SmartCity/MasterDrone/Orders/DispatchingService.java
+ SmartCity.MasterDrone.Orders.DispatchingService
 Amministrazione/Services/ServiceDrones.java
  Amministrazione.Services.ServiceDrones
-SensoreInquinamento/Simulator.java
- SensoreInquinamento.Simulator
 SmartCity/MasterDrone/StatsSender.java
  SmartCity.MasterDrone.StatsSender
-SensoreInquinamento/Buffer.java
- SensoreInquinamento.Buffer
+SmartCity/MasterDrone/Orders/OrderSender.java
+ SmartCity.MasterDrone.Orders.OrderSender
 grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass
  grpc.drone.DroneOuterClass$1
@@ -27,6 +25,51 @@ grpc/drone/DroneOuterClass.java
  grpc.drone.DroneOuterClass$OrderResponse$1
  grpc.drone.DroneOuterClass$OrderResponse$Builder
  grpc.drone.DroneOuterClass$OrderResponseOrBuilder
+ grpc.drone.DroneOuterClass$SendNextNext
+ grpc.drone.DroneOuterClass$SendNextNext$1
+ grpc.drone.DroneOuterClass$SendNextNext$Builder
+ grpc.drone.DroneOuterClass$SendNextNextOrBuilder
+SmartCity/Drone.java
+ SmartCity.Drone
+ SmartCity.Drone$1
+Amministrazione/Services/ServiceAdmin.java
+ Amministrazione.Services.ServiceAdmin
+SmartCity/MasterDrone/MasterDrone.java
+ SmartCity.MasterDrone.MasterDrone
+ SmartCity.MasterDrone.MasterDrone$1
+SmartCity/MasterDrone/Orders/Order.java
+ SmartCity.MasterDrone.Orders.Order
+Amministrazione/Statistics/Stat.java
+ Amministrazione.Statistics.Stat
+dronazon/Subscriber.java
+ dronazon.Subscriber
+ dronazon.Subscriber$1
+dronazon/Dronazon.java
+ dronazon.Dronazon
+SmartCity/SensoreInquinamento/Measurement.java
+ SmartCity.SensoreInquinamento.Measurement
+Amministrazione/Statistics/StatsList.java
+ Amministrazione.Statistics.StatsList
+SmartCity/RPCServices/DroneRPCListeningService.java
+ SmartCity.RPCServices.DroneRPCListeningService
+SmartCity/SmartCity.java
+ SmartCity.SmartCity
+SmartCity/SensoreInquinamento/Simulator.java
+ SmartCity.SensoreInquinamento.Simulator
+Amministrazione/Coordinates.java
+ Amministrazione.Coordinates
+SmartCity/SensoreInquinamento/PM10Simulator.java
+ SmartCity.SensoreInquinamento.PM10Simulator
+Amministrazione/ServerAmministratore.java
+ Amministrazione.ServerAmministratore
+SmartCity/RPCServices/DroneRPCSendingService.java
+ SmartCity.RPCServices.DroneRPCSendingService
+SmartCity/MasterDrone/Statistics.java
+ SmartCity.MasterDrone.Statistics
+Amministrazione/Client/ClientAmministratore.java
+ Amministrazione.Client.ClientAmministratore
+dronazon/DronazonSender.java
+ dronazon.DronazonSender
 grpc/drone/DroneGrpc.java
  grpc.drone.DroneGrpc
  grpc.drone.DroneGrpc$1
@@ -38,48 +81,7 @@ grpc/drone/DroneGrpc.java
  grpc.drone.DroneGrpc$DroneMethodDescriptorSupplier
  grpc.drone.DroneGrpc$DroneStub
  grpc.drone.DroneGrpc$MethodHandlers
-SmartCity/Drone.java
- SmartCity.Drone
- SmartCity.Drone$1
-Amministrazione/Services/ServiceAdmin.java
- Amministrazione.Services.ServiceAdmin
-Amministrazione/Client/ClientAmministratore.java
- Amministrazione.Client.ClientAmministratore
-SmartCity/MasterDrone/MasterDronelist.java
- SmartCity.MasterDrone.MasterDronelist
-SmartCity/MasterDrone/Order.java
- SmartCity.MasterDrone.Order
-Amministrazione/Statistics/Stat.java
- Amministrazione.Statistics.Stat
-dronazon/Subscriber.java
- dronazon.Subscriber
- dronazon.Subscriber$1
-dronazon/Dronazon.java
- dronazon.Dronazon
-SensoreInquinamento/Measurement.java
- SensoreInquinamento.Measurement
-Amministrazione/Statistics/StatsList.java
- Amministrazione.Statistics.StatsList
-SmartCity/RPCServices/DroneRPCListeningService.java
- SmartCity.RPCServices.DroneRPCListeningService
-SmartCity/SmartCity.java
- SmartCity.SmartCity
-Amministrazione/Coordinates.java
- Amministrazione.Coordinates
-Amministrazione/ServerAmministratore.java
- Amministrazione.ServerAmministratore
-dronazon/DronazonSender.java
- dronazon.DronazonSender
-SensoreInquinamento/PM10Simulator.java
- SensoreInquinamento.PM10Simulator
-SmartCity/MasterDrone/Statistics.java
- SmartCity.MasterDrone.Statistics
+SmartCity/SensoreInquinamento/Buffer.java
+ SmartCity.SensoreInquinamento.Buffer
 SmartCity/DroneStarter.java
  SmartCity.DroneStarter
-SmartCity/MasterDrone/OrderSender.java
- SmartCity.MasterDrone.OrderSender
-SmartCity/RPCServices/DroneRPCSendingService.java
- SmartCity.RPCServices.DroneRPCSendingService
-SmartCity/MasterDrone/MasterDrone.java
- SmartCity.MasterDrone.MasterDrone
- SmartCity.MasterDrone.MasterDrone$1

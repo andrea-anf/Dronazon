@@ -2,7 +2,6 @@ package SmartCity.RPCServices;
 
 import SmartCity.Drone;
 import SmartCity.SmartCity;
-import com.sun.jersey.api.client.ClientResponse;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
@@ -13,10 +12,11 @@ import io.grpc.ManagedChannelBuilder;
 
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
+
     //looking for master to join the ring?
     public static void addDroneRequest(Drone drone, SmartCity dronelist){
         boolean found = false;
-        System.out.println("[+] Looking for the master...");
+        System.out.println("[RING] Looking for the master...");
         for (Drone d : dronelist.getDronelist()){
                 final ManagedChannel channel = ManagedChannelBuilder
                         .forTarget(d.getLocalAddress() + ":" + d.getLocalPort())
@@ -37,19 +37,26 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                 AddResponse response = stub.add(request);
                 if(response.getResponse() == 1){
                     found = true;
-                    System.out.println("[+] Master found:" +
+                    System.out.println("[RING] Master found:" +
                             "\n\tID: " + d.getId() +
                             "\n\tAddress: " + d.getLocalAddress() + ":" + d.getLocalPort());
                     drone.setMasterAddress(d.getLocalAddress());
                     drone.setMasterPort(d.getLocalPort());
+
+                    drone.setNextDroneID(response.getNextDrone());
+                    drone.setNextNextDroneID(response.getNextNextDrone());
+                    drone.setMasterPrevDrone(response.getMasterPrevDrone());
+                    System.out.println("\tNext drone :" + drone.getNextDroneID());
+                    System.out.println("\tNextNext drone :" + drone.getNextNextDroneID());
+
 
                 }
                 channel.shutdown();
         }
         //if no drones are founds, starts an election
         if(found == false){
-            System.out.println("\n[!] No master found");
-            System.out.println("[!] Need to starts an election");
+            System.out.println("\n[RING] No master found");
+            System.out.println("[RING2] Need to starts an election");
         }
     }
 

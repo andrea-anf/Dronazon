@@ -1,5 +1,6 @@
 TODO:
-- gestione e invio statistiche
-- far mostrare statistiche ogni 10sec ai droni normali
-- far inviare statistiche ogni 10 sec al master
-- implementare chiamata per invio statistiche al server
+Fare l'anello:
+    conoscenza del nextDrone e NextNextDrone
+    quando il masterNextDrone scopre che il master è caduto, cade il suo ruolo di MND
+
+Fare parte facoltativa
