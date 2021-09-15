@@ -12,6 +12,10 @@ import grpc.drone.DroneOuterClass.OrderRequest;
 import grpc.drone.DroneOuterClass.OrderResponse;
 import grpc.drone.DroneOuterClass.PingRequest;
 import grpc.drone.DroneOuterClass.PingResponse;
+import grpc.drone.DroneOuterClass.ElectionReq;
+import grpc.drone.DroneOuterClass.ElectionAck;
+
+
 
 import io.grpc.stub.StreamObserver;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -21,7 +25,7 @@ import java.sql.Timestamp;
 public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     private Drone drone;
 
-    public DroneRPCListeningService(Drone drone){
+    public DroneRPCListeningService(Drone drone) {
         this.drone = drone;
     }
 
@@ -47,12 +51,11 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
         );
         boolean isPrevToMaster = false;
-        if(drone.getDronelist().size() == 2){
+        if (drone.getDronelist().size() == 2) {
             isPrevToMaster = true;
         }
 
-
-        if(drone.isMaster()){
+        if (drone.isMaster()) {
             response = AddResponse.newBuilder()
                     .setResponse(1)
 
@@ -89,14 +92,13 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             System.out.print("\n");
 
 
-            synchronized (drone.getDronelistLock()){
+            synchronized (drone.getDronelistLock()) {
                 drone.getDronelistLock().notify();
             }
-        }
-        else{
+        } else {
 
             //if this is the masterPrevDrone, it sets as nextNextDrone the new drone
-            if(drone.isMasterPrevDrone()){
+            if (drone.isMasterPrevDrone()) {
                 drone.setNextNextDrone(newDrone);
             }
             System.out.println("\n[RING] SmartCity:");
@@ -109,12 +111,10 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                     .build();
         }
 
-
-
-
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
 
     public void ping(PingRequest ping, StreamObserver<PingResponse> responseObserver) {
         System.out.println("\n[PING] Receiving ping " + ping.getPing());
@@ -128,8 +128,50 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onCompleted();
     }
 
+    public void replyElection(ElectionReq election, StreamObserver<ElectionAck> responseObserver){
 
-        @Override
+        if(election.getDroneID() == drone.getId()){
+            System.out.println("\n[ELECTION] Election terminated, i am the boss");
+        }
+        else {
+            System.out.println("\n[ELECTION] Receiving election message" +
+                    "\n\tMessage: " + election.getMsg() +
+                    "\n\tCandidate: " + election.getDroneID());
+        }
+
+//TODO: finire algoritmo di elezione
+        if(election.getMsg() == "election"){
+            if(election.getDroneID() > drone.getId()){
+                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "election");
+
+                }
+                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextNextDrone(), "election");
+
+                }
+                else{
+                    System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
+                }
+
+            }
+            else{
+                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "election");
+
+                }
+                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextNextDrone(), "election");
+
+                }
+                else{
+                    System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
+                }
+            }
+        }
+
+    }
+    @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         System.out.println("\n[ORDER] Receiving order number " + order.getId());
 
@@ -139,14 +181,14 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             e.printStackTrace();
         }
 
-        System.out.println("\n[ORDER] Order " + order.getId() + " delivered." );
+        System.out.println("\n[ORDER] Order " + order.getId() + " delivered.");
 
         //set arrival time
         String arrivalTime = new Timestamp(System.currentTimeMillis()).toString();
-        System.out.println("\tArrival time: " + arrivalTime );
+        System.out.println("\tArrival time: " + arrivalTime);
 
         //decrease battery level
-        drone.setBatteryLevel(drone.getBatteryLevel()-10);
+        drone.setBatteryLevel(drone.getBatteryLevel() - 10);
         //get remaining battery level
         System.out.println("\tBattery left: " + drone.getBatteryLevel());
 
@@ -166,7 +208,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         //find distance between departure point and destination point
         double distanceDepartToDest = dispatchingInfo.Distance(order.getDepX(), order.getDepY(), order.getDestX(), order.getDestY());
         //find kilometers traveled
-        double totalDistance = distanceDepartToDest+distanceInitialToDepart;
+        double totalDistance = distanceDepartToDest + distanceInitialToDepart;
 
         drone.setKmTraveled(drone.getKmTraveled() + totalDistance);
         System.out.println("\tKilometers traveled: " + totalDistance);
@@ -175,18 +217,17 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         drone.increseDeliveryCompleted();
         System.out.println("\tCompleted deliveries: " + drone.getDeliveryCompleted());
 
-        double count=0;
-        for(Measurement val : drone.getBuff().readAllAndClean()){
+        double count = 0;
+        for (Measurement val : drone.getBuff().readAllAndClean()) {
             count += val.getValue();
         }
-        double airPollution = count/8;
-        System.out.println("\tAvg Pollution: " + airPollution );
-
+        double airPollution = count / 8;
+        System.out.println("\tAvg Pollution: " + airPollution);
 
 
         drone.setDelivering(false);
 
-        if(drone.getBatteryLevel() < 15) {
+        if (drone.getBatteryLevel() < 15) {
             System.out.println("\n[BATTERY] Low battery level, I need to stop!");
             drone.setQuitting(true);
         }
@@ -202,11 +243,11 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 .setDeliveryCompleted(drone.getDeliveryCompleted())
                 .build();
 
-        synchronized (drone.getDeliveryLock()){
+        synchronized (drone.getDeliveryLock()) {
             drone.getDeliveryLock().notify();
         }
 
-        if(drone.isQuitting() && !drone.isMaster()){
+        if (drone.isQuitting() && !drone.isMaster()) {
             try {
                 drone.quitDrone();
             } catch (MqttException | InterruptedException e) {
@@ -217,8 +258,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onNext(stats);
         responseObserver.onCompleted();
     }
-
-
 
 
 }

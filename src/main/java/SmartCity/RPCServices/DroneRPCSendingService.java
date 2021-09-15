@@ -3,19 +3,25 @@ package SmartCity.RPCServices;
 import SmartCity.Drone;
 import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
+import grpc.drone.DroneOuterClass;
 import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
 import grpc.drone.DroneOuterClass.OrderRequest;
 import grpc.drone.DroneOuterClass.OrderResponse;
 import grpc.drone.DroneOuterClass.PingRequest;
 import grpc.drone.DroneOuterClass.PingResponse;
+import grpc.drone.DroneOuterClass.ElectionReq;
+import grpc.drone.DroneOuterClass.ElectionAck;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
-
+//    private Drone drone;
+//    public DroneRPCSendingService(Drone drone){
+//        this.drone = drone;
+//    }
 
     public static Drone addDroneRequest(Drone drone, SmartCity dronelist){
         boolean found = false;
@@ -44,8 +50,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                     found = true;
                     master = d;
 
-                    drone.setMasterAddress(d.getLocalAddress());
-                    drone.setMasterPort(d.getLocalPort());
+                    drone.setMasterDrone(d);
 
                     Drone nextD = new Drone();
                     nextD.setId(response.getIDnextDrone());
@@ -82,6 +87,23 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         }
     }
 
+    public static void sendElection(int starter, Drone target, String message){
+
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
+                .usePlaintext()
+                .build();
+
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+
+        ElectionReq request = ElectionReq.newBuilder()
+                .setMsg(message)
+                .setDroneID(starter)
+                .build();
+    }
+
+
+
     public static boolean pingDrone(Drone target){
         PingResponse response;
         final ManagedChannel channel = ManagedChannelBuilder
@@ -103,6 +125,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
             response = null;
         }
         channel.shutdown();
+
         if(response == null || response.getPingAck()==false){
                 return false;
         }

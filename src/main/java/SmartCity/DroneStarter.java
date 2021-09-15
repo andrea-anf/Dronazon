@@ -39,9 +39,9 @@ public class DroneStarter {
             Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
             listeningService.start();
 
-            Drone master = DroneRPCSendingService.addDroneRequest(drone, dronelist);
+            drone.setMasterDrone(DroneRPCSendingService.addDroneRequest(drone, dronelist));
             drone.addToDronelist(drone);
-            drone.addToDronelist(master);
+            drone.addToDronelist(drone.getMasterDrone());
 
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
@@ -51,7 +51,7 @@ public class DroneStarter {
             threadStatSender.start();
 
 
-            Runnable checkNext = new CheckNext(drone, master);
+            Runnable checkNext = new CheckDrone(drone);
             Thread threadCheckStatus = new Thread(checkNext);
             threadCheckStatus.start();
 

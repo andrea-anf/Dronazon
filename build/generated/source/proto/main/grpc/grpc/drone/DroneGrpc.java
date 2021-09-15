@@ -120,6 +120,37 @@ public final class DroneGrpc {
     return getPingMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.ElectionReq,
+      grpc.drone.DroneOuterClass.ElectionAck> getElectionMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Election",
+      requestType = grpc.drone.DroneOuterClass.ElectionReq.class,
+      responseType = grpc.drone.DroneOuterClass.ElectionAck.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.ElectionReq,
+      grpc.drone.DroneOuterClass.ElectionAck> getElectionMethod() {
+    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.ElectionReq, grpc.drone.DroneOuterClass.ElectionAck> getElectionMethod;
+    if ((getElectionMethod = DroneGrpc.getElectionMethod) == null) {
+      synchronized (DroneGrpc.class) {
+        if ((getElectionMethod = DroneGrpc.getElectionMethod) == null) {
+          DroneGrpc.getElectionMethod = getElectionMethod =
+              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.ElectionReq, grpc.drone.DroneOuterClass.ElectionAck>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Election"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.ElectionReq.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.ElectionAck.getDefaultInstance()))
+              .setSchemaDescriptor(new DroneMethodDescriptorSupplier("Election"))
+              .build();
+        }
+      }
+    }
+    return getElectionMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -168,6 +199,13 @@ public final class DroneGrpc {
       asyncUnimplementedUnaryCall(getPingMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void election(grpc.drone.DroneOuterClass.ElectionReq request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.ElectionAck> responseObserver) {
+      asyncUnimplementedUnaryCall(getElectionMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -191,6 +229,13 @@ public final class DroneGrpc {
                 grpc.drone.DroneOuterClass.PingRequest,
                 grpc.drone.DroneOuterClass.PingResponse>(
                   this, METHODID_PING)))
+          .addMethod(
+            getElectionMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.drone.DroneOuterClass.ElectionReq,
+                grpc.drone.DroneOuterClass.ElectionAck>(
+                  this, METHODID_ELECTION)))
           .build();
     }
   }
@@ -236,6 +281,14 @@ public final class DroneGrpc {
       asyncUnaryCall(
           getChannel().newCall(getPingMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void election(grpc.drone.DroneOuterClass.ElectionReq request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.ElectionAck> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getElectionMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -275,6 +328,13 @@ public final class DroneGrpc {
     public grpc.drone.DroneOuterClass.PingResponse ping(grpc.drone.DroneOuterClass.PingRequest request) {
       return blockingUnaryCall(
           getChannel(), getPingMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.drone.DroneOuterClass.ElectionAck election(grpc.drone.DroneOuterClass.ElectionReq request) {
+      return blockingUnaryCall(
+          getChannel(), getElectionMethod(), getCallOptions(), request);
     }
   }
 
@@ -319,11 +379,20 @@ public final class DroneGrpc {
       return futureUnaryCall(
           getChannel().newCall(getPingMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.ElectionAck> election(
+        grpc.drone.DroneOuterClass.ElectionReq request) {
+      return futureUnaryCall(
+          getChannel().newCall(getElectionMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD = 0;
   private static final int METHODID_SEND_ORDER = 1;
   private static final int METHODID_PING = 2;
+  private static final int METHODID_ELECTION = 3;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -353,6 +422,10 @@ public final class DroneGrpc {
         case METHODID_PING:
           serviceImpl.ping((grpc.drone.DroneOuterClass.PingRequest) request,
               (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.PingResponse>) responseObserver);
+          break;
+        case METHODID_ELECTION:
+          serviceImpl.election((grpc.drone.DroneOuterClass.ElectionReq) request,
+              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.ElectionAck>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -418,6 +491,7 @@ public final class DroneGrpc {
               .addMethod(getAddMethod())
               .addMethod(getSendOrderMethod())
               .addMethod(getPingMethod())
+              .addMethod(getElectionMethod())
               .build();
         }
       }

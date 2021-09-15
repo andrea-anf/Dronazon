@@ -45,10 +45,17 @@ message PingResponse {
   bool pingAck = 1;
 }
 
-
+message ElectionReq {
+  string msg = 1;
+  int32 droneID = 2;
+}
+message ElectionAck {
+  bool ack = 1;
+}
 
 service Drone {
   rpc Add(AddRequest) returns (AddResponse);
   rpc SendOrder(OrderRequest) returns (OrderResponse);
   rpc Ping(PingRequest) returns (PingResponse);
+  rpc Election(ElectionReq) returns (ElectionAck);
 }

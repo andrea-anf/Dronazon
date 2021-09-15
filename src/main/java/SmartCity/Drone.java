@@ -37,9 +37,8 @@ public class Drone {
     private Statistics statistics = new Statistics();
 
     //ring information
-    private String masterAddress;
-    private String masterPort;
-    private boolean partecipation;
+    private Drone masterDrone;
+    private boolean partecipation = false;
     private String serverAddress = "http://localhost:1338/";
     private boolean quitting = false;
     private Drone nextDrone;
@@ -47,7 +46,7 @@ public class Drone {
     private boolean masterPrevDrone = false;
 
     //master drone attributes
-    private boolean master;
+    private boolean master = false;
     private MqttClient client;
     private List<Drone> dronelist = new ArrayList<>();
     private Queue<String> orderQueue = new LinkedList<>();
@@ -61,29 +60,7 @@ public class Drone {
     public Drone (){}
 
 
-    public Drone getNextDrone() {
-        return nextDrone;
-    }
 
-    public void setNextDrone(Drone nextDrone0) {
-        this.nextDrone = nextDrone0;
-    }
-
-    public Drone getNextNextDrone() {
-        return nextNextDrone;
-    }
-
-    public void setNextNextDrone(Drone nextNextDrone) {
-        this.nextNextDrone = nextNextDrone;
-    }
-
-    public boolean isMasterPrevDrone() {
-        return masterPrevDrone;
-    }
-
-    public void setMasterPrevDrone(boolean masterPrevDrone) {
-        this.masterPrevDrone = masterPrevDrone;
-    }
 
     //HTTP REQUESTS
     public ClientResponse connect(){
@@ -186,6 +163,26 @@ public class Drone {
         this.partecipation = partecipation;
     }
 
+    public Drone getNextDrone() {
+        return nextDrone;
+    }
+    public void setNextDrone(Drone nextDrone0) {
+        this.nextDrone = nextDrone0;
+    }
+
+    public Drone getNextNextDrone() {
+        return nextNextDrone;
+    }
+    public void setNextNextDrone(Drone nextNextDrone) {
+        this.nextNextDrone = nextNextDrone;
+    }
+
+    public boolean isMasterPrevDrone() {
+        return masterPrevDrone;
+    }
+    public void setMasterPrevDrone(boolean masterPrevDrone) {
+        this.masterPrevDrone = masterPrevDrone;
+    }
 
     // SERVER ADDRESS
     public String getServerAddress() {
@@ -197,23 +194,17 @@ public class Drone {
 
 
     // MASTER INFO
-    public String getMasterAddress() {
-        return masterAddress;
-    }
-    public void setMasterAddress(String masterAddress) {
-        this.masterAddress = masterAddress;
-    }
-    public String getMasterPort() {
-        return masterPort;
-    }
-    public void setMasterPort(String masterPort) {
-        this.masterPort = masterPort;
-    }
     public boolean isMaster() {
         return master;
     }
     public void setMaster(boolean master) {
         this.master = master;
+    }
+    public Drone getMasterDrone() {
+        return masterDrone;
+    }
+    public void setMasterDrone(Drone masterDrone) {
+        this.masterDrone = masterDrone;
     }
 
     public MqttClient getClient() {
@@ -314,7 +305,6 @@ public class Drone {
             return mis;
         }
     };
-
     public Buffer getBuff() {
         return buff;
     }
