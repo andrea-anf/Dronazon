@@ -11,9 +11,13 @@ message AddRequest {
 
 message AddResponse {
   int32 response = 1;
-  int32 nextDrone = 2;
-  int32 nextNextDrone = 3;
-  bool masterPrevDrone = 4;
+  int32 IDnextDrone = 2;
+  int32 IDnextNextDrone = 3;
+  bool IDmasterPrevDrone = 4;
+  string AddressNextDrone = 5;
+  string AddressNextNextDrone = 6;
+  string PortNextDrone = 7;
+  string PortNextNextDrone = 8;
 }
 
 message OrderRequest {
@@ -34,8 +38,11 @@ message OrderResponse {
   int32 deliveryCompleted = 8;
 }
 
-message SendNextNext {
-  int32 nextNextDrone = 1;
+message PingRequest {
+  bool ping = 1;
+}
+message PingResponse {
+  bool pingAck = 1;
 }
 
 
@@ -43,4 +50,5 @@ message SendNextNext {
 service Drone {
   rpc Add(AddRequest) returns (AddResponse);
   rpc SendOrder(OrderRequest) returns (OrderResponse);
+  rpc Ping(PingRequest) returns (PingResponse);
 }

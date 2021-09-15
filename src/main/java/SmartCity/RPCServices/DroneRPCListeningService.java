@@ -10,6 +10,9 @@ import grpc.drone.DroneOuterClass.AddRequest;
 import grpc.drone.DroneOuterClass.AddResponse;
 import grpc.drone.DroneOuterClass.OrderRequest;
 import grpc.drone.DroneOuterClass.OrderResponse;
+import grpc.drone.DroneOuterClass.PingRequest;
+import grpc.drone.DroneOuterClass.PingResponse;
+
 import io.grpc.stub.StreamObserver;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
@@ -37,7 +40,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         newDrone.setCoords(coords);
 
         drone.addToDronelist(newDrone);
-        System.out.println("[RING] New drone is joining the ring: " +
+        System.out.println("\n[RING] New drone is joining the ring: " +
                 "\n\tID: " + request.getId() +
                 "\n\tAddress: " + request.getAddress() +
                 "\n\tPort: " + request.getPort() +
@@ -48,17 +51,42 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             isPrevToMaster = true;
         }
 
+
         if(drone.isMaster()){
-            //if master, save the new drone and respond with 1
-             response = AddResponse.newBuilder()
+            response = AddResponse.newBuilder()
                     .setResponse(1)
-                     .setNextDrone(drone.getNextDroneID())
-                     .setNextNextDrone(drone.getNextNextDroneID())
-                     .setMasterPrevDrone(isPrevToMaster)
+
+                    .setIDnextDrone(drone.getNextDrone().getId())
+                    .setIDnextNextDrone(drone.getNextNextDrone().getId())
+
+                    .setAddressNextDrone(drone.getNextDrone().getLocalAddress())
+                    .setAddressNextNextDrone(drone.getNextNextDrone().getLocalAddress())
+
+                    .setPortNextDrone(drone.getNextDrone().getLocalPort())
+                    .setPortNextNextDrone(drone.getNextNextDrone().getLocalPort())
+
+                    .setIDmasterPrevDrone(isPrevToMaster)
+
                     .build();
 
-             drone.setNextNextDroneID(drone.getNextDroneID());
-             drone.setNextDroneID(newDrone.getId());
+            //update pointers to nextDrone and nextNextDrone
+            drone.setNextNextDrone(drone.getNextDrone());
+            drone.setNextDrone(newDrone);
+
+            System.out.print("\n[RING] SmartCity:");
+            for (Drone d : drone.getDronelist()) {
+                System.out.print(
+                        "\n\tID: " + d.getId() +
+                                "\t| Coords: (" + d.getCoords().getX() + "," + d.getCoords().getY() + ")" +
+                                "\tAddress: " + d.getLocalAddress() +
+                                "\tPort: " + d.getLocalPort());
+                if (d.getId() == drone.getNextDrone().getId()) {
+                    System.out.print("\t[NextDrone]");
+                } else if (d.getId() == drone.getNextNextDrone().getId()) {
+                    System.out.print("\t[NextNextDrone]");
+                }
+            }
+            System.out.print("\n");
 
 
             synchronized (drone.getDronelistLock()){
@@ -67,23 +95,41 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         }
         else{
 
-
+            //if this is the masterPrevDrone, it sets as nextNextDrone the new drone
             if(drone.isMasterPrevDrone()){
-                drone.setNextNextDroneID(newDrone.getId());
+                drone.setNextNextDrone(newDrone);
             }
+            System.out.println("\n[RING] SmartCity:");
+            System.out.println("\tNext Drone: " + drone.getNextDrone().getId());
+            System.out.println("\tNext Next Drone: " + drone.getNextNextDrone().getId());
+            System.out.println("\tPrev Master Drone: " + drone.isMasterPrevDrone());
 
             response = AddResponse.newBuilder()
                     .setResponse(0)
                     .build();
-
         }
+
+
 
 
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
 
-    @Override
+    public void ping(PingRequest ping, StreamObserver<PingResponse> responseObserver) {
+        System.out.println("\n[PING] Receiving ping " + ping.getPing());
+
+        boolean quitting = !drone.isQuitting();
+        PingResponse pingAck = PingResponse.newBuilder()
+                .setPingAck(quitting)
+                .build();
+
+        responseObserver.onNext(pingAck);
+        responseObserver.onCompleted();
+    }
+
+
+        @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         System.out.println("\n[ORDER] Receiving order number " + order.getId());
 

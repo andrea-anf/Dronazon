@@ -89,6 +89,37 @@ public final class DroneGrpc {
     return getSendOrderMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.PingRequest,
+      grpc.drone.DroneOuterClass.PingResponse> getPingMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Ping",
+      requestType = grpc.drone.DroneOuterClass.PingRequest.class,
+      responseType = grpc.drone.DroneOuterClass.PingResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.PingRequest,
+      grpc.drone.DroneOuterClass.PingResponse> getPingMethod() {
+    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.PingRequest, grpc.drone.DroneOuterClass.PingResponse> getPingMethod;
+    if ((getPingMethod = DroneGrpc.getPingMethod) == null) {
+      synchronized (DroneGrpc.class) {
+        if ((getPingMethod = DroneGrpc.getPingMethod) == null) {
+          DroneGrpc.getPingMethod = getPingMethod =
+              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.PingRequest, grpc.drone.DroneOuterClass.PingResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Ping"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.PingRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.PingResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new DroneMethodDescriptorSupplier("Ping"))
+              .build();
+        }
+      }
+    }
+    return getPingMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -130,6 +161,13 @@ public final class DroneGrpc {
       asyncUnimplementedUnaryCall(getSendOrderMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void ping(grpc.drone.DroneOuterClass.PingRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.PingResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getPingMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -146,6 +184,13 @@ public final class DroneGrpc {
                 grpc.drone.DroneOuterClass.OrderRequest,
                 grpc.drone.DroneOuterClass.OrderResponse>(
                   this, METHODID_SEND_ORDER)))
+          .addMethod(
+            getPingMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.drone.DroneOuterClass.PingRequest,
+                grpc.drone.DroneOuterClass.PingResponse>(
+                  this, METHODID_PING)))
           .build();
     }
   }
@@ -183,6 +228,14 @@ public final class DroneGrpc {
       asyncUnaryCall(
           getChannel().newCall(getSendOrderMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void ping(grpc.drone.DroneOuterClass.PingRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.PingResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getPingMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -215,6 +268,13 @@ public final class DroneGrpc {
     public grpc.drone.DroneOuterClass.OrderResponse sendOrder(grpc.drone.DroneOuterClass.OrderRequest request) {
       return blockingUnaryCall(
           getChannel(), getSendOrderMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.drone.DroneOuterClass.PingResponse ping(grpc.drone.DroneOuterClass.PingRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getPingMethod(), getCallOptions(), request);
     }
   }
 
@@ -251,10 +311,19 @@ public final class DroneGrpc {
       return futureUnaryCall(
           getChannel().newCall(getSendOrderMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.PingResponse> ping(
+        grpc.drone.DroneOuterClass.PingRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getPingMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD = 0;
   private static final int METHODID_SEND_ORDER = 1;
+  private static final int METHODID_PING = 2;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -280,6 +349,10 @@ public final class DroneGrpc {
         case METHODID_SEND_ORDER:
           serviceImpl.sendOrder((grpc.drone.DroneOuterClass.OrderRequest) request,
               (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.OrderResponse>) responseObserver);
+          break;
+        case METHODID_PING:
+          serviceImpl.ping((grpc.drone.DroneOuterClass.PingRequest) request,
+              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.PingResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -344,6 +417,7 @@ public final class DroneGrpc {
               .setSchemaDescriptor(new DroneFileDescriptorSupplier())
               .addMethod(getAddMethod())
               .addMethod(getSendOrderMethod())
+              .addMethod(getPingMethod())
               .build();
         }
       }

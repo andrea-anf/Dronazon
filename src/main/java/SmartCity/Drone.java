@@ -42,8 +42,8 @@ public class Drone {
     private boolean partecipation;
     private String serverAddress = "http://localhost:1338/";
     private boolean quitting = false;
-    private int nextDroneID = 0;
-    private int nextNextDroneID = 0;
+    private Drone nextDrone;
+    private Drone nextNextDrone;
     private boolean masterPrevDrone = false;
 
     //master drone attributes
@@ -61,20 +61,20 @@ public class Drone {
     public Drone (){}
 
 
-    public int getNextDroneID() {
-        return nextDroneID;
+    public Drone getNextDrone() {
+        return nextDrone;
     }
 
-    public void setNextDroneID(int nextDroneID) {
-        this.nextDroneID = nextDroneID;
+    public void setNextDrone(Drone nextDrone0) {
+        this.nextDrone = nextDrone0;
     }
 
-    public int getNextNextDroneID() {
-        return nextNextDroneID;
+    public Drone getNextNextDrone() {
+        return nextNextDrone;
     }
 
-    public void setNextNextDroneID(int nextNextDroneID) {
-        this.nextNextDroneID = nextNextDroneID;
+    public void setNextNextDrone(Drone nextNextDrone) {
+        this.nextNextDrone = nextNextDrone;
     }
 
     public boolean isMasterPrevDrone() {

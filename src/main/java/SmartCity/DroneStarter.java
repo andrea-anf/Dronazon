@@ -34,19 +34,26 @@ public class DroneStarter {
         signUpDrone(drone);
 
 
-        //if it's the first entry, make it master
+        //if dronelist is not empty, make it normal drone, otherwise Master
         if(dronelist.getDronelist().size() != 0){
             Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
             listeningService.start();
 
-            DroneRPCSendingService.addDroneRequest(drone, dronelist);
+            Drone master = DroneRPCSendingService.addDroneRequest(drone, dronelist);
+            drone.addToDronelist(drone);
+            drone.addToDronelist(master);
 
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
 
-            Runnable sender = new StatsSender(drone);
-            Thread thread = new Thread(sender);
-            thread.start();
+            Runnable statSender = new StatsSender(drone);
+            Thread threadStatSender = new Thread(statSender);
+            threadStatSender.start();
+
+
+            Runnable checkNext = new CheckNext(drone, master);
+            Thread threadCheckStatus = new Thread(checkNext);
+            threadCheckStatus.start();
 
             System.out.println("\n...Press enter to stop...");
             input.nextLine();
@@ -58,7 +65,8 @@ public class DroneStarter {
 
         }
         else{
-            drone.setNextDroneID(drone.getId());
+            drone.setNextDrone(drone);
+            drone.setNextNextDrone(drone);
             drone.setMaster(true);
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
@@ -88,17 +96,10 @@ public class DroneStarter {
                             "\t| Coords: (" + d.getCoords().getX()+","+ d.getCoords().getY() + ")" +
                             "\tAddress: " + d.getLocalAddress()+
                             "\tPort: " + d.getLocalPort());
-            if(d.getId() == drone.getNextDroneID()){
-                System.out.print("\t[NextDrone]\n");
-            }
-            else if(d.getId() == drone.getNextNextDroneID()){
-                System.out.print("\t[NextNextDrone]\n");
-
-            }
-
             if(d.getId() == drone.getId()){
                 drone.setCoords(d.getCoords());
             }
+
         }
 
     }

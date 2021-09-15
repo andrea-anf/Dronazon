@@ -943,22 +943,70 @@ public final class DroneOuterClass {
     int getResponse();
 
     /**
-     * <code>int32 nextDrone = 2;</code>
-     * @return The nextDrone.
+     * <code>int32 IDnextDrone = 2;</code>
+     * @return The iDnextDrone.
      */
-    int getNextDrone();
+    int getIDnextDrone();
 
     /**
-     * <code>int32 nextNextDrone = 3;</code>
-     * @return The nextNextDrone.
+     * <code>int32 IDnextNextDrone = 3;</code>
+     * @return The iDnextNextDrone.
      */
-    int getNextNextDrone();
+    int getIDnextNextDrone();
 
     /**
-     * <code>bool masterPrevDrone = 4;</code>
-     * @return The masterPrevDrone.
+     * <code>bool IDmasterPrevDrone = 4;</code>
+     * @return The iDmasterPrevDrone.
      */
-    boolean getMasterPrevDrone();
+    boolean getIDmasterPrevDrone();
+
+    /**
+     * <code>string AddressNextDrone = 5;</code>
+     * @return The addressNextDrone.
+     */
+    java.lang.String getAddressNextDrone();
+    /**
+     * <code>string AddressNextDrone = 5;</code>
+     * @return The bytes for addressNextDrone.
+     */
+    com.google.protobuf.ByteString
+        getAddressNextDroneBytes();
+
+    /**
+     * <code>string AddressNextNextDrone = 6;</code>
+     * @return The addressNextNextDrone.
+     */
+    java.lang.String getAddressNextNextDrone();
+    /**
+     * <code>string AddressNextNextDrone = 6;</code>
+     * @return The bytes for addressNextNextDrone.
+     */
+    com.google.protobuf.ByteString
+        getAddressNextNextDroneBytes();
+
+    /**
+     * <code>string PortNextDrone = 7;</code>
+     * @return The portNextDrone.
+     */
+    java.lang.String getPortNextDrone();
+    /**
+     * <code>string PortNextDrone = 7;</code>
+     * @return The bytes for portNextDrone.
+     */
+    com.google.protobuf.ByteString
+        getPortNextDroneBytes();
+
+    /**
+     * <code>string PortNextNextDrone = 8;</code>
+     * @return The portNextNextDrone.
+     */
+    java.lang.String getPortNextNextDrone();
+    /**
+     * <code>string PortNextNextDrone = 8;</code>
+     * @return The bytes for portNextNextDrone.
+     */
+    com.google.protobuf.ByteString
+        getPortNextNextDroneBytes();
   }
   /**
    * Protobuf type {@code grpc.drone.AddResponse}
@@ -973,6 +1021,10 @@ public final class DroneOuterClass {
       super(builder);
     }
     private AddResponse() {
+      addressNextDrone_ = "";
+      addressNextNextDrone_ = "";
+      portNextDrone_ = "";
+      portNextNextDrone_ = "";
     }
 
     @java.lang.Override
@@ -1012,17 +1064,41 @@ public final class DroneOuterClass {
             }
             case 16: {
 
-              nextDrone_ = input.readInt32();
+              iDnextDrone_ = input.readInt32();
               break;
             }
             case 24: {
 
-              nextNextDrone_ = input.readInt32();
+              iDnextNextDrone_ = input.readInt32();
               break;
             }
             case 32: {
 
-              masterPrevDrone_ = input.readBool();
+              iDmasterPrevDrone_ = input.readBool();
+              break;
+            }
+            case 42: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              addressNextDrone_ = s;
+              break;
+            }
+            case 50: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              addressNextNextDrone_ = s;
+              break;
+            }
+            case 58: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              portNextDrone_ = s;
+              break;
+            }
+            case 66: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              portNextNextDrone_ = s;
               break;
             }
             default: {
@@ -1067,34 +1143,178 @@ public final class DroneOuterClass {
       return response_;
     }
 
-    public static final int NEXTDRONE_FIELD_NUMBER = 2;
-    private int nextDrone_;
+    public static final int IDNEXTDRONE_FIELD_NUMBER = 2;
+    private int iDnextDrone_;
     /**
-     * <code>int32 nextDrone = 2;</code>
-     * @return The nextDrone.
+     * <code>int32 IDnextDrone = 2;</code>
+     * @return The iDnextDrone.
      */
-    public int getNextDrone() {
-      return nextDrone_;
+    public int getIDnextDrone() {
+      return iDnextDrone_;
     }
 
-    public static final int NEXTNEXTDRONE_FIELD_NUMBER = 3;
-    private int nextNextDrone_;
+    public static final int IDNEXTNEXTDRONE_FIELD_NUMBER = 3;
+    private int iDnextNextDrone_;
     /**
-     * <code>int32 nextNextDrone = 3;</code>
-     * @return The nextNextDrone.
+     * <code>int32 IDnextNextDrone = 3;</code>
+     * @return The iDnextNextDrone.
      */
-    public int getNextNextDrone() {
-      return nextNextDrone_;
+    public int getIDnextNextDrone() {
+      return iDnextNextDrone_;
     }
 
-    public static final int MASTERPREVDRONE_FIELD_NUMBER = 4;
-    private boolean masterPrevDrone_;
+    public static final int IDMASTERPREVDRONE_FIELD_NUMBER = 4;
+    private boolean iDmasterPrevDrone_;
     /**
-     * <code>bool masterPrevDrone = 4;</code>
-     * @return The masterPrevDrone.
+     * <code>bool IDmasterPrevDrone = 4;</code>
+     * @return The iDmasterPrevDrone.
      */
-    public boolean getMasterPrevDrone() {
-      return masterPrevDrone_;
+    public boolean getIDmasterPrevDrone() {
+      return iDmasterPrevDrone_;
+    }
+
+    public static final int ADDRESSNEXTDRONE_FIELD_NUMBER = 5;
+    private volatile java.lang.Object addressNextDrone_;
+    /**
+     * <code>string AddressNextDrone = 5;</code>
+     * @return The addressNextDrone.
+     */
+    public java.lang.String getAddressNextDrone() {
+      java.lang.Object ref = addressNextDrone_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        addressNextDrone_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string AddressNextDrone = 5;</code>
+     * @return The bytes for addressNextDrone.
+     */
+    public com.google.protobuf.ByteString
+        getAddressNextDroneBytes() {
+      java.lang.Object ref = addressNextDrone_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        addressNextDrone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int ADDRESSNEXTNEXTDRONE_FIELD_NUMBER = 6;
+    private volatile java.lang.Object addressNextNextDrone_;
+    /**
+     * <code>string AddressNextNextDrone = 6;</code>
+     * @return The addressNextNextDrone.
+     */
+    public java.lang.String getAddressNextNextDrone() {
+      java.lang.Object ref = addressNextNextDrone_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        addressNextNextDrone_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string AddressNextNextDrone = 6;</code>
+     * @return The bytes for addressNextNextDrone.
+     */
+    public com.google.protobuf.ByteString
+        getAddressNextNextDroneBytes() {
+      java.lang.Object ref = addressNextNextDrone_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        addressNextNextDrone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORTNEXTDRONE_FIELD_NUMBER = 7;
+    private volatile java.lang.Object portNextDrone_;
+    /**
+     * <code>string PortNextDrone = 7;</code>
+     * @return The portNextDrone.
+     */
+    public java.lang.String getPortNextDrone() {
+      java.lang.Object ref = portNextDrone_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        portNextDrone_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string PortNextDrone = 7;</code>
+     * @return The bytes for portNextDrone.
+     */
+    public com.google.protobuf.ByteString
+        getPortNextDroneBytes() {
+      java.lang.Object ref = portNextDrone_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        portNextDrone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PORTNEXTNEXTDRONE_FIELD_NUMBER = 8;
+    private volatile java.lang.Object portNextNextDrone_;
+    /**
+     * <code>string PortNextNextDrone = 8;</code>
+     * @return The portNextNextDrone.
+     */
+    public java.lang.String getPortNextNextDrone() {
+      java.lang.Object ref = portNextNextDrone_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        portNextNextDrone_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string PortNextNextDrone = 8;</code>
+     * @return The bytes for portNextNextDrone.
+     */
+    public com.google.protobuf.ByteString
+        getPortNextNextDroneBytes() {
+      java.lang.Object ref = portNextNextDrone_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        portNextNextDrone_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     private byte memoizedIsInitialized = -1;
@@ -1114,14 +1334,26 @@ public final class DroneOuterClass {
       if (response_ != 0) {
         output.writeInt32(1, response_);
       }
-      if (nextDrone_ != 0) {
-        output.writeInt32(2, nextDrone_);
+      if (iDnextDrone_ != 0) {
+        output.writeInt32(2, iDnextDrone_);
       }
-      if (nextNextDrone_ != 0) {
-        output.writeInt32(3, nextNextDrone_);
+      if (iDnextNextDrone_ != 0) {
+        output.writeInt32(3, iDnextNextDrone_);
       }
-      if (masterPrevDrone_ != false) {
-        output.writeBool(4, masterPrevDrone_);
+      if (iDmasterPrevDrone_ != false) {
+        output.writeBool(4, iDmasterPrevDrone_);
+      }
+      if (!getAddressNextDroneBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 5, addressNextDrone_);
+      }
+      if (!getAddressNextNextDroneBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 6, addressNextNextDrone_);
+      }
+      if (!getPortNextDroneBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 7, portNextDrone_);
+      }
+      if (!getPortNextNextDroneBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 8, portNextNextDrone_);
       }
       unknownFields.writeTo(output);
     }
@@ -1136,17 +1368,29 @@ public final class DroneOuterClass {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, response_);
       }
-      if (nextDrone_ != 0) {
+      if (iDnextDrone_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, nextDrone_);
+          .computeInt32Size(2, iDnextDrone_);
       }
-      if (nextNextDrone_ != 0) {
+      if (iDnextNextDrone_ != 0) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, nextNextDrone_);
+          .computeInt32Size(3, iDnextNextDrone_);
       }
-      if (masterPrevDrone_ != false) {
+      if (iDmasterPrevDrone_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(4, masterPrevDrone_);
+          .computeBoolSize(4, iDmasterPrevDrone_);
+      }
+      if (!getAddressNextDroneBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, addressNextDrone_);
+      }
+      if (!getAddressNextNextDroneBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, addressNextNextDrone_);
+      }
+      if (!getPortNextDroneBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, portNextDrone_);
+      }
+      if (!getPortNextNextDroneBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, portNextNextDrone_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1165,12 +1409,20 @@ public final class DroneOuterClass {
 
       if (getResponse()
           != other.getResponse()) return false;
-      if (getNextDrone()
-          != other.getNextDrone()) return false;
-      if (getNextNextDrone()
-          != other.getNextNextDrone()) return false;
-      if (getMasterPrevDrone()
-          != other.getMasterPrevDrone()) return false;
+      if (getIDnextDrone()
+          != other.getIDnextDrone()) return false;
+      if (getIDnextNextDrone()
+          != other.getIDnextNextDrone()) return false;
+      if (getIDmasterPrevDrone()
+          != other.getIDmasterPrevDrone()) return false;
+      if (!getAddressNextDrone()
+          .equals(other.getAddressNextDrone())) return false;
+      if (!getAddressNextNextDrone()
+          .equals(other.getAddressNextNextDrone())) return false;
+      if (!getPortNextDrone()
+          .equals(other.getPortNextDrone())) return false;
+      if (!getPortNextNextDrone()
+          .equals(other.getPortNextNextDrone())) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -1184,13 +1436,21 @@ public final class DroneOuterClass {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
       hash = (53 * hash) + getResponse();
-      hash = (37 * hash) + NEXTDRONE_FIELD_NUMBER;
-      hash = (53 * hash) + getNextDrone();
-      hash = (37 * hash) + NEXTNEXTDRONE_FIELD_NUMBER;
-      hash = (53 * hash) + getNextNextDrone();
-      hash = (37 * hash) + MASTERPREVDRONE_FIELD_NUMBER;
+      hash = (37 * hash) + IDNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getIDnextDrone();
+      hash = (37 * hash) + IDNEXTNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getIDnextNextDrone();
+      hash = (37 * hash) + IDMASTERPREVDRONE_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getMasterPrevDrone());
+          getIDmasterPrevDrone());
+      hash = (37 * hash) + ADDRESSNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getAddressNextDrone().hashCode();
+      hash = (37 * hash) + ADDRESSNEXTNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getAddressNextNextDrone().hashCode();
+      hash = (37 * hash) + PORTNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getPortNextDrone().hashCode();
+      hash = (37 * hash) + PORTNEXTNEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getPortNextNextDrone().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -1326,11 +1586,19 @@ public final class DroneOuterClass {
         super.clear();
         response_ = 0;
 
-        nextDrone_ = 0;
+        iDnextDrone_ = 0;
 
-        nextNextDrone_ = 0;
+        iDnextNextDrone_ = 0;
 
-        masterPrevDrone_ = false;
+        iDmasterPrevDrone_ = false;
+
+        addressNextDrone_ = "";
+
+        addressNextNextDrone_ = "";
+
+        portNextDrone_ = "";
+
+        portNextNextDrone_ = "";
 
         return this;
       }
@@ -1359,9 +1627,13 @@ public final class DroneOuterClass {
       public grpc.drone.DroneOuterClass.AddResponse buildPartial() {
         grpc.drone.DroneOuterClass.AddResponse result = new grpc.drone.DroneOuterClass.AddResponse(this);
         result.response_ = response_;
-        result.nextDrone_ = nextDrone_;
-        result.nextNextDrone_ = nextNextDrone_;
-        result.masterPrevDrone_ = masterPrevDrone_;
+        result.iDnextDrone_ = iDnextDrone_;
+        result.iDnextNextDrone_ = iDnextNextDrone_;
+        result.iDmasterPrevDrone_ = iDmasterPrevDrone_;
+        result.addressNextDrone_ = addressNextDrone_;
+        result.addressNextNextDrone_ = addressNextNextDrone_;
+        result.portNextDrone_ = portNextDrone_;
+        result.portNextNextDrone_ = portNextNextDrone_;
         onBuilt();
         return result;
       }
@@ -1413,14 +1685,30 @@ public final class DroneOuterClass {
         if (other.getResponse() != 0) {
           setResponse(other.getResponse());
         }
-        if (other.getNextDrone() != 0) {
-          setNextDrone(other.getNextDrone());
+        if (other.getIDnextDrone() != 0) {
+          setIDnextDrone(other.getIDnextDrone());
         }
-        if (other.getNextNextDrone() != 0) {
-          setNextNextDrone(other.getNextNextDrone());
+        if (other.getIDnextNextDrone() != 0) {
+          setIDnextNextDrone(other.getIDnextNextDrone());
         }
-        if (other.getMasterPrevDrone() != false) {
-          setMasterPrevDrone(other.getMasterPrevDrone());
+        if (other.getIDmasterPrevDrone() != false) {
+          setIDmasterPrevDrone(other.getIDmasterPrevDrone());
+        }
+        if (!other.getAddressNextDrone().isEmpty()) {
+          addressNextDrone_ = other.addressNextDrone_;
+          onChanged();
+        }
+        if (!other.getAddressNextNextDrone().isEmpty()) {
+          addressNextNextDrone_ = other.addressNextNextDrone_;
+          onChanged();
+        }
+        if (!other.getPortNextDrone().isEmpty()) {
+          portNextDrone_ = other.portNextDrone_;
+          onChanged();
+        }
+        if (!other.getPortNextNextDrone().isEmpty()) {
+          portNextNextDrone_ = other.portNextNextDrone_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -1481,92 +1769,396 @@ public final class DroneOuterClass {
         return this;
       }
 
-      private int nextDrone_ ;
+      private int iDnextDrone_ ;
       /**
-       * <code>int32 nextDrone = 2;</code>
-       * @return The nextDrone.
+       * <code>int32 IDnextDrone = 2;</code>
+       * @return The iDnextDrone.
        */
-      public int getNextDrone() {
-        return nextDrone_;
+      public int getIDnextDrone() {
+        return iDnextDrone_;
       }
       /**
-       * <code>int32 nextDrone = 2;</code>
-       * @param value The nextDrone to set.
+       * <code>int32 IDnextDrone = 2;</code>
+       * @param value The iDnextDrone to set.
        * @return This builder for chaining.
        */
-      public Builder setNextDrone(int value) {
+      public Builder setIDnextDrone(int value) {
         
-        nextDrone_ = value;
+        iDnextDrone_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 nextDrone = 2;</code>
+       * <code>int32 IDnextDrone = 2;</code>
        * @return This builder for chaining.
        */
-      public Builder clearNextDrone() {
+      public Builder clearIDnextDrone() {
         
-        nextDrone_ = 0;
-        onChanged();
-        return this;
-      }
-
-      private int nextNextDrone_ ;
-      /**
-       * <code>int32 nextNextDrone = 3;</code>
-       * @return The nextNextDrone.
-       */
-      public int getNextNextDrone() {
-        return nextNextDrone_;
-      }
-      /**
-       * <code>int32 nextNextDrone = 3;</code>
-       * @param value The nextNextDrone to set.
-       * @return This builder for chaining.
-       */
-      public Builder setNextNextDrone(int value) {
-        
-        nextNextDrone_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int32 nextNextDrone = 3;</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearNextNextDrone() {
-        
-        nextNextDrone_ = 0;
+        iDnextDrone_ = 0;
         onChanged();
         return this;
       }
 
-      private boolean masterPrevDrone_ ;
+      private int iDnextNextDrone_ ;
       /**
-       * <code>bool masterPrevDrone = 4;</code>
-       * @return The masterPrevDrone.
+       * <code>int32 IDnextNextDrone = 3;</code>
+       * @return The iDnextNextDrone.
        */
-      public boolean getMasterPrevDrone() {
-        return masterPrevDrone_;
+      public int getIDnextNextDrone() {
+        return iDnextNextDrone_;
       }
       /**
-       * <code>bool masterPrevDrone = 4;</code>
-       * @param value The masterPrevDrone to set.
+       * <code>int32 IDnextNextDrone = 3;</code>
+       * @param value The iDnextNextDrone to set.
        * @return This builder for chaining.
        */
-      public Builder setMasterPrevDrone(boolean value) {
+      public Builder setIDnextNextDrone(int value) {
         
-        masterPrevDrone_ = value;
+        iDnextNextDrone_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool masterPrevDrone = 4;</code>
+       * <code>int32 IDnextNextDrone = 3;</code>
        * @return This builder for chaining.
        */
-      public Builder clearMasterPrevDrone() {
+      public Builder clearIDnextNextDrone() {
         
-        masterPrevDrone_ = false;
+        iDnextNextDrone_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private boolean iDmasterPrevDrone_ ;
+      /**
+       * <code>bool IDmasterPrevDrone = 4;</code>
+       * @return The iDmasterPrevDrone.
+       */
+      public boolean getIDmasterPrevDrone() {
+        return iDmasterPrevDrone_;
+      }
+      /**
+       * <code>bool IDmasterPrevDrone = 4;</code>
+       * @param value The iDmasterPrevDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setIDmasterPrevDrone(boolean value) {
+        
+        iDmasterPrevDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool IDmasterPrevDrone = 4;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearIDmasterPrevDrone() {
+        
+        iDmasterPrevDrone_ = false;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object addressNextDrone_ = "";
+      /**
+       * <code>string AddressNextDrone = 5;</code>
+       * @return The addressNextDrone.
+       */
+      public java.lang.String getAddressNextDrone() {
+        java.lang.Object ref = addressNextDrone_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          addressNextDrone_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string AddressNextDrone = 5;</code>
+       * @return The bytes for addressNextDrone.
+       */
+      public com.google.protobuf.ByteString
+          getAddressNextDroneBytes() {
+        java.lang.Object ref = addressNextDrone_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          addressNextDrone_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string AddressNextDrone = 5;</code>
+       * @param value The addressNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddressNextDrone(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        addressNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string AddressNextDrone = 5;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAddressNextDrone() {
+        
+        addressNextDrone_ = getDefaultInstance().getAddressNextDrone();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string AddressNextDrone = 5;</code>
+       * @param value The bytes for addressNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddressNextDroneBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        addressNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object addressNextNextDrone_ = "";
+      /**
+       * <code>string AddressNextNextDrone = 6;</code>
+       * @return The addressNextNextDrone.
+       */
+      public java.lang.String getAddressNextNextDrone() {
+        java.lang.Object ref = addressNextNextDrone_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          addressNextNextDrone_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string AddressNextNextDrone = 6;</code>
+       * @return The bytes for addressNextNextDrone.
+       */
+      public com.google.protobuf.ByteString
+          getAddressNextNextDroneBytes() {
+        java.lang.Object ref = addressNextNextDrone_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          addressNextNextDrone_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string AddressNextNextDrone = 6;</code>
+       * @param value The addressNextNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddressNextNextDrone(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        addressNextNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string AddressNextNextDrone = 6;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAddressNextNextDrone() {
+        
+        addressNextNextDrone_ = getDefaultInstance().getAddressNextNextDrone();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string AddressNextNextDrone = 6;</code>
+       * @param value The bytes for addressNextNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAddressNextNextDroneBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        addressNextNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object portNextDrone_ = "";
+      /**
+       * <code>string PortNextDrone = 7;</code>
+       * @return The portNextDrone.
+       */
+      public java.lang.String getPortNextDrone() {
+        java.lang.Object ref = portNextDrone_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          portNextDrone_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string PortNextDrone = 7;</code>
+       * @return The bytes for portNextDrone.
+       */
+      public com.google.protobuf.ByteString
+          getPortNextDroneBytes() {
+        java.lang.Object ref = portNextDrone_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          portNextDrone_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string PortNextDrone = 7;</code>
+       * @param value The portNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortNextDrone(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        portNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string PortNextDrone = 7;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPortNextDrone() {
+        
+        portNextDrone_ = getDefaultInstance().getPortNextDrone();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string PortNextDrone = 7;</code>
+       * @param value The bytes for portNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortNextDroneBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        portNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object portNextNextDrone_ = "";
+      /**
+       * <code>string PortNextNextDrone = 8;</code>
+       * @return The portNextNextDrone.
+       */
+      public java.lang.String getPortNextNextDrone() {
+        java.lang.Object ref = portNextNextDrone_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          portNextNextDrone_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string PortNextNextDrone = 8;</code>
+       * @return The bytes for portNextNextDrone.
+       */
+      public com.google.protobuf.ByteString
+          getPortNextNextDroneBytes() {
+        java.lang.Object ref = portNextNextDrone_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          portNextNextDrone_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string PortNextNextDrone = 8;</code>
+       * @param value The portNextNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortNextNextDrone(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        portNextNextDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string PortNextNextDrone = 8;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPortNextNextDrone() {
+        
+        portNextNextDrone_ = getDefaultInstance().getPortNextNextDrone();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string PortNextNextDrone = 8;</code>
+       * @param value The bytes for portNextNextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPortNextNextDroneBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        portNextNextDrone_ = value;
         onChanged();
         return this;
       }
@@ -3508,36 +4100,36 @@ public final class DroneOuterClass {
 
   }
 
-  public interface SendNextNextOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:grpc.drone.SendNextNext)
+  public interface PingRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.PingRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 nextNextDrone = 1;</code>
-     * @return The nextNextDrone.
+     * <code>bool ping = 1;</code>
+     * @return The ping.
      */
-    int getNextNextDrone();
+    boolean getPing();
   }
   /**
-   * Protobuf type {@code grpc.drone.SendNextNext}
+   * Protobuf type {@code grpc.drone.PingRequest}
    */
-  public  static final class SendNextNext extends
+  public  static final class PingRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:grpc.drone.SendNextNext)
-      SendNextNextOrBuilder {
+      // @@protoc_insertion_point(message_implements:grpc.drone.PingRequest)
+      PingRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use SendNextNext.newBuilder() to construct.
-    private SendNextNext(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use PingRequest.newBuilder() to construct.
+    private PingRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private SendNextNext() {
+    private PingRequest() {
     }
 
     @java.lang.Override
     @SuppressWarnings({"unused"})
     protected java.lang.Object newInstance(
         UnusedPrivateParameter unused) {
-      return new SendNextNext();
+      return new PingRequest();
     }
 
     @java.lang.Override
@@ -3545,7 +4137,7 @@ public final class DroneOuterClass {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private SendNextNext(
+    private PingRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -3565,7 +4157,7 @@ public final class DroneOuterClass {
               break;
             case 8: {
 
-              nextNextDrone_ = input.readInt32();
+              ping_ = input.readBool();
               break;
             }
             default: {
@@ -3589,25 +4181,25 @@ public final class DroneOuterClass {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_SendNextNext_descriptor;
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_SendNextNext_fieldAccessorTable
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              grpc.drone.DroneOuterClass.SendNextNext.class, grpc.drone.DroneOuterClass.SendNextNext.Builder.class);
+              grpc.drone.DroneOuterClass.PingRequest.class, grpc.drone.DroneOuterClass.PingRequest.Builder.class);
     }
 
-    public static final int NEXTNEXTDRONE_FIELD_NUMBER = 1;
-    private int nextNextDrone_;
+    public static final int PING_FIELD_NUMBER = 1;
+    private boolean ping_;
     /**
-     * <code>int32 nextNextDrone = 1;</code>
-     * @return The nextNextDrone.
+     * <code>bool ping = 1;</code>
+     * @return The ping.
      */
-    public int getNextNextDrone() {
-      return nextNextDrone_;
+    public boolean getPing() {
+      return ping_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -3624,8 +4216,8 @@ public final class DroneOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (nextNextDrone_ != 0) {
-        output.writeInt32(1, nextNextDrone_);
+      if (ping_ != false) {
+        output.writeBool(1, ping_);
       }
       unknownFields.writeTo(output);
     }
@@ -3636,9 +4228,9 @@ public final class DroneOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (nextNextDrone_ != 0) {
+      if (ping_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, nextNextDrone_);
+          .computeBoolSize(1, ping_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -3650,13 +4242,13 @@ public final class DroneOuterClass {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof grpc.drone.DroneOuterClass.SendNextNext)) {
+      if (!(obj instanceof grpc.drone.DroneOuterClass.PingRequest)) {
         return super.equals(obj);
       }
-      grpc.drone.DroneOuterClass.SendNextNext other = (grpc.drone.DroneOuterClass.SendNextNext) obj;
+      grpc.drone.DroneOuterClass.PingRequest other = (grpc.drone.DroneOuterClass.PingRequest) obj;
 
-      if (getNextNextDrone()
-          != other.getNextNextDrone()) return false;
+      if (getPing()
+          != other.getPing()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -3668,76 +4260,77 @@ public final class DroneOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + NEXTNEXTDRONE_FIELD_NUMBER;
-      hash = (53 * hash) + getNextNextDrone();
+      hash = (37 * hash) + PING_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getPing());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(byte[] data)
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(java.io.InputStream input)
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseDelimitedFrom(java.io.InputStream input)
+    public static grpc.drone.DroneOuterClass.PingRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseDelimitedFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static grpc.drone.DroneOuterClass.SendNextNext parseFrom(
+    public static grpc.drone.DroneOuterClass.PingRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -3750,7 +4343,7 @@ public final class DroneOuterClass {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(grpc.drone.DroneOuterClass.SendNextNext prototype) {
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.PingRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -3766,26 +4359,26 @@ public final class DroneOuterClass {
       return builder;
     }
     /**
-     * Protobuf type {@code grpc.drone.SendNextNext}
+     * Protobuf type {@code grpc.drone.PingRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:grpc.drone.SendNextNext)
-        grpc.drone.DroneOuterClass.SendNextNextOrBuilder {
+        // @@protoc_insertion_point(builder_implements:grpc.drone.PingRequest)
+        grpc.drone.DroneOuterClass.PingRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_SendNextNext_descriptor;
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_SendNextNext_fieldAccessorTable
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                grpc.drone.DroneOuterClass.SendNextNext.class, grpc.drone.DroneOuterClass.SendNextNext.Builder.class);
+                grpc.drone.DroneOuterClass.PingRequest.class, grpc.drone.DroneOuterClass.PingRequest.Builder.class);
       }
 
-      // Construct using grpc.drone.DroneOuterClass.SendNextNext.newBuilder()
+      // Construct using grpc.drone.DroneOuterClass.PingRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -3803,7 +4396,7 @@ public final class DroneOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        nextNextDrone_ = 0;
+        ping_ = false;
 
         return this;
       }
@@ -3811,17 +4404,17 @@ public final class DroneOuterClass {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_SendNextNext_descriptor;
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingRequest_descriptor;
       }
 
       @java.lang.Override
-      public grpc.drone.DroneOuterClass.SendNextNext getDefaultInstanceForType() {
-        return grpc.drone.DroneOuterClass.SendNextNext.getDefaultInstance();
+      public grpc.drone.DroneOuterClass.PingRequest getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.PingRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public grpc.drone.DroneOuterClass.SendNextNext build() {
-        grpc.drone.DroneOuterClass.SendNextNext result = buildPartial();
+      public grpc.drone.DroneOuterClass.PingRequest build() {
+        grpc.drone.DroneOuterClass.PingRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -3829,9 +4422,9 @@ public final class DroneOuterClass {
       }
 
       @java.lang.Override
-      public grpc.drone.DroneOuterClass.SendNextNext buildPartial() {
-        grpc.drone.DroneOuterClass.SendNextNext result = new grpc.drone.DroneOuterClass.SendNextNext(this);
-        result.nextNextDrone_ = nextNextDrone_;
+      public grpc.drone.DroneOuterClass.PingRequest buildPartial() {
+        grpc.drone.DroneOuterClass.PingRequest result = new grpc.drone.DroneOuterClass.PingRequest(this);
+        result.ping_ = ping_;
         onBuilt();
         return result;
       }
@@ -3870,18 +4463,18 @@ public final class DroneOuterClass {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof grpc.drone.DroneOuterClass.SendNextNext) {
-          return mergeFrom((grpc.drone.DroneOuterClass.SendNextNext)other);
+        if (other instanceof grpc.drone.DroneOuterClass.PingRequest) {
+          return mergeFrom((grpc.drone.DroneOuterClass.PingRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(grpc.drone.DroneOuterClass.SendNextNext other) {
-        if (other == grpc.drone.DroneOuterClass.SendNextNext.getDefaultInstance()) return this;
-        if (other.getNextNextDrone() != 0) {
-          setNextNextDrone(other.getNextNextDrone());
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.PingRequest other) {
+        if (other == grpc.drone.DroneOuterClass.PingRequest.getDefaultInstance()) return this;
+        if (other.getPing() != false) {
+          setPing(other.getPing());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3898,11 +4491,11 @@ public final class DroneOuterClass {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        grpc.drone.DroneOuterClass.SendNextNext parsedMessage = null;
+        grpc.drone.DroneOuterClass.PingRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (grpc.drone.DroneOuterClass.SendNextNext) e.getUnfinishedMessage();
+          parsedMessage = (grpc.drone.DroneOuterClass.PingRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -3912,32 +4505,32 @@ public final class DroneOuterClass {
         return this;
       }
 
-      private int nextNextDrone_ ;
+      private boolean ping_ ;
       /**
-       * <code>int32 nextNextDrone = 1;</code>
-       * @return The nextNextDrone.
+       * <code>bool ping = 1;</code>
+       * @return The ping.
        */
-      public int getNextNextDrone() {
-        return nextNextDrone_;
+      public boolean getPing() {
+        return ping_;
       }
       /**
-       * <code>int32 nextNextDrone = 1;</code>
-       * @param value The nextNextDrone to set.
+       * <code>bool ping = 1;</code>
+       * @param value The ping to set.
        * @return This builder for chaining.
        */
-      public Builder setNextNextDrone(int value) {
+      public Builder setPing(boolean value) {
         
-        nextNextDrone_ = value;
+        ping_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 nextNextDrone = 1;</code>
+       * <code>bool ping = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearNextNextDrone() {
+      public Builder clearPing() {
         
-        nextNextDrone_ = 0;
+        ping_ = false;
         onChanged();
         return this;
       }
@@ -3954,41 +4547,528 @@ public final class DroneOuterClass {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:grpc.drone.SendNextNext)
+      // @@protoc_insertion_point(builder_scope:grpc.drone.PingRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:grpc.drone.SendNextNext)
-    private static final grpc.drone.DroneOuterClass.SendNextNext DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:grpc.drone.PingRequest)
+    private static final grpc.drone.DroneOuterClass.PingRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.SendNextNext();
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.PingRequest();
     }
 
-    public static grpc.drone.DroneOuterClass.SendNextNext getDefaultInstance() {
+    public static grpc.drone.DroneOuterClass.PingRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<SendNextNext>
-        PARSER = new com.google.protobuf.AbstractParser<SendNextNext>() {
+    private static final com.google.protobuf.Parser<PingRequest>
+        PARSER = new com.google.protobuf.AbstractParser<PingRequest>() {
       @java.lang.Override
-      public SendNextNext parsePartialFrom(
+      public PingRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new SendNextNext(input, extensionRegistry);
+        return new PingRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<SendNextNext> parser() {
+    public static com.google.protobuf.Parser<PingRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<SendNextNext> getParserForType() {
+    public com.google.protobuf.Parser<PingRequest> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public grpc.drone.DroneOuterClass.SendNextNext getDefaultInstanceForType() {
+    public grpc.drone.DroneOuterClass.PingRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface PingResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.PingResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>bool pingAck = 1;</code>
+     * @return The pingAck.
+     */
+    boolean getPingAck();
+  }
+  /**
+   * Protobuf type {@code grpc.drone.PingResponse}
+   */
+  public  static final class PingResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.drone.PingResponse)
+      PingResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use PingResponse.newBuilder() to construct.
+    private PingResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private PingResponse() {
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new PingResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private PingResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              pingAck_ = input.readBool();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.drone.DroneOuterClass.PingResponse.class, grpc.drone.DroneOuterClass.PingResponse.Builder.class);
+    }
+
+    public static final int PINGACK_FIELD_NUMBER = 1;
+    private boolean pingAck_;
+    /**
+     * <code>bool pingAck = 1;</code>
+     * @return The pingAck.
+     */
+    public boolean getPingAck() {
+      return pingAck_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (pingAck_ != false) {
+        output.writeBool(1, pingAck_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (pingAck_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, pingAck_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.drone.DroneOuterClass.PingResponse)) {
+        return super.equals(obj);
+      }
+      grpc.drone.DroneOuterClass.PingResponse other = (grpc.drone.DroneOuterClass.PingResponse) obj;
+
+      if (getPingAck()
+          != other.getPingAck()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + PINGACK_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getPingAck());
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.PingResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.PingResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.drone.PingResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.drone.PingResponse)
+        grpc.drone.DroneOuterClass.PingResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.drone.DroneOuterClass.PingResponse.class, grpc.drone.DroneOuterClass.PingResponse.Builder.class);
+      }
+
+      // Construct using grpc.drone.DroneOuterClass.PingResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        pingAck_ = false;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_PingResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.PingResponse getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.PingResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.PingResponse build() {
+        grpc.drone.DroneOuterClass.PingResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.PingResponse buildPartial() {
+        grpc.drone.DroneOuterClass.PingResponse result = new grpc.drone.DroneOuterClass.PingResponse(this);
+        result.pingAck_ = pingAck_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.drone.DroneOuterClass.PingResponse) {
+          return mergeFrom((grpc.drone.DroneOuterClass.PingResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.PingResponse other) {
+        if (other == grpc.drone.DroneOuterClass.PingResponse.getDefaultInstance()) return this;
+        if (other.getPingAck() != false) {
+          setPingAck(other.getPingAck());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.drone.DroneOuterClass.PingResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.drone.DroneOuterClass.PingResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private boolean pingAck_ ;
+      /**
+       * <code>bool pingAck = 1;</code>
+       * @return The pingAck.
+       */
+      public boolean getPingAck() {
+        return pingAck_;
+      }
+      /**
+       * <code>bool pingAck = 1;</code>
+       * @param value The pingAck to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPingAck(boolean value) {
+        
+        pingAck_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool pingAck = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPingAck() {
+        
+        pingAck_ = false;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.drone.PingResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.drone.PingResponse)
+    private static final grpc.drone.DroneOuterClass.PingResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.PingResponse();
+    }
+
+    public static grpc.drone.DroneOuterClass.PingResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<PingResponse>
+        PARSER = new com.google.protobuf.AbstractParser<PingResponse>() {
+      @java.lang.Override
+      public PingResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new PingResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<PingResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<PingResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.drone.DroneOuterClass.PingResponse getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -4015,10 +5095,15 @@ public final class DroneOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_grpc_drone_OrderResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_grpc_drone_SendNextNext_descriptor;
+    internal_static_grpc_drone_PingRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_grpc_drone_SendNextNext_fieldAccessorTable;
+      internal_static_grpc_drone_PingRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_drone_PingResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_drone_PingResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -4030,21 +5115,26 @@ public final class DroneOuterClass {
     java.lang.String[] descriptorData = {
       "\n\013drone.proto\022\ngrpc.drone\"W\n\nAddRequest\022" +
       "\n\n\002id\030\001 \001(\005\022\017\n\007address\030\002 \001(\t\022\014\n\004port\030\003 \001" +
-      "(\t\022\016\n\006coordX\030\004 \001(\005\022\016\n\006coordY\030\005 \001(\005\"b\n\013Ad" +
-      "dResponse\022\020\n\010response\030\001 \001(\005\022\021\n\tnextDrone" +
-      "\030\002 \001(\005\022\025\n\rnextNextDrone\030\003 \001(\005\022\027\n\017masterP" +
-      "revDrone\030\004 \001(\010\"T\n\014OrderRequest\022\n\n\002id\030\001 \001" +
-      "(\t\022\014\n\004depX\030\002 \001(\005\022\014\n\004depY\030\003 \001(\005\022\r\n\005destX\030" +
-      "\004 \001(\005\022\r\n\005destY\030\005 \001(\005\"\271\001\n\rOrderResponse\022\023" +
-      "\n\013arrivalTime\030\001 \001(\t\022\021\n\tnewCoordX\030\002 \001(\005\022\021" +
-      "\n\tnewCoordY\030\003 \001(\005\022\022\n\nkmTraveled\030\004 \001(\001\022\024\n" +
-      "\014airPollution\030\005 \001(\001\022\024\n\014batteryLevel\030\006 \001(" +
-      "\005\022\022\n\nisQuitting\030\007 \001(\010\022\031\n\021deliveryComplet" +
-      "ed\030\010 \001(\005\"%\n\014SendNextNext\022\025\n\rnextNextDron" +
-      "e\030\001 \001(\0052\201\001\n\005Drone\0226\n\003Add\022\026.grpc.drone.Ad" +
-      "dRequest\032\027.grpc.drone.AddResponse\022@\n\tSen" +
-      "dOrder\022\030.grpc.drone.OrderRequest\032\031.grpc." +
-      "drone.OrderResponseb\006proto3"
+      "(\t\022\016\n\006coordX\030\004 \001(\005\022\016\n\006coordY\030\005 \001(\005\"\322\001\n\013A" +
+      "ddResponse\022\020\n\010response\030\001 \001(\005\022\023\n\013IDnextDr" +
+      "one\030\002 \001(\005\022\027\n\017IDnextNextDrone\030\003 \001(\005\022\031\n\021ID" +
+      "masterPrevDrone\030\004 \001(\010\022\030\n\020AddressNextDron" +
+      "e\030\005 \001(\t\022\034\n\024AddressNextNextDrone\030\006 \001(\t\022\025\n" +
+      "\rPortNextDrone\030\007 \001(\t\022\031\n\021PortNextNextDron" +
+      "e\030\010 \001(\t\"T\n\014OrderRequest\022\n\n\002id\030\001 \001(\t\022\014\n\004d" +
+      "epX\030\002 \001(\005\022\014\n\004depY\030\003 \001(\005\022\r\n\005destX\030\004 \001(\005\022\r" +
+      "\n\005destY\030\005 \001(\005\"\271\001\n\rOrderResponse\022\023\n\013arriv" +
+      "alTime\030\001 \001(\t\022\021\n\tnewCoordX\030\002 \001(\005\022\021\n\tnewCo" +
+      "ordY\030\003 \001(\005\022\022\n\nkmTraveled\030\004 \001(\001\022\024\n\014airPol" +
+      "lution\030\005 \001(\001\022\024\n\014batteryLevel\030\006 \001(\005\022\022\n\nis" +
+      "Quitting\030\007 \001(\010\022\031\n\021deliveryCompleted\030\010 \001(" +
+      "\005\"\033\n\013PingRequest\022\014\n\004ping\030\001 \001(\010\"\037\n\014PingRe" +
+      "sponse\022\017\n\007pingAck\030\001 \001(\0102\274\001\n\005Drone\0226\n\003Add" +
+      "\022\026.grpc.drone.AddRequest\032\027.grpc.drone.Ad" +
+      "dResponse\022@\n\tSendOrder\022\030.grpc.drone.Orde" +
+      "rRequest\032\031.grpc.drone.OrderResponse\0229\n\004P" +
+      "ing\022\027.grpc.drone.PingRequest\032\030.grpc.dron" +
+      "e.PingResponseb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -4061,7 +5151,7 @@ public final class DroneOuterClass {
     internal_static_grpc_drone_AddResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_AddResponse_descriptor,
-        new java.lang.String[] { "Response", "NextDrone", "NextNextDrone", "MasterPrevDrone", });
+        new java.lang.String[] { "Response", "IDnextDrone", "IDnextNextDrone", "IDmasterPrevDrone", "AddressNextDrone", "AddressNextNextDrone", "PortNextDrone", "PortNextNextDrone", });
     internal_static_grpc_drone_OrderRequest_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_grpc_drone_OrderRequest_fieldAccessorTable = new
@@ -4074,12 +5164,18 @@ public final class DroneOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_OrderResponse_descriptor,
         new java.lang.String[] { "ArrivalTime", "NewCoordX", "NewCoordY", "KmTraveled", "AirPollution", "BatteryLevel", "IsQuitting", "DeliveryCompleted", });
-    internal_static_grpc_drone_SendNextNext_descriptor =
+    internal_static_grpc_drone_PingRequest_descriptor =
       getDescriptor().getMessageTypes().get(4);
-    internal_static_grpc_drone_SendNextNext_fieldAccessorTable = new
+    internal_static_grpc_drone_PingRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_grpc_drone_SendNextNext_descriptor,
-        new java.lang.String[] { "NextNextDrone", });
+        internal_static_grpc_drone_PingRequest_descriptor,
+        new java.lang.String[] { "Ping", });
+    internal_static_grpc_drone_PingResponse_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_grpc_drone_PingResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_drone_PingResponse_descriptor,
+        new java.lang.String[] { "PingAck", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

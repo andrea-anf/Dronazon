@@ -1,6 +1,7 @@
 package SmartCity.MasterDrone;
 
 import SmartCity.Drone;
+import SmartCity.RPCServices.DroneRPCSendingService;
 import com.sun.jersey.api.client.ClientResponse;
 
 public class StatsSender extends Thread{
@@ -29,15 +30,10 @@ public class StatsSender extends Thread{
                     }
 
                     System.out.print("[STATISTICS]  " + response);
-
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
+
             }
-            // implemented the else just to make other drones prints the stats
+            // implemented the "else" just to make other drones prints the stats
             // without writing another thread
             else{
                 if(master.getDeliveryCompleted() > 0){
@@ -45,12 +41,13 @@ public class StatsSender extends Thread{
                             "\n\tAverage delivery completed: " + master.getDeliveryCompleted() +
                             "\n\tAverage km traveled: " + master.getKmTraveled() +
                             "\n\tAverage battery left: " + master.getBatteryLevel());
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                 }
+            }
+
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
         }
