@@ -39,10 +39,11 @@ message OrderResponse {
 }
 
 message PingRequest {
-  bool ping = 1;
+  bool recovery = 1;
 }
 message PingResponse {
   bool pingAck = 1;
+  int32 nextDrone = 2;
 }
 
 message ElectionReq {

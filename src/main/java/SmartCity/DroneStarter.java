@@ -40,9 +40,6 @@ public class DroneStarter {
             listeningService.start();
 
             drone.setMasterDrone(DroneRPCSendingService.addDroneRequest(drone, dronelist));
-            drone.addToDronelist(drone);
-            drone.addToDronelist(drone.getMasterDrone());
-
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
 
@@ -51,8 +48,8 @@ public class DroneStarter {
             threadStatSender.start();
 
 
-            Runnable checkNext = new CheckDrone(drone);
-            Thread threadCheckStatus = new Thread(checkNext);
+            Runnable checkDrone = new CheckDrone(drone);
+            Thread threadCheckStatus = new Thread(checkDrone);
             threadCheckStatus.start();
 
             System.out.println("\n...Press enter to stop...");
@@ -68,8 +65,10 @@ public class DroneStarter {
             drone.setNextDrone(drone);
             drone.setNextNextDrone(drone);
             drone.setMaster(true);
+
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
+
             Runnable sender = new MasterDrone(drone);
             Thread thread = new Thread(sender);
             thread.start();
@@ -87,20 +86,17 @@ public class DroneStarter {
         if (response.getStatus() != 200) {
             throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
         }
+
         //returns list with active drones and sets coords
         SmartCity updatedDronelist = response.getEntity(SmartCity.class);
-        System.out.println("\n[RING] SmartCity:");
         for (Drone d : updatedDronelist.getDronelist()){
-            System.out.println(
-                    "\tID: " + d.getId() +
-                            "\t| Coords: (" + d.getCoords().getX()+","+ d.getCoords().getY() + ")" +
-                            "\tAddress: " + d.getLocalAddress()+
-                            "\tPort: " + d.getLocalPort());
+            drone.addToDronelist(d);
             if(d.getId() == drone.getId()){
                 drone.setCoords(d.getCoords());
             }
-
         }
+        drone.showDroneList();
+
 
     }
 }

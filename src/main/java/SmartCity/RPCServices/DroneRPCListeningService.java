@@ -1,7 +1,9 @@
 package SmartCity.RPCServices;
 
 import Amministrazione.Coordinates;
+import SmartCity.CheckDrone;
 import SmartCity.Drone;
+import SmartCity.MasterDrone.MasterDrone;
 import SmartCity.MasterDrone.Orders.DispatchingService;
 import SmartCity.SensoreInquinamento.Measurement;
 import grpc.drone.DroneGrpc;
@@ -43,7 +45,10 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         newDrone.setLocalPort(request.getPort());
         newDrone.setCoords(coords);
 
+        //add new drone to the dronelist
         drone.addToDronelist(newDrone);
+
+
         System.out.println("\n[RING] New drone is joining the ring: " +
                 "\n\tID: " + request.getId() +
                 "\n\tAddress: " + request.getAddress() +
@@ -51,9 +56,10 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                 "\n\tCoords: (" + request.getCoordX() + ", " + request.getCoordY() + ")"
         );
         boolean isPrevToMaster = false;
-        if (drone.getDronelist().size() == 2) {
+        if(drone.getDronelist().size() == 2){
             isPrevToMaster = true;
         }
+
 
         if (drone.isMaster()) {
             response = AddResponse.newBuilder()
@@ -76,21 +82,12 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             drone.setNextNextDrone(drone.getNextDrone());
             drone.setNextDrone(newDrone);
 
-            System.out.print("\n[RING] SmartCity:");
-            for (Drone d : drone.getDronelist()) {
-                System.out.print(
-                        "\n\tID: " + d.getId() +
-                                "\t| Coords: (" + d.getCoords().getX() + "," + d.getCoords().getY() + ")" +
-                                "\tAddress: " + d.getLocalAddress() +
-                                "\tPort: " + d.getLocalPort());
-                if (d.getId() == drone.getNextDrone().getId()) {
-                    System.out.print("\t[NextDrone]");
-                } else if (d.getId() == drone.getNextNextDrone().getId()) {
-                    System.out.print("\t[NextNextDrone]");
-                }
+            drone.showDroneList();
+            if(drone.getDronelist().size() > 1){
+                Runnable checkDrone = new CheckDrone(drone);
+                Thread threadCheckStatus = new Thread(checkDrone);
+                threadCheckStatus.start();
             }
-            System.out.print("\n");
-
 
             synchronized (drone.getDronelistLock()) {
                 drone.getDronelistLock().notify();
@@ -101,11 +98,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
             if (drone.isMasterPrevDrone()) {
                 drone.setNextNextDrone(newDrone);
             }
-            System.out.println("\n[RING] SmartCity:");
-            System.out.println("\tNext Drone: " + drone.getNextDrone().getId());
-            System.out.println("\tNext Next Drone: " + drone.getNextNextDrone().getId());
-            System.out.println("\tPrev Master Drone: " + drone.isMasterPrevDrone());
-
+            drone.showDroneList();
             response = AddResponse.newBuilder()
                     .setResponse(0)
                     .build();
@@ -117,60 +110,74 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
 
 
     public void ping(PingRequest ping, StreamObserver<PingResponse> responseObserver) {
-        System.out.println("\n[PING] Receiving ping " + ping.getPing());
+        int nextDroneID = 0;
+        if(ping.getRecovery()){
+            nextDroneID = drone.getNextDrone().getId();
+        }
 
         boolean quitting = !drone.isQuitting();
         PingResponse pingAck = PingResponse.newBuilder()
                 .setPingAck(quitting)
+                .setNextDrone(nextDroneID)
                 .build();
 
         responseObserver.onNext(pingAck);
         responseObserver.onCompleted();
     }
 
-    public void replyElection(ElectionReq election, StreamObserver<ElectionAck> responseObserver){
+//    public void election(ElectionReq election, StreamObserver<ElectionAck> responseObserver){
+//
+//        ElectionAck electionAck = ElectionAck.newBuilder().setAck(true).build();
+//
+//        System.out.println("\n[ELECTION] Receiving election message" +
+//                "\n\tMessage: " + election.getMsg() +
+//                "\n\tCandidate: " + election.getDroneID());
+//
+//        if(election.getDroneID() == drone.getId()){
+//            if(election.getMsg().equals("election")){
+//                drone.setPartecipation(false);
+//                System.out.println("\n[ELECTION] Voting terminated, notifying other drones");
+//                System.out.println("\n[ELECTION] Makes others know who I am");
+//                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+//                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "elected");
+//                }
+//                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+//                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextNextDrone(), "elected");
+//                }
+//                else{
+//                    System.out.println("\n[ELECTION] NextDrone and NextNext drone are unreachable.");
+//                }
+//            }
+//            else{
+//                System.out.println("\n[ELECTION] Election terminated.");
+//
+//                Runnable sender = new MasterDrone(drone);
+//                Thread thread = new Thread(sender);
+//                thread.start();
+//            }
+//
+//        }
+//        else {
+//            if(election.getMsg().equals("election")){
+//                responseToElection(election);
+//            }
+//            else if(election.getMsg().equals("elected")){
+//
+//                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+//                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "elected");
+//                }
+//                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+//                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextNextDrone(), "elected");
+//                }//                drone.setMasterDrone(drone.getById(election.getDroneID()));
+//                System.out.println("\n[ELECTION] Election terminated. New Master: " + drone.getMasterDrone().getId());
+//            }
+//        }
+//        responseObserver.onNext(electionAck);
+//        responseObserver.onCompleted();
+//
+//    }
 
-        if(election.getDroneID() == drone.getId()){
-            System.out.println("\n[ELECTION] Election terminated, i am the boss");
-        }
-        else {
-            System.out.println("\n[ELECTION] Receiving election message" +
-                    "\n\tMessage: " + election.getMsg() +
-                    "\n\tCandidate: " + election.getDroneID());
-        }
 
-//TODO: finire algoritmo di elezione
-        if(election.getMsg() == "election"){
-            if(election.getDroneID() > drone.getId()){
-                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
-                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "election");
-
-                }
-                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
-                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextNextDrone(), "election");
-
-                }
-                else{
-                    System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
-                }
-
-            }
-            else{
-                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
-                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "election");
-
-                }
-                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
-                    DroneRPCSendingService.sendElection(drone.getId(), drone.getNextNextDrone(), "election");
-
-                }
-                else{
-                    System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
-                }
-            }
-        }
-
-    }
     @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         System.out.println("\n[ORDER] Receiving order number " + order.getId());
@@ -259,5 +266,44 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onCompleted();
     }
 
+
+//    public void responseToElection(ElectionReq election){
+//            if(election.getDroneID() > drone.getId()){
+//                drone.setPartecipation(true);
+//                //if electionID is greater than drone's id, forwards the message
+//                if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+//                    //send to NextDrone
+//                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "election");
+//                }
+//                else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+//                    //if NextDrone is unreachable, send to NextNextDrone
+//                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextNextDrone(), "election");
+//                }
+//                else{
+//                    System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
+//                }
+//            }
+//            else{
+//                if(drone.isPartecipation() == false){
+//                    drone.setPartecipation(true);
+//
+//                    //if electionID is lower than drone's id
+//                    if(DroneRPCSendingService.pingDrone(drone.getNextDrone())){
+//                        //send to NextDrone
+//                        DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "election");
+//                    }
+//                    else if(DroneRPCSendingService.pingDrone(drone.getNextNextDrone())){
+//                        //if NextDrone is unreachable, send to NextNextDrone
+//                        DroneRPCSendingService.sendElection(drone.getId(), drone.getNextNextDrone(), "election");
+//                    }
+//                    else{
+//                        System.out.println("[ELECTION] nextDrone and nextNextDrone are unreachable");
+//                    }
+//                }
+//                else{
+//                    System.out.println("[ELECTION] Replica Election with a lower Id, stopping");
+//                }
+//            }
+//    }
 
 }

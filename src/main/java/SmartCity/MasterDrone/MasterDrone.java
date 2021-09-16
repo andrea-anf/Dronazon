@@ -23,7 +23,6 @@ public class MasterDrone implements Runnable{
 
     public MasterDrone(Drone drone){
         this.drone = drone;
-        drone.addToDronelist(drone);
     }
 
     public void run(){
@@ -70,7 +69,7 @@ public class MasterDrone implements Runnable{
                                     "\n\tMessage: " + receivedMessage +
                                     "\n\tQoS:     " + message.getQos());
 
-                    System.out.println("\n[INFO] DRONELIST:");
+                    System.out.println("\n[RING] SmartList:");
                     for(Drone d : drone.getDronelist()){
                         if(d.getId() == drone.getId()){
                             if(d.isDelivering()){

@@ -41,9 +41,10 @@ public class Drone {
     private boolean partecipation = false;
     private String serverAddress = "http://localhost:1338/";
     private boolean quitting = false;
-    private Drone nextDrone;
-    private Drone nextNextDrone;
+    private Drone nextDrone = null;
+    private Drone nextNextDrone = null;
     private boolean masterPrevDrone = false;
+    private boolean recovery = false;
 
     //master drone attributes
     private boolean master = false;
@@ -56,6 +57,9 @@ public class Drone {
     //locks
     private final Object deliveryLock = new Object();
     private final Object dronelistLock = new Object();
+    private final Object waitForElectionLock = new Object();
+
+
 
     public Drone (){}
 
@@ -184,6 +188,13 @@ public class Drone {
         this.masterPrevDrone = masterPrevDrone;
     }
 
+    public boolean isRecovery() {
+        return recovery;
+    }
+    public void setRecovery(boolean recovery) {
+        this.recovery = recovery;
+    }
+
     // SERVER ADDRESS
     public String getServerAddress() {
         return serverAddress;
@@ -200,6 +211,7 @@ public class Drone {
     public void setMaster(boolean master) {
         this.master = master;
     }
+
     public Drone getMasterDrone() {
         return masterDrone;
     }
@@ -222,9 +234,11 @@ public class Drone {
     public void setDronelist(List<Drone> dronelist) {
         this.dronelist = dronelist;
     }
+
     public void addToDronelist(Drone drone){
         this.dronelist.add(drone);
     }
+
     public Drone getById(int id){
         for(Drone d : this.dronelist){
             if(d.getId() == id){
@@ -233,6 +247,43 @@ public class Drone {
         }
         return null;
     }
+
+    public void showDroneList(){
+        System.out.println("\n[RING] SmartCity:");
+        for(Drone d : this.getDronelist()){
+            System.out.print(
+                    "\tID: " + d.getId() +
+                            "\t| Coords: (" + d.getCoords().getX()+","+ d.getCoords().getY() + ")" +
+                            "\tAddress: " + d.getLocalAddress()+
+                            "\tPort: " + d.getLocalPort());
+
+            if(this.getMasterDrone() != null && d.getId() == this.getMasterDrone().getId()){
+                if(d.getId() == this.getNextDrone().getId()){
+                    System.out.print("\t [MASTER] [NEXT DRONE]\n");
+                }
+                else if(d.getId() == this.getNextNextDrone().getId()){
+                    System.out.print("\t [MASTER] [NEXT NEXT DRONE]\n");
+                }
+                else{
+                    System.out.print("\t [MASTER]\n");
+                }
+            }
+            else{
+                if(this.getNextDrone() != null && d.getId() == this.getNextDrone().getId()){
+                    System.out.print("\t [NEXT]\n");
+                }
+                else if(this.getNextDrone() != null && d.getId() == this.getNextNextDrone().getId()){
+                    System.out.print("\t [NEXT NEXT DRONE]\n");
+                }
+                else{
+                    System.out.print("\n");
+                }
+
+
+            }
+        }
+    }
+
 
     //DELIVERING STATE
     public boolean isDelivering() {
@@ -314,11 +365,13 @@ public class Drone {
     public Object getDeliveryLock() {
         return deliveryLock;
     }
-
     public Object getDronelistLock() {
         return dronelistLock;
     }
 
+    public Object getWaitForElectionLock() {
+        return waitForElectionLock;
+    }
 
     //TERMINATING DRONES
     public void quitDrone() throws MqttException, InterruptedException {
@@ -393,5 +446,6 @@ public class Drone {
             System.exit(0);
         }
     }
+
 }
 

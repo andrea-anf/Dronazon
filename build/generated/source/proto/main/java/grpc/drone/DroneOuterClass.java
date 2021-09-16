@@ -4105,10 +4105,10 @@ public final class DroneOuterClass {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>bool ping = 1;</code>
-     * @return The ping.
+     * <code>bool recovery = 1;</code>
+     * @return The recovery.
      */
-    boolean getPing();
+    boolean getRecovery();
   }
   /**
    * Protobuf type {@code grpc.drone.PingRequest}
@@ -4157,7 +4157,7 @@ public final class DroneOuterClass {
               break;
             case 8: {
 
-              ping_ = input.readBool();
+              recovery_ = input.readBool();
               break;
             }
             default: {
@@ -4192,14 +4192,14 @@ public final class DroneOuterClass {
               grpc.drone.DroneOuterClass.PingRequest.class, grpc.drone.DroneOuterClass.PingRequest.Builder.class);
     }
 
-    public static final int PING_FIELD_NUMBER = 1;
-    private boolean ping_;
+    public static final int RECOVERY_FIELD_NUMBER = 1;
+    private boolean recovery_;
     /**
-     * <code>bool ping = 1;</code>
-     * @return The ping.
+     * <code>bool recovery = 1;</code>
+     * @return The recovery.
      */
-    public boolean getPing() {
-      return ping_;
+    public boolean getRecovery() {
+      return recovery_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4216,8 +4216,8 @@ public final class DroneOuterClass {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (ping_ != false) {
-        output.writeBool(1, ping_);
+      if (recovery_ != false) {
+        output.writeBool(1, recovery_);
       }
       unknownFields.writeTo(output);
     }
@@ -4228,9 +4228,9 @@ public final class DroneOuterClass {
       if (size != -1) return size;
 
       size = 0;
-      if (ping_ != false) {
+      if (recovery_ != false) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, ping_);
+          .computeBoolSize(1, recovery_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4247,8 +4247,8 @@ public final class DroneOuterClass {
       }
       grpc.drone.DroneOuterClass.PingRequest other = (grpc.drone.DroneOuterClass.PingRequest) obj;
 
-      if (getPing()
-          != other.getPing()) return false;
+      if (getRecovery()
+          != other.getRecovery()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4260,9 +4260,9 @@ public final class DroneOuterClass {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + PING_FIELD_NUMBER;
+      hash = (37 * hash) + RECOVERY_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getPing());
+          getRecovery());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4396,7 +4396,7 @@ public final class DroneOuterClass {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        ping_ = false;
+        recovery_ = false;
 
         return this;
       }
@@ -4424,7 +4424,7 @@ public final class DroneOuterClass {
       @java.lang.Override
       public grpc.drone.DroneOuterClass.PingRequest buildPartial() {
         grpc.drone.DroneOuterClass.PingRequest result = new grpc.drone.DroneOuterClass.PingRequest(this);
-        result.ping_ = ping_;
+        result.recovery_ = recovery_;
         onBuilt();
         return result;
       }
@@ -4473,8 +4473,8 @@ public final class DroneOuterClass {
 
       public Builder mergeFrom(grpc.drone.DroneOuterClass.PingRequest other) {
         if (other == grpc.drone.DroneOuterClass.PingRequest.getDefaultInstance()) return this;
-        if (other.getPing() != false) {
-          setPing(other.getPing());
+        if (other.getRecovery() != false) {
+          setRecovery(other.getRecovery());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4505,32 +4505,32 @@ public final class DroneOuterClass {
         return this;
       }
 
-      private boolean ping_ ;
+      private boolean recovery_ ;
       /**
-       * <code>bool ping = 1;</code>
-       * @return The ping.
+       * <code>bool recovery = 1;</code>
+       * @return The recovery.
        */
-      public boolean getPing() {
-        return ping_;
+      public boolean getRecovery() {
+        return recovery_;
       }
       /**
-       * <code>bool ping = 1;</code>
-       * @param value The ping to set.
+       * <code>bool recovery = 1;</code>
+       * @param value The recovery to set.
        * @return This builder for chaining.
        */
-      public Builder setPing(boolean value) {
+      public Builder setRecovery(boolean value) {
         
-        ping_ = value;
+        recovery_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>bool ping = 1;</code>
+       * <code>bool recovery = 1;</code>
        * @return This builder for chaining.
        */
-      public Builder clearPing() {
+      public Builder clearRecovery() {
         
-        ping_ = false;
+        recovery_ = false;
         onChanged();
         return this;
       }
@@ -4596,6 +4596,12 @@ public final class DroneOuterClass {
      * @return The pingAck.
      */
     boolean getPingAck();
+
+    /**
+     * <code>int32 nextDrone = 2;</code>
+     * @return The nextDrone.
+     */
+    int getNextDrone();
   }
   /**
    * Protobuf type {@code grpc.drone.PingResponse}
@@ -4647,6 +4653,11 @@ public final class DroneOuterClass {
               pingAck_ = input.readBool();
               break;
             }
+            case 16: {
+
+              nextDrone_ = input.readInt32();
+              break;
+            }
             default: {
               if (!parseUnknownField(
                   input, unknownFields, extensionRegistry, tag)) {
@@ -4689,6 +4700,16 @@ public final class DroneOuterClass {
       return pingAck_;
     }
 
+    public static final int NEXTDRONE_FIELD_NUMBER = 2;
+    private int nextDrone_;
+    /**
+     * <code>int32 nextDrone = 2;</code>
+     * @return The nextDrone.
+     */
+    public int getNextDrone() {
+      return nextDrone_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -4706,6 +4727,9 @@ public final class DroneOuterClass {
       if (pingAck_ != false) {
         output.writeBool(1, pingAck_);
       }
+      if (nextDrone_ != 0) {
+        output.writeInt32(2, nextDrone_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -4718,6 +4742,10 @@ public final class DroneOuterClass {
       if (pingAck_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(1, pingAck_);
+      }
+      if (nextDrone_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, nextDrone_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4736,6 +4764,8 @@ public final class DroneOuterClass {
 
       if (getPingAck()
           != other.getPingAck()) return false;
+      if (getNextDrone()
+          != other.getNextDrone()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -4750,6 +4780,8 @@ public final class DroneOuterClass {
       hash = (37 * hash) + PINGACK_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getPingAck());
+      hash = (37 * hash) + NEXTDRONE_FIELD_NUMBER;
+      hash = (53 * hash) + getNextDrone();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4885,6 +4917,8 @@ public final class DroneOuterClass {
         super.clear();
         pingAck_ = false;
 
+        nextDrone_ = 0;
+
         return this;
       }
 
@@ -4912,6 +4946,7 @@ public final class DroneOuterClass {
       public grpc.drone.DroneOuterClass.PingResponse buildPartial() {
         grpc.drone.DroneOuterClass.PingResponse result = new grpc.drone.DroneOuterClass.PingResponse(this);
         result.pingAck_ = pingAck_;
+        result.nextDrone_ = nextDrone_;
         onBuilt();
         return result;
       }
@@ -4962,6 +4997,9 @@ public final class DroneOuterClass {
         if (other == grpc.drone.DroneOuterClass.PingResponse.getDefaultInstance()) return this;
         if (other.getPingAck() != false) {
           setPingAck(other.getPingAck());
+        }
+        if (other.getNextDrone() != 0) {
+          setNextDrone(other.getNextDrone());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5018,6 +5056,36 @@ public final class DroneOuterClass {
       public Builder clearPingAck() {
         
         pingAck_ = false;
+        onChanged();
+        return this;
+      }
+
+      private int nextDrone_ ;
+      /**
+       * <code>int32 nextDrone = 2;</code>
+       * @return The nextDrone.
+       */
+      public int getNextDrone() {
+        return nextDrone_;
+      }
+      /**
+       * <code>int32 nextDrone = 2;</code>
+       * @param value The nextDrone to set.
+       * @return This builder for chaining.
+       */
+      public Builder setNextDrone(int value) {
+        
+        nextDrone_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 nextDrone = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearNextDrone() {
+        
+        nextDrone_ = 0;
         onChanged();
         return this;
       }
@@ -6259,16 +6327,17 @@ public final class DroneOuterClass {
       "ordY\030\003 \001(\005\022\022\n\nkmTraveled\030\004 \001(\001\022\024\n\014airPol" +
       "lution\030\005 \001(\001\022\024\n\014batteryLevel\030\006 \001(\005\022\022\n\nis" +
       "Quitting\030\007 \001(\010\022\031\n\021deliveryCompleted\030\010 \001(" +
-      "\005\"\033\n\013PingRequest\022\014\n\004ping\030\001 \001(\010\"\037\n\014PingRe" +
-      "sponse\022\017\n\007pingAck\030\001 \001(\010\"+\n\013ElectionReq\022\013" +
-      "\n\003msg\030\001 \001(\t\022\017\n\007droneID\030\002 \001(\005\"\032\n\013Election" +
-      "Ack\022\013\n\003ack\030\001 \001(\0102\372\001\n\005Drone\0226\n\003Add\022\026.grpc" +
-      ".drone.AddRequest\032\027.grpc.drone.AddRespon" +
-      "se\022@\n\tSendOrder\022\030.grpc.drone.OrderReques" +
-      "t\032\031.grpc.drone.OrderResponse\0229\n\004Ping\022\027.g" +
-      "rpc.drone.PingRequest\032\030.grpc.drone.PingR" +
-      "esponse\022<\n\010Election\022\027.grpc.drone.Electio" +
-      "nReq\032\027.grpc.drone.ElectionAckb\006proto3"
+      "\005\"\037\n\013PingRequest\022\020\n\010recovery\030\001 \001(\010\"2\n\014Pi" +
+      "ngResponse\022\017\n\007pingAck\030\001 \001(\010\022\021\n\tnextDrone" +
+      "\030\002 \001(\005\"+\n\013ElectionReq\022\013\n\003msg\030\001 \001(\t\022\017\n\007dr" +
+      "oneID\030\002 \001(\005\"\032\n\013ElectionAck\022\013\n\003ack\030\001 \001(\0102" +
+      "\372\001\n\005Drone\0226\n\003Add\022\026.grpc.drone.AddRequest" +
+      "\032\027.grpc.drone.AddResponse\022@\n\tSendOrder\022\030" +
+      ".grpc.drone.OrderRequest\032\031.grpc.drone.Or" +
+      "derResponse\0229\n\004Ping\022\027.grpc.drone.PingReq" +
+      "uest\032\030.grpc.drone.PingResponse\022<\n\010Electi" +
+      "on\022\027.grpc.drone.ElectionReq\032\027.grpc.drone" +
+      ".ElectionAckb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6303,13 +6372,13 @@ public final class DroneOuterClass {
     internal_static_grpc_drone_PingRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_PingRequest_descriptor,
-        new java.lang.String[] { "Ping", });
+        new java.lang.String[] { "Recovery", });
     internal_static_grpc_drone_PingResponse_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_grpc_drone_PingResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_PingResponse_descriptor,
-        new java.lang.String[] { "PingAck", });
+        new java.lang.String[] { "PingAck", "NextDrone", });
     internal_static_grpc_drone_ElectionReq_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_grpc_drone_ElectionReq_fieldAccessorTable = new
