@@ -18,15 +18,19 @@ import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
 
-    public static Drone addDroneRequest(Drone drone, SmartCity dronelist){
-        boolean found = false;
+    public static Drone addDroneRequest(Drone drone){
+        boolean masterFound = false;
         Drone master = new Drone();
         System.out.println("\n[RING] Looking for the master...");
 
-        for (Drone d : dronelist.getDronelist()){
+        for (Drone d : drone.getDronelist()){
+            if(d.getId() == drone.getId())continue;
                 final ManagedChannel channel = ManagedChannelBuilder
                         .forTarget(d.getLocalAddress() + ":" + d.getLocalPort())
                         .usePlaintext()
@@ -43,92 +47,111 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                         .build();
 
                 //handle response
-                AddResponse response = stub.add(request);
-                if(response.getResponse() == 1){
-                    found = true;
+                AddResponse response;
+
+                try{
+                    response = stub.add(request);
+                }
+                catch(StatusRuntimeException sre){
+                    response = null;
+                }
+
+
+                if(response != null && response.getResponse() == 1){
+                    masterFound = true;
                     master = d;
 
-                    drone.setMasterDrone(master);
-
+                    //next drone
                     Drone nextD = new Drone();
                     nextD.setId(response.getIDnextDrone());
                     nextD.setLocalAddress(response.getAddressNextDrone());
                     nextD.setLocalPort(response.getPortNextDrone());
 
+                    //next next drone
                     Drone nextNextD = new Drone();
                     nextNextD.setId(response.getIDnextNextDrone());
                     nextNextD.setLocalAddress(response.getAddressNextNextDrone());
                     nextNextD.setLocalPort(response.getPortNextNextDrone());
 
                     drone.setNextDrone(nextD);
-                    drone.setNextNextDrone(nextNextD);
+                    if(response.getIDnextNextDrone() != 0){
+                        drone.setNextNextDrone(nextNextD);
+                    }
                     drone.setMasterPrevDrone(response.getIDmasterPrevDrone());
+                    drone.setMasterDrone(master);
 
-                    System.out.println("[RING] Master found!");
+                    System.out.print("[RING] Master found! "+
+                            "\n\tMasterDrone: " + drone.getMasterDrone().getId() +
+                            "\n\tNextDrone: " + response.getIDnextDrone() +
+                            "\n\tNextNextDrone: " + response.getIDnextNextDrone());
 
                     if(drone.isMasterPrevDrone()){
-                        System.out.println("[RING] Master Previous Drone: True");
+                        System.out.println("\t[RING] Master Previous Drone: True");
                     }
                     drone.showDroneList();
                 }
                 channel.shutdown();
         }
         //if no drones are founds, starts an election
-        if(found == false){
-            System.out.println("\n[RING] No master found");
+        if(masterFound == false){
+            System.out.println("\n[RING] No master masterFound");
             System.out.println("[RING] Need to starts an election");
             return null;
         }
-        else{
             return master;
-        }
+
     }
 
     public static void sendElection(int starter, Drone target, String message){
-        System.out.println("[ELECTION] Sending the election message: message");
-
+        System.out.println("[ELECTION] Sending the election message: to" + target.getId());
         final ManagedChannel channel = ManagedChannelBuilder
                 .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
                 .usePlaintext()
                 .build();
 
         DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
-
         ElectionReq request = ElectionReq.newBuilder()
                 .setMsg(message)
                 .setDroneID(starter)
                 .build();
 
-        stub.election(request);
+        try{
+            ElectionAck resp = stub.election(request);
+            System.out.println("[ELECTION] ACK : " + resp.getAck());
+        }
+        catch(StatusRuntimeException sre){
+            sre.getStackTrace();
+        }
         channel.shutdown();
     }
 
     public static int pingDrone(Drone target, boolean recovery){
-        PingResponse response;
-        final ManagedChannel channel = ManagedChannelBuilder
-                .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
-                .usePlaintext()
-                .build();
+        PingResponse response = null;
 
-        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+        if(target != null) {
+            final ManagedChannel channel = ManagedChannelBuilder
+                    .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
+                    .usePlaintext()
+                    .build();
 
-        PingRequest request = PingRequest.newBuilder()
-                .setRecovery(recovery)
-                .build();
+            DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
 
-        //handle response
-        try{
-            response = stub.ping(request);
+            PingRequest request = PingRequest.newBuilder()
+                    .setRecovery(recovery)
+                    .build();
+
+            //handle response
+            try {
+                response = stub.ping(request);
+            } catch (StatusRuntimeException error) {
+                response = null;
+            }
+            channel.shutdown();
+
         }
-        catch(StatusRuntimeException error){
-            response = null;
-        }
-        channel.shutdown();
-
-        if(response == null || response.getPingAck()==false){
-                return -1;
-        }
-        else{
+        if (response == null || response.getPingAck() == false) {
+            return -1;
+        } else {
             return response.getNextDrone();
         }
     }

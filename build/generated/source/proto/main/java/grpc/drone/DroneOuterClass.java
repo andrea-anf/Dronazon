@@ -5163,6 +5163,12 @@ public final class DroneOuterClass {
      * @return The droneID.
      */
     int getDroneID();
+
+    /**
+     * <code>int32 batteryLevel = 3;</code>
+     * @return The batteryLevel.
+     */
+    int getBatteryLevel();
   }
   /**
    * Protobuf type {@code grpc.drone.ElectionReq}
@@ -5219,6 +5225,11 @@ public final class DroneOuterClass {
             case 16: {
 
               droneID_ = input.readInt32();
+              break;
+            }
+            case 24: {
+
+              batteryLevel_ = input.readInt32();
               break;
             }
             default: {
@@ -5299,6 +5310,16 @@ public final class DroneOuterClass {
       return droneID_;
     }
 
+    public static final int BATTERYLEVEL_FIELD_NUMBER = 3;
+    private int batteryLevel_;
+    /**
+     * <code>int32 batteryLevel = 3;</code>
+     * @return The batteryLevel.
+     */
+    public int getBatteryLevel() {
+      return batteryLevel_;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -5319,6 +5340,9 @@ public final class DroneOuterClass {
       if (droneID_ != 0) {
         output.writeInt32(2, droneID_);
       }
+      if (batteryLevel_ != 0) {
+        output.writeInt32(3, batteryLevel_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -5334,6 +5358,10 @@ public final class DroneOuterClass {
       if (droneID_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, droneID_);
+      }
+      if (batteryLevel_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, batteryLevel_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -5354,6 +5382,8 @@ public final class DroneOuterClass {
           .equals(other.getMsg())) return false;
       if (getDroneID()
           != other.getDroneID()) return false;
+      if (getBatteryLevel()
+          != other.getBatteryLevel()) return false;
       if (!unknownFields.equals(other.unknownFields)) return false;
       return true;
     }
@@ -5369,6 +5399,8 @@ public final class DroneOuterClass {
       hash = (53 * hash) + getMsg().hashCode();
       hash = (37 * hash) + DRONEID_FIELD_NUMBER;
       hash = (53 * hash) + getDroneID();
+      hash = (37 * hash) + BATTERYLEVEL_FIELD_NUMBER;
+      hash = (53 * hash) + getBatteryLevel();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -5506,6 +5538,8 @@ public final class DroneOuterClass {
 
         droneID_ = 0;
 
+        batteryLevel_ = 0;
+
         return this;
       }
 
@@ -5534,6 +5568,7 @@ public final class DroneOuterClass {
         grpc.drone.DroneOuterClass.ElectionReq result = new grpc.drone.DroneOuterClass.ElectionReq(this);
         result.msg_ = msg_;
         result.droneID_ = droneID_;
+        result.batteryLevel_ = batteryLevel_;
         onBuilt();
         return result;
       }
@@ -5588,6 +5623,9 @@ public final class DroneOuterClass {
         }
         if (other.getDroneID() != 0) {
           setDroneID(other.getDroneID());
+        }
+        if (other.getBatteryLevel() != 0) {
+          setBatteryLevel(other.getBatteryLevel());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5720,6 +5758,36 @@ public final class DroneOuterClass {
       public Builder clearDroneID() {
         
         droneID_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private int batteryLevel_ ;
+      /**
+       * <code>int32 batteryLevel = 3;</code>
+       * @return The batteryLevel.
+       */
+      public int getBatteryLevel() {
+        return batteryLevel_;
+      }
+      /**
+       * <code>int32 batteryLevel = 3;</code>
+       * @param value The batteryLevel to set.
+       * @return This builder for chaining.
+       */
+      public Builder setBatteryLevel(int value) {
+        
+        batteryLevel_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 batteryLevel = 3;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearBatteryLevel() {
+        
+        batteryLevel_ = 0;
         onChanged();
         return this;
       }
@@ -6329,15 +6397,16 @@ public final class DroneOuterClass {
       "Quitting\030\007 \001(\010\022\031\n\021deliveryCompleted\030\010 \001(" +
       "\005\"\037\n\013PingRequest\022\020\n\010recovery\030\001 \001(\010\"2\n\014Pi" +
       "ngResponse\022\017\n\007pingAck\030\001 \001(\010\022\021\n\tnextDrone" +
-      "\030\002 \001(\005\"+\n\013ElectionReq\022\013\n\003msg\030\001 \001(\t\022\017\n\007dr" +
-      "oneID\030\002 \001(\005\"\032\n\013ElectionAck\022\013\n\003ack\030\001 \001(\0102" +
-      "\372\001\n\005Drone\0226\n\003Add\022\026.grpc.drone.AddRequest" +
-      "\032\027.grpc.drone.AddResponse\022@\n\tSendOrder\022\030" +
-      ".grpc.drone.OrderRequest\032\031.grpc.drone.Or" +
-      "derResponse\0229\n\004Ping\022\027.grpc.drone.PingReq" +
-      "uest\032\030.grpc.drone.PingResponse\022<\n\010Electi" +
-      "on\022\027.grpc.drone.ElectionReq\032\027.grpc.drone" +
-      ".ElectionAckb\006proto3"
+      "\030\002 \001(\005\"A\n\013ElectionReq\022\013\n\003msg\030\001 \001(\t\022\017\n\007dr" +
+      "oneID\030\002 \001(\005\022\024\n\014batteryLevel\030\003 \001(\005\"\032\n\013Ele" +
+      "ctionAck\022\013\n\003ack\030\001 \001(\0102\372\001\n\005Drone\0226\n\003Add\022\026" +
+      ".grpc.drone.AddRequest\032\027.grpc.drone.AddR" +
+      "esponse\022@\n\tSendOrder\022\030.grpc.drone.OrderR" +
+      "equest\032\031.grpc.drone.OrderResponse\0229\n\004Pin" +
+      "g\022\027.grpc.drone.PingRequest\032\030.grpc.drone." +
+      "PingResponse\022<\n\010Election\022\027.grpc.drone.El" +
+      "ectionReq\032\027.grpc.drone.ElectionAckb\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6384,7 +6453,7 @@ public final class DroneOuterClass {
     internal_static_grpc_drone_ElectionReq_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_ElectionReq_descriptor,
-        new java.lang.String[] { "Msg", "DroneID", });
+        new java.lang.String[] { "Msg", "DroneID", "BatteryLevel", });
     internal_static_grpc_drone_ElectionAck_descriptor =
       getDescriptor().getMessageTypes().get(7);
     internal_static_grpc_drone_ElectionAck_fieldAccessorTable = new

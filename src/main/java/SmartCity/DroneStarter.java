@@ -30,16 +30,17 @@ public class DroneStarter {
 
         ClientResponse responseGetSmartCity = drone.getSmartCity();
         System.out.println("[SERVER] " + responseGetSmartCity.toString());
-        SmartCity dronelist = responseGetSmartCity.getEntity(SmartCity.class);
+        SmartCity smartcity = responseGetSmartCity.getEntity(SmartCity.class);
         signUpDrone(drone);
 
 
-        //if dronelist is not empty, make it normal drone, otherwise Master
-        if(dronelist.getDronelist().size() != 0){
+        //if smartcity is not empty, make it a normal drone, otherwise Master
+        if(smartcity.getDronelist().size() > 0){
             Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
             listeningService.start();
 
-            drone.setMasterDrone(DroneRPCSendingService.addDroneRequest(drone, dronelist));
+            //save master drone
+            DroneRPCSendingService.addDroneRequest(drone);
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
 
@@ -63,7 +64,6 @@ public class DroneStarter {
         }
         else{
             drone.setNextDrone(drone);
-            drone.setNextNextDrone(drone);
             drone.setMaster(true);
 
             Thread simulator = new PM10Simulator(drone.getBuff());
@@ -73,8 +73,6 @@ public class DroneStarter {
             Thread thread = new Thread(sender);
             thread.start();
         }
-
-
     }
 
 

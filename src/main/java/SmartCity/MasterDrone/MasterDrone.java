@@ -19,7 +19,6 @@ public class MasterDrone implements Runnable{
 
     private Drone drone;
     int qos = 2;
-    private int nextDrone = 0;
 
     public MasterDrone(Drone drone){
         this.drone = drone;

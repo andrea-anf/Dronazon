@@ -1,117 +1,98 @@
 package SmartCity;
 
 import SmartCity.RPCServices.DroneRPCSendingService;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.List;
 
 public class CheckDrone extends Thread {
     private Drone sender;
-    private Drone target;
-    private List<Drone> dronelist;
+    private Drone next;
 
     public CheckDrone(Drone sender) {
         this.sender = sender;
     }
 
     public void run() {
-        while(true){
-            pingAndFix();
+        while (true) {
+            if(sender.getById(sender.getNextDrone().getId()) != null){
+                next = sender.getById(sender.getNextDrone().getId());
+                System.out.println("[PING] To " + next.getId());
+                if (ping(next) == -1) {
+                    sender.removeFromDronelist(next);
+
+                    if(sender.getNextNextDrone() != null && sender.getById(sender.getNextNextDrone().getId()) != null) {
+                        Drone nextNext = sender.getById(sender.getNextNextDrone().getId());
+                        System.out.println("[PING] Fixing ring with " + nextNext.getId());
+                        int fixResult = fix(nextNext);
+
+                        if(next.getId() == sender.getMasterDrone().getId() && fixResult == 0){
+                            sender.showDroneList();
+                            System.out.println("[PING] Master down, starting a new election");
+                            sender.setMasterDrone(null);
+                            DroneRPCSendingService.sendElection(sender.getId(), sender.getNextDrone(), "election");
+
+//                            synchronized (sender.getWaitForElectionLock()){
+//                                while(sender.getMasterDrone() == null){
+//                                    try {
+//                                        sender.getWaitForElectionLock().wait();
+//                                    } catch (InterruptedException e) {
+//                                        e.printStackTrace();
+//                                    }
+//                                }
+//                            }
+                        }
+                        else if(fixResult == -1) {
+                            try {
+                                sender.quitDrone();
+                            } catch (MqttException e) {
+                                e.printStackTrace();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    sender.showDroneList();
+                }
+            }
+
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-//        while (true) {
-//            System.out.println("\n[RING] Ping:");
-//
-//            //DOWN CASE
-//            if (!DroneRPCSendingService.pingDrone()) {
-//                //MASTER CASE
-//                if (sender.getNextDrone().getId() == sender.getMasterDrone().getId()) {
-//                    System.out.println("\n\tNext Drone " + sender.getNextDrone().getId() + "[MASTER] DOWN");
-//                    System.out.println("\tMaster not reachable, need to start an election");
-//                    DroneRPCSendingService.sendElection(sender.getId(), sender.getNextNextDrone(), "election");
-//                    sender.setPartecipation(true);
-//                    //wait until the end of election
-////                    synchronized (sender.getWaitForElectionLock()) {
-////                        while (sender.isPartecipation()) {
-////                            try {
-////                                sender.getWaitForElectionLock().wait();
-////                            } catch (InterruptedException e) {
-////                                e.printStackTrace();
-////                            }
-////                        }
-////                        sender.setPartecipation(false);
-////                    }
-//                }
-//                System.out.println("\n\tDrone " + sender.getNextDrone().getId() + " DOWN");
-//                sender.setNextDrone(sender.getNextNextDrone());
-//
-//                //if next drone is down, pings nextNext Drone, and if it's not reachable and it was master, starts an election
-//                if (!DroneRPCSendingService.pingDrone(sender.getNextNextDrone())) {
-//                    if (sender.getNextNextDrone().getId() == sender.getMasterDrone().getId()) {
-//                        System.out.println("\n\tNext Next Drone " + sender.getNextNextDrone().getId() + "[MASTER] DOWN");
-//                        System.out.println("\tMaster not reachable, but I don't know other drones!!!");
-//                    }
-//                    System.out.println("\n\tNext Next Drone " + sender.getNextNextDrone().getId() + " DOWN");
-//
-//               //if NextNext Drone is up, do nothing
-//                } else {
-//                    if (sender.getNextNextDrone().getId() == sender.getMasterDrone().getId()) {
-//                        System.out.println("\tNext Next Drone " + sender.getNextNextDrone().getId() + "[MASTER] UP");
-//
-//                    } else {
-//                        System.out.println("\tNext Next Drone " + sender.getNextDrone().getId() + " UP");
-//                    }
-//                }
-//                //if Next Drone is up, do nothing
-//            } else {
-//                if (sender.getNextDrone().getId() == sender.getMasterDrone().getId()) {
-//                    System.out.println("\tNext Drone " + sender.getNextDrone().getId() + "[MASTER] UP");
-//
-//                } else {
-//                    System.out.println("\tNext Drone " + sender.getNextDrone().getId() + " UP");
-//                }
-//            }
-//            try {
-//                Thread.sleep(5000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//        }
 
     }
 
-    public void pingAndFix(){
-        if(DroneRPCSendingService.pingDrone(sender.getNextDrone(), false) == -1){
-            sender.getDronelist().remove(sender.getNextDrone());
+    public int ping(Drone next) {
+        int pingNextResult = DroneRPCSendingService.pingDrone(next, false);
 
-            int nextNextID = DroneRPCSendingService.pingDrone(sender.getNextNextDrone(), true);
-
-            if(nextNextID == -1){
-                System.out.println("[PING] No more drones available");
-                sender.getDronelist().remove(sender.getNextNextDrone());
-//
-//                sender.setNextDrone(sender);
-//                sender.setNextNextDrone(sender);
-
-                sender.showDroneList();
-
-            }
-            else {
-                System.out.println("[PING] fixing connection between drones");
-                if(sender.getNextDrone() == sender.getMasterDrone()){
-                    sender.setMasterDrone(null);
-                    DroneRPCSendingService.sendElection(sender.getId(), sender.getNextNextDrone(), "election");
-                }
-//TODO: perchè diavolo non cancella il master dalla lista?????
-                sender.setNextDrone(sender.getNextNextDrone());
-                sender.setNextNextDrone(sender.getById(nextNextID));
-                sender.showDroneList();
-
-            }
+        if (pingNextResult == -1) {
+            System.out.println("[PING] Drone " + next.getId() + " unreachable");
         }
+        return pingNextResult;
+    }
 
+
+    int fix(Drone nextNext) {
+
+        int nextNextID = DroneRPCSendingService.pingDrone(nextNext, true);
+
+        if (nextNextID == -1) {
+            System.out.println("[PING] Recovery failed [1] Can't reach next drone");
+            sender.getDronelist().remove(sender.getById(nextNext.getId()));
+            return -1;
+
+        } else if(nextNextID == sender.getId()){
+            System.out.println("[PING] Recovery failed [2] Trying to reach myself");
+            return -1;
+        }
+        else{
+            System.out.println("[PING] Fixing connection between drones");
+            sender.setNextDrone(sender.getNextNextDrone());
+            sender.setNextNextDrone(sender.getById(nextNextID));
+            return 0;
+        }
     }
 }

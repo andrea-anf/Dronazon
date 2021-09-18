@@ -228,13 +228,15 @@ public class Drone {
 
 
     //DRONELIST
-    public List<Drone> getDronelist() {
+    public synchronized List<Drone> getDronelist() {
         return dronelist;
     }
     public void setDronelist(List<Drone> dronelist) {
         this.dronelist = dronelist;
     }
-
+    public void removeFromDronelist(Drone drone) {
+        this.dronelist.remove(drone);
+    }
     public void addToDronelist(Drone drone){
         this.dronelist.add(drone);
     }
@@ -272,7 +274,7 @@ public class Drone {
                 if(this.getNextDrone() != null && d.getId() == this.getNextDrone().getId()){
                     System.out.print("\t [NEXT]\n");
                 }
-                else if(this.getNextDrone() != null && d.getId() == this.getNextNextDrone().getId()){
+                else if(this.getNextNextDrone() != null && d.getId() == this.getNextNextDrone().getId()){
                     System.out.print("\t [NEXT NEXT DRONE]\n");
                 }
                 else{
@@ -368,7 +370,6 @@ public class Drone {
     public Object getDronelistLock() {
         return dronelistLock;
     }
-
     public Object getWaitForElectionLock() {
         return waitForElectionLock;
     }

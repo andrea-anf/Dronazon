@@ -49,6 +49,7 @@ message PingResponse {
 message ElectionReq {
   string msg = 1;
   int32 droneID = 2;
+  int32 batteryLevel = 3;
 }
 message ElectionAck {
   bool ack = 1;
