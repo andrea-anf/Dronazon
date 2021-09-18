@@ -1,6 +1,7 @@
 package SmartCity.RPCServices;
 
 import SmartCity.Drone;
+import SmartCity.MasterDrone.MasterDrone;
 import SmartCity.SmartCity;
 import grpc.drone.DroneGrpc;
 import grpc.drone.DroneOuterClass;
@@ -86,7 +87,7 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
                             "\n\tNextNextDrone: " + response.getIDnextNextDrone());
 
                     if(drone.isMasterPrevDrone()){
-                        System.out.println("\t[RING] Master Previous Drone: True");
+                        System.out.println("\n\t[RING] Master Previous Drone: True");
                     }
                     drone.showDroneList();
                 }
@@ -94,16 +95,24 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         }
         //if no drones are founds, starts an election
         if(masterFound == false){
-            System.out.println("\n[RING] No master masterFound");
-            System.out.println("[RING] Need to starts an election");
+//            if(drone.getDronelist().size() == 1){
+//                Runnable sender = new MasterDrone(drone);
+//                Thread thread = new Thread(sender);
+//                thread.start();
+//            }
+//            else{
+//                DroneRPCSendingService.sendElection(drone.getId(), drone.getBatteryLevel(), drone.getDronelist().get(0));
+//            }
+            System.out.println("\n[RING] No master found, need to start an election");
             return null;
         }
             return master;
 
     }
 
-    public static void sendElection(int starter, Drone target, String message){
-        System.out.println("[ELECTION] Sending the election message: to" + target.getId());
+    public static void sendElection(int senderId, int senderBattery, Drone target, String message){
+        System.out.println("[ELECTION] Sending the election message to " + target.getId());
+
         final ManagedChannel channel = ManagedChannelBuilder
                 .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
                 .usePlaintext()
@@ -112,12 +121,12 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
         ElectionReq request = ElectionReq.newBuilder()
                 .setMsg(message)
-                .setDroneID(starter)
+                .setDroneID(senderId)
+                .setBatteryLevel(senderBattery)
                 .build();
 
         try{
             ElectionAck resp = stub.election(request);
-            System.out.println("[ELECTION] ACK : " + resp.getAck());
         }
         catch(StatusRuntimeException sre){
             sre.getStackTrace();

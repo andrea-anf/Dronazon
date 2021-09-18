@@ -53,7 +53,6 @@ public class Drone {
     private Queue<String> orderQueue = new LinkedList<>();
     private boolean delivering = false;
 
-
     //locks
     private final Object deliveryLock = new Object();
     private final Object dronelistLock = new Object();
@@ -251,7 +250,7 @@ public class Drone {
     }
 
     public void showDroneList(){
-        System.out.println("\n[RING] SmartCity:");
+        System.out.println("\n[RING - " + this.getId() +"] SmartCity:");
         for(Drone d : this.getDronelist()){
             System.out.print(
                     "\tID: " + d.getId() +

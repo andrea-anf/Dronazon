@@ -38,7 +38,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         Drone newDrone = this.craftNewDrone(request);
         drone.addToDronelist(newDrone);
 
-        System.out.println("\n[RING] New drone is joining the ring: " +
+        System.out.println("\n[RING - " + drone.getId() +"] New drone is joining the ring: " +
                 "\n\tID: " + newDrone.getId() +
                 "\n\tAddress: " + newDrone.getLocalAddress() +
                 "\n\tPort: " + newDrone.getLocalPort() +
@@ -75,10 +75,12 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
                         .setResponse(1)
                         .setIDnextDrone(drone.getNextDrone().getId())
                         .setIDnextNextDrone(0)
+
                         .setAddressNextDrone(drone.getNextDrone().getLocalAddress())
-                        .setAddressNextNextDrone("")
+                        .setAddressNextNextDrone(drone.getLocalAddress())
+
                         .setPortNextDrone(drone.getNextDrone().getLocalPort())
-                        .setPortNextNextDrone("")
+                        .setPortNextNextDrone(drone.getLocalPort())
                         .setIDmasterPrevDrone(isPrevToMaster)
                         .build();
             }
@@ -135,19 +137,30 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
 
         System.out.println("\n[ELECTION] Received election message" +
                 "\n\tMessage: " + election.getMsg() +
-                "\n\tCandidate: " + election.getDroneID());
+                "\n\tCandidate: " + election.getDroneID() +
+                "\n\tBatteryLeft: " + election.getBatteryLevel());
 
         ElectionAck electionAck = ElectionAck.newBuilder().setAck(true).build();
+
+        //check that old master drone has been removed from dronelist
+        if(drone.getMasterDrone() != null){
+            if(drone.getNextNextDrone().getId() == drone.getMasterDrone().getId()){
+                drone.setNextNextDrone(null);
+            }
+            drone.removeFromDronelist(drone.getMasterDrone());
+            drone.setMasterDrone(null);
+        }
 
         if(election.getDroneID() == drone.getId()){
             if(election.getMsg().equals("election")){
                 drone.setPartecipation(false);
                 System.out.println("\n[ELECTION] Voting terminated, notifying other drones");
                 System.out.println("\n[ELECTION] Makes others know who I am");
-                DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "elected");
+                DroneRPCSendingService.sendElection(drone.getId(), drone.getBatteryLevel(), drone.getNextDrone(), "elected");
             }
             else{
                 System.out.println("\n[ELECTION] Election terminated.");
+                drone.showDroneList();
                 Runnable sender = new MasterDrone(drone);
                 Thread thread = new Thread(sender);
                 thread.start();
@@ -155,35 +168,67 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         }
         else {
             if(election.getMsg().equals("election")){
-                if(election.getDroneID() > drone.getId()){
-                    drone.setPartecipation(true);
-                    //if electionID is greater than drone's id, forwards the message
-                    System.out.println("[ELECTION] Forwarding the election message:" +
-                            "\n\tMessage: " + election.getMsg() +
-                            "\n\tCandidate: " + election.getDroneID() +
-                            "\n\tto " + drone.getNextDrone().getId());
-                    DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "election");
+
+                //verify battery level
+                if(election.getBatteryLevel() > drone.getBatteryLevel()){
+                        drone.setPartecipation(true);
+                        //if electionID is greater than drone's id, forwards the message
+                        System.out.println("[ELECTION] Forwarding the election message:" +
+                                "\n\tMessage: " + election.getMsg() +
+                                "\n\tCandidate: " + election.getDroneID() +
+                                "\n\tBatteryLeft: " + election.getBatteryLevel() +
+                                "\n\tto " + drone.getNextDrone().getId());
+                        DroneRPCSendingService.sendElection(election.getDroneID(), election.getBatteryLevel(),drone.getNextDrone(), "election");
                 }
-                else{
+                else if(election.getBatteryLevel() < drone.getBatteryLevel()){
                     if(drone.isPartecipation() == false){
                         drone.setPartecipation(true);
                         System.out.println("[ELECTION] Updating and forwarding the election message:" +
                                 "\n\tMessage: " + election.getMsg() +
                                 "\n\tCandidate: " + drone.getId() +
+                                "\n\tBatteryLeft: " + drone.getBatteryLevel() +
                                 "\n\tTo " + drone.getNextDrone().getId());
-                        DroneRPCSendingService.sendElection(drone.getId(), drone.getNextDrone(), "election");
+                        DroneRPCSendingService.sendElection(drone.getId(), drone.getBatteryLevel(), drone.getNextDrone(), "election");
                     }
                     else{
                         System.out.println("[ELECTION] Replica Election with a lower Id, stopping");
                     }
-                }            }
+                }
+                //if battery level are the same, pick the one with higher ID
+                else{
+                    if(election.getDroneID() > drone.getId()){
+                        drone.setPartecipation(true);
+                        //if electionID is greater than drone's id, forwards the message
+                        System.out.println("[ELECTION] Forwarding the election message:" +
+                                "\n\tMessage: " + election.getMsg() +
+                                "\n\tCandidate: " + election.getDroneID() +
+                                "\n\tBatteryLeft: " + election.getBatteryLevel() +
+                                "\n\tto " + drone.getNextDrone().getId());
+                        DroneRPCSendingService.sendElection(election.getDroneID(),election.getBatteryLevel(),drone.getNextDrone(), "election");
+                    }
+                    else {
+                        if(drone.isPartecipation() == false){
+                            drone.setPartecipation(true);
+                            System.out.println("[ELECTION] Updating and forwarding the election message:" +
+                                    "\n\tMessage: " + election.getMsg() +
+                                    "\n\tCandidate: " + drone.getId() +
+                                    "\n\tBatteryLeft: " + drone.getBatteryLevel() +
+                                    "\n\tTo " + drone.getNextDrone().getId());
+                            DroneRPCSendingService.sendElection(drone.getId(), drone.getBatteryLevel(), drone.getNextDrone(), "election");
+                        }
+                        else{
+                            System.out.println("[ELECTION] Replica Election with a lower Id, stopping");
+                        }
+                    }
+                }
+            }
             else if(election.getMsg().equals("elected")){
-                System.out.println("[ELECTION] forwarding the election message:" +
+                System.out.println("[ELECTION] forwarding the elected message:" +
                         "\n\tMessage: " + election.getMsg() +
                         "\n\tMaster: " + election.getDroneID() +
                         "\n\tTo " + drone.getNextDrone().getId());
 
-                DroneRPCSendingService.sendElection(election.getDroneID(), drone.getNextDrone(), "elected");
+                DroneRPCSendingService.sendElection(election.getDroneID(), election.getBatteryLevel(), drone.getNextDrone(), "elected");
 //                drone.getWaitForElectionLock().notify();
                 drone.setMasterDrone(drone.getById(election.getDroneID()));
                 System.out.println("\n[ELECTION] Election terminated. New Master: " + drone.getMasterDrone().getId());
@@ -284,9 +329,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     }
 
 
-    public void responseToElection(ElectionReq election){
-
-    }
 
     Drone craftNewDrone(AddRequest request){
         Drone newDrone = new Drone();

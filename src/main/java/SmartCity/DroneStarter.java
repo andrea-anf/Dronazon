@@ -34,24 +34,30 @@ public class DroneStarter {
         signUpDrone(drone);
 
 
+        //Drone starts to listen to other drones
+        Server server = ServerBuilder
+                .forPort(Integer.parseInt(drone.getLocalPort()))
+                .addService(new DroneRPCListeningService(drone))
+                .build();
+        server.start();
+
+
+
         //if smartcity is not empty, make it a normal drone, otherwise Master
         if(smartcity.getDronelist().size() > 0){
-            Server listeningService = ServerBuilder.forPort(Integer.parseInt(drone.getLocalPort())).addService(new DroneRPCListeningService(drone)).build();
-            listeningService.start();
+            System.out.println("[INFO] Drone started to listen to other drones");
 
-            //save master drone
             DroneRPCSendingService.addDroneRequest(drone);
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
 
-            Runnable statSender = new StatsSender(drone);
-            Thread threadStatSender = new Thread(statSender);
-            threadStatSender.start();
-
-
             Runnable checkDrone = new CheckDrone(drone);
             Thread threadCheckStatus = new Thread(checkDrone);
             threadCheckStatus.start();
+
+            Runnable statSender = new StatsSender(drone);
+            Thread threadStatSender = new Thread(statSender);
+            threadStatSender.start();
 
             System.out.println("\n...Press enter to stop...");
             input.nextLine();
@@ -63,11 +69,16 @@ public class DroneStarter {
 
         }
         else{
+            System.out.println("[INFO] Master started to listen to other drones");
             drone.setNextDrone(drone);
-            drone.setMaster(true);
+
 
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
+
+            Runnable statSender = new StatsSender(drone);
+            Thread threadStatSender = new Thread(statSender);
+            threadStatSender.start();
 
             Runnable sender = new MasterDrone(drone);
             Thread thread = new Thread(sender);

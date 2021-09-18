@@ -29,14 +29,8 @@ public class MasterDrone implements Runnable{
         Scanner input = new Scanner(System.in);
 
         try {
-
-            //######## STARTS TO LISTEN TO OTHER DRONES ########
-            Server server = ServerBuilder
-                    .forPort(Integer.parseInt(drone.getLocalPort()))
-                    .addService(new DroneRPCListeningService(drone))
-                    .build();
-            server.start();
-            System.out.println("\n[RING] Master started to listen!");
+            drone.setMaster(true);
+            drone.setMasterDrone(drone);
 
 
             // CONNECTING AS MQTT CLIENT
@@ -48,11 +42,6 @@ public class MasterDrone implements Runnable{
             drone.getClient().connect(connOpts);
             System.out.println("[BROKER] Successfully connected!");
 
-
-            //START TO SEND STATISTICS TO SERVER
-            Runnable sender = new StatsSender(drone);
-            Thread thread = new Thread(sender);
-            thread.start();
 
             drone.getClient().setCallback(new  MqttCallback() {
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
@@ -129,7 +118,7 @@ public class MasterDrone implements Runnable{
             input.hasNextLine();
             drone.quitDrone();
 
-        } catch (MqttException | IOException | InterruptedException me) {
+        } catch (MqttException | InterruptedException me) {
             System.out.println(me.getStackTrace());
         }
     }
