@@ -1,5 +1,6 @@
-package SmartCity;
+package SmartCity.BatteryRecharge;
 
+import SmartCity.Drone;
 import SmartCity.RPCServices.DroneRPCSendingService;
 
 import java.sql.Timestamp;

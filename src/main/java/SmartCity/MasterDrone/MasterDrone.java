@@ -1,18 +1,12 @@
 package SmartCity.MasterDrone;
 
+import SmartCity.CheckDrone;
 import SmartCity.Drone;
 import SmartCity.MasterDrone.Orders.DispatchingService;
-import SmartCity.RPCServices.DroneRPCListeningService;
 
-import SmartCity.RechargeBattery;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
 import org.eclipse.paho.client.mqttv3.*;
 
-import java.io.IOException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
 public class MasterDrone implements Runnable{
@@ -34,6 +28,10 @@ public class MasterDrone implements Runnable{
         try {
             drone.setMaster(true);
             drone.setMasterDrone(drone);
+
+            Runnable checkDrone = new CheckDrone(drone);
+            Thread threadCheckStatus = new Thread(checkDrone);
+            threadCheckStatus.start();
 
 
             // CONNECTING AS MQTT CLIENT
@@ -117,6 +115,7 @@ public class MasterDrone implements Runnable{
                             " is now subscribed to topic : " +
                             topic);
 
+            System.out.println("\n...Enter 'quit' to stop | 're' for recharge...");
             //waiting to break connection with broker
             while (true) {
                 String command = input.next(); // read any token from the input as String

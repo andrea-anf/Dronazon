@@ -20,12 +20,7 @@ import grpc.drone.DroneOuterClass.RechargePermissionAck;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-import io.grpc.stub.StreamObserver;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
 
@@ -142,27 +137,26 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
     public static int pingDrone(Drone target, boolean recovery){
         PingResponse response = null;
 
-        if(target != null) {
-            final ManagedChannel channel = ManagedChannelBuilder
-                    .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
-                    .usePlaintext()
-                    .build();
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
+                .usePlaintext()
+                .build();
 
-            DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
 
-            PingRequest request = PingRequest.newBuilder()
-                    .setRecovery(recovery)
-                    .build();
+        PingRequest request = PingRequest.newBuilder()
+                .setRecovery(recovery)
+                .build();
 
-            //handle response
-            try {
-                response = stub.ping(request);
-            } catch (StatusRuntimeException error) {
-                response = null;
-            }
-            channel.shutdown();
-
+        //handle response
+        try {
+            response = stub.ping(request);
+        } catch (StatusRuntimeException error) {
+            response = null;
         }
+        channel.shutdown();
+
+
         if (response == null || response.getPingAck() == false) {
             return -1;
         } else {
@@ -229,8 +223,6 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
             return 0;
         }
     }
-
-
 
     public static boolean sendRechargeRequest(Drone sender, Drone target, String timestamp){
 

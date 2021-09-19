@@ -1,6 +1,8 @@
 package SmartCity;
 
 import Amministrazione.Coordinates;
+import SmartCity.BatteryRecharge.RechargeBattery;
+import SmartCity.BatteryRecharge.RechargeBatteryPermission;
 import SmartCity.SensoreInquinamento.Buffer;
 import SmartCity.SensoreInquinamento.Measurement;
 import SmartCity.MasterDrone.Statistics;
@@ -12,7 +14,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @XmlRootElement
@@ -263,7 +264,7 @@ public class Drone {
                 if(d.getId() == this.getNextDrone().getId()){
                     System.out.print("\t [MASTER] [NEXT DRONE]\n");
                 }
-                else if(d.getId() == this.getNextNextDrone().getId()){
+                else if(this.getNextNextDrone() != null && d.getId() == this.getNextNextDrone().getId()){
                     System.out.print("\t [MASTER] [NEXT NEXT DRONE]\n");
                 }
                 else{

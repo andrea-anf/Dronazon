@@ -61,7 +61,7 @@ public class DroneStarter {
             Thread threadStatSender = new Thread(statSender);
             threadStatSender.start();
 
-            System.out.println("\n...Enter 'quit' to stop | re for recharge...");
+            System.out.println("\n...Enter 'quit' to stop | 're' for recharge...");
             while (true) {
                 String command = input.next(); // read any token from the input as String
                 System.out.println("Command " + command); // optional message to indicate exit
@@ -85,7 +85,6 @@ public class DroneStarter {
         else{
             System.out.println("[INFO] Master started to listen to other drones");
             drone.setNextDrone(drone);
-
 
             Thread simulator = new PM10Simulator(drone.getBuff());
             simulator.start();
