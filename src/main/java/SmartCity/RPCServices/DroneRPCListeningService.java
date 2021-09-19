@@ -16,13 +16,19 @@ import grpc.drone.DroneOuterClass.PingRequest;
 import grpc.drone.DroneOuterClass.PingResponse;
 import grpc.drone.DroneOuterClass.ElectionReq;
 import grpc.drone.DroneOuterClass.ElectionAck;
+import grpc.drone.DroneOuterClass.RechargeRequest;
+import grpc.drone.DroneOuterClass.RechargeResponse;
+import grpc.drone.DroneOuterClass.RechargePermission;
+import grpc.drone.DroneOuterClass.RechargePermissionAck;
 
-
-import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     private Drone drone;
@@ -120,7 +126,7 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     public void ping(PingRequest ping, StreamObserver<PingResponse> responseObserver) {
         int nextDroneID = 0;
         if(ping.getRecovery()){
-            nextDroneID = drone.getId();
+            nextDroneID = drone.getNextDrone().getId();
         }
 
         boolean quitting = !drone.isQuitting();
@@ -239,7 +245,6 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
         responseObserver.onCompleted();
     }
 
-
     @Override
     public void sendOrder(OrderRequest order, StreamObserver<OrderResponse> responseObserver) {
         System.out.println("\n[ORDER] Receiving order number " + order.getId());
@@ -329,6 +334,54 @@ public class DroneRPCListeningService extends DroneGrpc.DroneImplBase {
     }
 
 
+    @Override
+    public void recharge(RechargeRequest rechargeRequest, StreamObserver<RechargeResponse> responseObserver) {
+
+//        da gestire anche il timestamp!!!
+        Date droneTimestamp;
+        Date requestTimestamp;
+
+        droneTimestamp = drone.getTimestampToRecharge();
+        requestTimestamp = Timestamp.valueOf(rechargeRequest.getTimestamp());
+
+        if(drone.isRecharging()){
+            drone.addDroneToOkRecharge(drone.getById(rechargeRequest.getDroneId()));
+            System.out.println("[BATTERY] Adding drone " + rechargeRequest.getDroneId() + " in queue");
+            RechargeResponse response = RechargeResponse.newBuilder().setResponse("NO").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+        else if(drone.isWantsToRecharge() && (droneTimestamp.compareTo(requestTimestamp)) < 0){
+            drone.addDroneToOkRecharge(drone.getById(rechargeRequest.getDroneId()));
+            System.out.println("[BATTERY] Adding drone " + rechargeRequest.getDroneId() + " in queue");
+            RechargeResponse response = RechargeResponse.newBuilder().setResponse("NO").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+        else{
+            System.out.println("[BATTERY] OK");
+            RechargeResponse response = RechargeResponse.newBuilder().setResponse("OK").build();
+            responseObserver.onNext(response);
+            responseObserver.onCompleted();
+        }
+
+
+    }
+
+    @Override
+    public void rechargeOK(RechargePermission permission, StreamObserver<RechargePermissionAck> responseObserver){
+        RechargePermissionAck response = RechargePermissionAck.newBuilder().setAck("ack").build();
+
+        /// TODO non si riceve risposta quando un drone viene messo in coda
+        // vedere il print sotto per capire se almeno legge l'arrivo del permesso
+        drone.removeDroneToRecharge(drone.getById(permission.getDroneId()));
+        synchronized (drone.getWaitForRecharge()){
+            System.out.println("[BATTERY] Drone " + permission.getDroneId() + " finished.");
+            drone.getWaitForRecharge().notify();
+        }
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 
     Drone craftNewDrone(AddRequest request){
         Drone newDrone = new Drone();

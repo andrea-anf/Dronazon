@@ -11,13 +11,15 @@ import io.grpc.ServerBuilder;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 
 public class DroneStarter {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, MqttException, InterruptedException {
 
         Scanner input = new Scanner(System.in);
         Drone drone = new Drone();
@@ -59,13 +61,25 @@ public class DroneStarter {
             Thread threadStatSender = new Thread(statSender);
             threadStatSender.start();
 
-            System.out.println("\n...Press enter to stop...");
-            input.nextLine();
-            try {
-                drone.quitDrone();
-            } catch (MqttException | InterruptedException e) {
-                e.printStackTrace();
+            System.out.println("\n...Enter 'quit' to stop | re for recharge...");
+            while (true) {
+                String command = input.next(); // read any token from the input as String
+                System.out.println("Command " + command); // optional message to indicate exit
+                switch (command) {
+                    case "re":
+                        drone.rechargeDrone();
+                        break;
+                    case "quit":
+                        System.out.println("Bye!"); // optional message to indicate exit
+                        drone.quitDrone();
+                        break;
+                    default:
+                        System.out.println("Invalid input");
+                        break;
+                }
             }
+
+
 
         }
         else{
@@ -105,7 +119,7 @@ public class DroneStarter {
             }
         }
         drone.showDroneList();
-
-
     }
+
+
 }

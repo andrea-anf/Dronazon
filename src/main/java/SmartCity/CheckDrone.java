@@ -30,15 +30,7 @@ public class CheckDrone extends Thread {
                             sender.setMasterDrone(null);
                             DroneRPCSendingService.sendElection(sender.getId(), sender.getBatteryLevel(), sender.getNextDrone(), "election");
 
-//                            synchronized (sender.getWaitForElectionLock()){
-//                                while(sender.getMasterDrone() == null){
-//                                    try {
-//                                        sender.getWaitForElectionLock().wait();
-//                                    } catch (InterruptedException e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            }
+
                         }
                         else if(fixResult == -1) {
                             try {
@@ -50,17 +42,21 @@ public class CheckDrone extends Thread {
                     }
                     sender.showDroneList();
                 }
-                if(sender.getDronelist().size() > 2) {
-                    if(sender.getNextNextDrone() == null || sender.getNextNextDrone().getId() == 0){
+
+                if(sender.getDronelist().size() > 2 && ping(sender.getNextNextDrone()) != 0) {
+                    if( sender.getNextNextDrone() != null){
+                        //remove drone
+                        sender.removeFromDronelist(sender.getById(sender.getNextNextDrone().getId()));
                         fixNextNext(sender.getNextDrone());
+                        sender.showDroneList();
                     }
+
                 }
                 else if(sender.getDronelist().size() == 2){
                     sender.setNextNextDrone(sender.getNextDrone());
                 }
 
             }
-
 
             try {
                 Thread.sleep(5000);
@@ -120,6 +116,7 @@ public class CheckDrone extends Thread {
             System.out.println("[PING] Fixing connection between drones");
             sender.setNextDrone(sender.getById(sender.getNextNextDrone().getId()));
             sender.setNextNextDrone(sender.getById(nextNextID));
+
             System.out.println("[INFO] NextDrone: " + sender.getNextDrone().getId());
             System.out.println("[INFO] NextNextDrone: " + sender.getNextNextDrone().getId());
 

@@ -6331,6 +6331,2406 @@ public final class DroneOuterClass {
 
   }
 
+  public interface RechargeRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.RechargeRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 droneId = 1;</code>
+     * @return The droneId.
+     */
+    int getDroneId();
+
+    /**
+     * <code>string timestamp = 2;</code>
+     * @return The timestamp.
+     */
+    java.lang.String getTimestamp();
+    /**
+     * <code>string timestamp = 2;</code>
+     * @return The bytes for timestamp.
+     */
+    com.google.protobuf.ByteString
+        getTimestampBytes();
+  }
+  /**
+   * Protobuf type {@code grpc.drone.RechargeRequest}
+   */
+  public  static final class RechargeRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.drone.RechargeRequest)
+      RechargeRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RechargeRequest.newBuilder() to construct.
+    private RechargeRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RechargeRequest() {
+      timestamp_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RechargeRequest();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RechargeRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              droneId_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              timestamp_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.drone.DroneOuterClass.RechargeRequest.class, grpc.drone.DroneOuterClass.RechargeRequest.Builder.class);
+    }
+
+    public static final int DRONEID_FIELD_NUMBER = 1;
+    private int droneId_;
+    /**
+     * <code>int32 droneId = 1;</code>
+     * @return The droneId.
+     */
+    public int getDroneId() {
+      return droneId_;
+    }
+
+    public static final int TIMESTAMP_FIELD_NUMBER = 2;
+    private volatile java.lang.Object timestamp_;
+    /**
+     * <code>string timestamp = 2;</code>
+     * @return The timestamp.
+     */
+    public java.lang.String getTimestamp() {
+      java.lang.Object ref = timestamp_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        timestamp_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string timestamp = 2;</code>
+     * @return The bytes for timestamp.
+     */
+    public com.google.protobuf.ByteString
+        getTimestampBytes() {
+      java.lang.Object ref = timestamp_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        timestamp_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (droneId_ != 0) {
+        output.writeInt32(1, droneId_);
+      }
+      if (!getTimestampBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, timestamp_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (droneId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, droneId_);
+      }
+      if (!getTimestampBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, timestamp_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.drone.DroneOuterClass.RechargeRequest)) {
+        return super.equals(obj);
+      }
+      grpc.drone.DroneOuterClass.RechargeRequest other = (grpc.drone.DroneOuterClass.RechargeRequest) obj;
+
+      if (getDroneId()
+          != other.getDroneId()) return false;
+      if (!getTimestamp()
+          .equals(other.getTimestamp())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + DRONEID_FIELD_NUMBER;
+      hash = (53 * hash) + getDroneId();
+      hash = (37 * hash) + TIMESTAMP_FIELD_NUMBER;
+      hash = (53 * hash) + getTimestamp().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.RechargeRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.drone.RechargeRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.drone.RechargeRequest)
+        grpc.drone.DroneOuterClass.RechargeRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.drone.DroneOuterClass.RechargeRequest.class, grpc.drone.DroneOuterClass.RechargeRequest.Builder.class);
+      }
+
+      // Construct using grpc.drone.DroneOuterClass.RechargeRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        droneId_ = 0;
+
+        timestamp_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeRequest getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.RechargeRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeRequest build() {
+        grpc.drone.DroneOuterClass.RechargeRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeRequest buildPartial() {
+        grpc.drone.DroneOuterClass.RechargeRequest result = new grpc.drone.DroneOuterClass.RechargeRequest(this);
+        result.droneId_ = droneId_;
+        result.timestamp_ = timestamp_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.drone.DroneOuterClass.RechargeRequest) {
+          return mergeFrom((grpc.drone.DroneOuterClass.RechargeRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.RechargeRequest other) {
+        if (other == grpc.drone.DroneOuterClass.RechargeRequest.getDefaultInstance()) return this;
+        if (other.getDroneId() != 0) {
+          setDroneId(other.getDroneId());
+        }
+        if (!other.getTimestamp().isEmpty()) {
+          timestamp_ = other.timestamp_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.drone.DroneOuterClass.RechargeRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.drone.DroneOuterClass.RechargeRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int droneId_ ;
+      /**
+       * <code>int32 droneId = 1;</code>
+       * @return The droneId.
+       */
+      public int getDroneId() {
+        return droneId_;
+      }
+      /**
+       * <code>int32 droneId = 1;</code>
+       * @param value The droneId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDroneId(int value) {
+        
+        droneId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 droneId = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDroneId() {
+        
+        droneId_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object timestamp_ = "";
+      /**
+       * <code>string timestamp = 2;</code>
+       * @return The timestamp.
+       */
+      public java.lang.String getTimestamp() {
+        java.lang.Object ref = timestamp_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          timestamp_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string timestamp = 2;</code>
+       * @return The bytes for timestamp.
+       */
+      public com.google.protobuf.ByteString
+          getTimestampBytes() {
+        java.lang.Object ref = timestamp_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          timestamp_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string timestamp = 2;</code>
+       * @param value The timestamp to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTimestamp(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timestamp = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearTimestamp() {
+        
+        timestamp_ = getDefaultInstance().getTimestamp();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string timestamp = 2;</code>
+       * @param value The bytes for timestamp to set.
+       * @return This builder for chaining.
+       */
+      public Builder setTimestampBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        timestamp_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.drone.RechargeRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.drone.RechargeRequest)
+    private static final grpc.drone.DroneOuterClass.RechargeRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.RechargeRequest();
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargeRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RechargeRequest>
+        PARSER = new com.google.protobuf.AbstractParser<RechargeRequest>() {
+      @java.lang.Override
+      public RechargeRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RechargeRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RechargeRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RechargeRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.drone.DroneOuterClass.RechargeRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RechargeResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.RechargeResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string response = 1;</code>
+     * @return The response.
+     */
+    java.lang.String getResponse();
+    /**
+     * <code>string response = 1;</code>
+     * @return The bytes for response.
+     */
+    com.google.protobuf.ByteString
+        getResponseBytes();
+  }
+  /**
+   * Protobuf type {@code grpc.drone.RechargeResponse}
+   */
+  public  static final class RechargeResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.drone.RechargeResponse)
+      RechargeResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RechargeResponse.newBuilder() to construct.
+    private RechargeResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RechargeResponse() {
+      response_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RechargeResponse();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RechargeResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              response_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.drone.DroneOuterClass.RechargeResponse.class, grpc.drone.DroneOuterClass.RechargeResponse.Builder.class);
+    }
+
+    public static final int RESPONSE_FIELD_NUMBER = 1;
+    private volatile java.lang.Object response_;
+    /**
+     * <code>string response = 1;</code>
+     * @return The response.
+     */
+    public java.lang.String getResponse() {
+      java.lang.Object ref = response_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        response_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string response = 1;</code>
+     * @return The bytes for response.
+     */
+    public com.google.protobuf.ByteString
+        getResponseBytes() {
+      java.lang.Object ref = response_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        response_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getResponseBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, response_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getResponseBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, response_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.drone.DroneOuterClass.RechargeResponse)) {
+        return super.equals(obj);
+      }
+      grpc.drone.DroneOuterClass.RechargeResponse other = (grpc.drone.DroneOuterClass.RechargeResponse) obj;
+
+      if (!getResponse()
+          .equals(other.getResponse())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + RESPONSE_FIELD_NUMBER;
+      hash = (53 * hash) + getResponse().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargeResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.RechargeResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.drone.RechargeResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.drone.RechargeResponse)
+        grpc.drone.DroneOuterClass.RechargeResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.drone.DroneOuterClass.RechargeResponse.class, grpc.drone.DroneOuterClass.RechargeResponse.Builder.class);
+      }
+
+      // Construct using grpc.drone.DroneOuterClass.RechargeResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        response_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargeResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeResponse getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.RechargeResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeResponse build() {
+        grpc.drone.DroneOuterClass.RechargeResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargeResponse buildPartial() {
+        grpc.drone.DroneOuterClass.RechargeResponse result = new grpc.drone.DroneOuterClass.RechargeResponse(this);
+        result.response_ = response_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.drone.DroneOuterClass.RechargeResponse) {
+          return mergeFrom((grpc.drone.DroneOuterClass.RechargeResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.RechargeResponse other) {
+        if (other == grpc.drone.DroneOuterClass.RechargeResponse.getDefaultInstance()) return this;
+        if (!other.getResponse().isEmpty()) {
+          response_ = other.response_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.drone.DroneOuterClass.RechargeResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.drone.DroneOuterClass.RechargeResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object response_ = "";
+      /**
+       * <code>string response = 1;</code>
+       * @return The response.
+       */
+      public java.lang.String getResponse() {
+        java.lang.Object ref = response_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          response_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string response = 1;</code>
+       * @return The bytes for response.
+       */
+      public com.google.protobuf.ByteString
+          getResponseBytes() {
+        java.lang.Object ref = response_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          response_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string response = 1;</code>
+       * @param value The response to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResponse(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        response_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string response = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearResponse() {
+        
+        response_ = getDefaultInstance().getResponse();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string response = 1;</code>
+       * @param value The bytes for response to set.
+       * @return This builder for chaining.
+       */
+      public Builder setResponseBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        response_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.drone.RechargeResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.drone.RechargeResponse)
+    private static final grpc.drone.DroneOuterClass.RechargeResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.RechargeResponse();
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargeResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RechargeResponse>
+        PARSER = new com.google.protobuf.AbstractParser<RechargeResponse>() {
+      @java.lang.Override
+      public RechargeResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RechargeResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RechargeResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RechargeResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.drone.DroneOuterClass.RechargeResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RechargePermissionOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.RechargePermission)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string ok = 1;</code>
+     * @return The ok.
+     */
+    java.lang.String getOk();
+    /**
+     * <code>string ok = 1;</code>
+     * @return The bytes for ok.
+     */
+    com.google.protobuf.ByteString
+        getOkBytes();
+
+    /**
+     * <code>int32 droneId = 2;</code>
+     * @return The droneId.
+     */
+    int getDroneId();
+  }
+  /**
+   * Protobuf type {@code grpc.drone.RechargePermission}
+   */
+  public  static final class RechargePermission extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.drone.RechargePermission)
+      RechargePermissionOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RechargePermission.newBuilder() to construct.
+    private RechargePermission(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RechargePermission() {
+      ok_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RechargePermission();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RechargePermission(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ok_ = s;
+              break;
+            }
+            case 16: {
+
+              droneId_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermission_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermission_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.drone.DroneOuterClass.RechargePermission.class, grpc.drone.DroneOuterClass.RechargePermission.Builder.class);
+    }
+
+    public static final int OK_FIELD_NUMBER = 1;
+    private volatile java.lang.Object ok_;
+    /**
+     * <code>string ok = 1;</code>
+     * @return The ok.
+     */
+    public java.lang.String getOk() {
+      java.lang.Object ref = ok_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ok_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string ok = 1;</code>
+     * @return The bytes for ok.
+     */
+    public com.google.protobuf.ByteString
+        getOkBytes() {
+      java.lang.Object ref = ok_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ok_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DRONEID_FIELD_NUMBER = 2;
+    private int droneId_;
+    /**
+     * <code>int32 droneId = 2;</code>
+     * @return The droneId.
+     */
+    public int getDroneId() {
+      return droneId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getOkBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ok_);
+      }
+      if (droneId_ != 0) {
+        output.writeInt32(2, droneId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getOkBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ok_);
+      }
+      if (droneId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, droneId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.drone.DroneOuterClass.RechargePermission)) {
+        return super.equals(obj);
+      }
+      grpc.drone.DroneOuterClass.RechargePermission other = (grpc.drone.DroneOuterClass.RechargePermission) obj;
+
+      if (!getOk()
+          .equals(other.getOk())) return false;
+      if (getDroneId()
+          != other.getDroneId()) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + OK_FIELD_NUMBER;
+      hash = (53 * hash) + getOk().hashCode();
+      hash = (37 * hash) + DRONEID_FIELD_NUMBER;
+      hash = (53 * hash) + getDroneId();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermission parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.RechargePermission prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.drone.RechargePermission}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.drone.RechargePermission)
+        grpc.drone.DroneOuterClass.RechargePermissionOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermission_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermission_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.drone.DroneOuterClass.RechargePermission.class, grpc.drone.DroneOuterClass.RechargePermission.Builder.class);
+      }
+
+      // Construct using grpc.drone.DroneOuterClass.RechargePermission.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        ok_ = "";
+
+        droneId_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermission_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermission getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.RechargePermission.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermission build() {
+        grpc.drone.DroneOuterClass.RechargePermission result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermission buildPartial() {
+        grpc.drone.DroneOuterClass.RechargePermission result = new grpc.drone.DroneOuterClass.RechargePermission(this);
+        result.ok_ = ok_;
+        result.droneId_ = droneId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.drone.DroneOuterClass.RechargePermission) {
+          return mergeFrom((grpc.drone.DroneOuterClass.RechargePermission)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.RechargePermission other) {
+        if (other == grpc.drone.DroneOuterClass.RechargePermission.getDefaultInstance()) return this;
+        if (!other.getOk().isEmpty()) {
+          ok_ = other.ok_;
+          onChanged();
+        }
+        if (other.getDroneId() != 0) {
+          setDroneId(other.getDroneId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.drone.DroneOuterClass.RechargePermission parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.drone.DroneOuterClass.RechargePermission) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object ok_ = "";
+      /**
+       * <code>string ok = 1;</code>
+       * @return The ok.
+       */
+      public java.lang.String getOk() {
+        java.lang.Object ref = ok_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ok_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string ok = 1;</code>
+       * @return The bytes for ok.
+       */
+      public com.google.protobuf.ByteString
+          getOkBytes() {
+        java.lang.Object ref = ok_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ok_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string ok = 1;</code>
+       * @param value The ok to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOk(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ok_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ok = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearOk() {
+        
+        ok_ = getDefaultInstance().getOk();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ok = 1;</code>
+       * @param value The bytes for ok to set.
+       * @return This builder for chaining.
+       */
+      public Builder setOkBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ok_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int droneId_ ;
+      /**
+       * <code>int32 droneId = 2;</code>
+       * @return The droneId.
+       */
+      public int getDroneId() {
+        return droneId_;
+      }
+      /**
+       * <code>int32 droneId = 2;</code>
+       * @param value The droneId to set.
+       * @return This builder for chaining.
+       */
+      public Builder setDroneId(int value) {
+        
+        droneId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 droneId = 2;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearDroneId() {
+        
+        droneId_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.drone.RechargePermission)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.drone.RechargePermission)
+    private static final grpc.drone.DroneOuterClass.RechargePermission DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.RechargePermission();
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargePermission getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RechargePermission>
+        PARSER = new com.google.protobuf.AbstractParser<RechargePermission>() {
+      @java.lang.Override
+      public RechargePermission parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RechargePermission(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RechargePermission> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RechargePermission> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.drone.DroneOuterClass.RechargePermission getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface RechargePermissionAckOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:grpc.drone.RechargePermissionAck)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>string ack = 1;</code>
+     * @return The ack.
+     */
+    java.lang.String getAck();
+    /**
+     * <code>string ack = 1;</code>
+     * @return The bytes for ack.
+     */
+    com.google.protobuf.ByteString
+        getAckBytes();
+  }
+  /**
+   * Protobuf type {@code grpc.drone.RechargePermissionAck}
+   */
+  public  static final class RechargePermissionAck extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:grpc.drone.RechargePermissionAck)
+      RechargePermissionAckOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use RechargePermissionAck.newBuilder() to construct.
+    private RechargePermissionAck(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private RechargePermissionAck() {
+      ack_ = "";
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new RechargePermissionAck();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private RechargePermissionAck(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              ack_ = s;
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermissionAck_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermissionAck_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              grpc.drone.DroneOuterClass.RechargePermissionAck.class, grpc.drone.DroneOuterClass.RechargePermissionAck.Builder.class);
+    }
+
+    public static final int ACK_FIELD_NUMBER = 1;
+    private volatile java.lang.Object ack_;
+    /**
+     * <code>string ack = 1;</code>
+     * @return The ack.
+     */
+    public java.lang.String getAck() {
+      java.lang.Object ref = ack_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        ack_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string ack = 1;</code>
+     * @return The bytes for ack.
+     */
+    public com.google.protobuf.ByteString
+        getAckBytes() {
+      java.lang.Object ref = ack_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        ack_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (!getAckBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, ack_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (!getAckBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, ack_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof grpc.drone.DroneOuterClass.RechargePermissionAck)) {
+        return super.equals(obj);
+      }
+      grpc.drone.DroneOuterClass.RechargePermissionAck other = (grpc.drone.DroneOuterClass.RechargePermissionAck) obj;
+
+      if (!getAck()
+          .equals(other.getAck())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ACK_FIELD_NUMBER;
+      hash = (53 * hash) + getAck().hashCode();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(grpc.drone.DroneOuterClass.RechargePermissionAck prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code grpc.drone.RechargePermissionAck}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:grpc.drone.RechargePermissionAck)
+        grpc.drone.DroneOuterClass.RechargePermissionAckOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermissionAck_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermissionAck_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                grpc.drone.DroneOuterClass.RechargePermissionAck.class, grpc.drone.DroneOuterClass.RechargePermissionAck.Builder.class);
+      }
+
+      // Construct using grpc.drone.DroneOuterClass.RechargePermissionAck.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        ack_ = "";
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return grpc.drone.DroneOuterClass.internal_static_grpc_drone_RechargePermissionAck_descriptor;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermissionAck getDefaultInstanceForType() {
+        return grpc.drone.DroneOuterClass.RechargePermissionAck.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermissionAck build() {
+        grpc.drone.DroneOuterClass.RechargePermissionAck result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public grpc.drone.DroneOuterClass.RechargePermissionAck buildPartial() {
+        grpc.drone.DroneOuterClass.RechargePermissionAck result = new grpc.drone.DroneOuterClass.RechargePermissionAck(this);
+        result.ack_ = ack_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof grpc.drone.DroneOuterClass.RechargePermissionAck) {
+          return mergeFrom((grpc.drone.DroneOuterClass.RechargePermissionAck)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(grpc.drone.DroneOuterClass.RechargePermissionAck other) {
+        if (other == grpc.drone.DroneOuterClass.RechargePermissionAck.getDefaultInstance()) return this;
+        if (!other.getAck().isEmpty()) {
+          ack_ = other.ack_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        grpc.drone.DroneOuterClass.RechargePermissionAck parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (grpc.drone.DroneOuterClass.RechargePermissionAck) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private java.lang.Object ack_ = "";
+      /**
+       * <code>string ack = 1;</code>
+       * @return The ack.
+       */
+      public java.lang.String getAck() {
+        java.lang.Object ref = ack_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          ack_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string ack = 1;</code>
+       * @return The bytes for ack.
+       */
+      public com.google.protobuf.ByteString
+          getAckBytes() {
+        java.lang.Object ref = ack_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          ack_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string ack = 1;</code>
+       * @param value The ack to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAck(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        ack_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ack = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearAck() {
+        
+        ack_ = getDefaultInstance().getAck();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string ack = 1;</code>
+       * @param value The bytes for ack to set.
+       * @return This builder for chaining.
+       */
+      public Builder setAckBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        ack_ = value;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:grpc.drone.RechargePermissionAck)
+    }
+
+    // @@protoc_insertion_point(class_scope:grpc.drone.RechargePermissionAck)
+    private static final grpc.drone.DroneOuterClass.RechargePermissionAck DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new grpc.drone.DroneOuterClass.RechargePermissionAck();
+    }
+
+    public static grpc.drone.DroneOuterClass.RechargePermissionAck getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<RechargePermissionAck>
+        PARSER = new com.google.protobuf.AbstractParser<RechargePermissionAck>() {
+      @java.lang.Override
+      public RechargePermissionAck parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RechargePermissionAck(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<RechargePermissionAck> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RechargePermissionAck> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public grpc.drone.DroneOuterClass.RechargePermissionAck getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_grpc_drone_AddRequest_descriptor;
   private static final 
@@ -6371,6 +8771,26 @@ public final class DroneOuterClass {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_grpc_drone_ElectionAck_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_drone_RechargeRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_drone_RechargeRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_drone_RechargeResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_drone_RechargeResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_drone_RechargePermission_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_drone_RechargePermission_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_grpc_drone_RechargePermissionAck_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_grpc_drone_RechargePermissionAck_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -6399,14 +8819,22 @@ public final class DroneOuterClass {
       "ngResponse\022\017\n\007pingAck\030\001 \001(\010\022\021\n\tnextDrone" +
       "\030\002 \001(\005\"A\n\013ElectionReq\022\013\n\003msg\030\001 \001(\t\022\017\n\007dr" +
       "oneID\030\002 \001(\005\022\024\n\014batteryLevel\030\003 \001(\005\"\032\n\013Ele" +
-      "ctionAck\022\013\n\003ack\030\001 \001(\0102\372\001\n\005Drone\0226\n\003Add\022\026" +
-      ".grpc.drone.AddRequest\032\027.grpc.drone.AddR" +
-      "esponse\022@\n\tSendOrder\022\030.grpc.drone.OrderR" +
-      "equest\032\031.grpc.drone.OrderResponse\0229\n\004Pin" +
-      "g\022\027.grpc.drone.PingRequest\032\030.grpc.drone." +
-      "PingResponse\022<\n\010Election\022\027.grpc.drone.El" +
-      "ectionReq\032\027.grpc.drone.ElectionAckb\006prot" +
-      "o3"
+      "ctionAck\022\013\n\003ack\030\001 \001(\010\"5\n\017RechargeRequest" +
+      "\022\017\n\007droneId\030\001 \001(\005\022\021\n\ttimestamp\030\002 \001(\t\"$\n\020" +
+      "RechargeResponse\022\020\n\010response\030\001 \001(\t\"1\n\022Re" +
+      "chargePermission\022\n\n\002ok\030\001 \001(\t\022\017\n\007droneId\030" +
+      "\002 \001(\005\"$\n\025RechargePermissionAck\022\013\n\003ack\030\001 " +
+      "\001(\t2\222\003\n\005Drone\0226\n\003Add\022\026.grpc.drone.AddReq" +
+      "uest\032\027.grpc.drone.AddResponse\022@\n\tSendOrd" +
+      "er\022\030.grpc.drone.OrderRequest\032\031.grpc.dron" +
+      "e.OrderResponse\0229\n\004Ping\022\027.grpc.drone.Pin" +
+      "gRequest\032\030.grpc.drone.PingResponse\022<\n\010El" +
+      "ection\022\027.grpc.drone.ElectionReq\032\027.grpc.d" +
+      "rone.ElectionAck\022E\n\010Recharge\022\033.grpc.dron" +
+      "e.RechargeRequest\032\034.grpc.drone.RechargeR" +
+      "esponse\022O\n\nRechargeOK\022\036.grpc.drone.Recha" +
+      "rgePermission\032!.grpc.drone.RechargePermi" +
+      "ssionAckb\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -6459,6 +8887,30 @@ public final class DroneOuterClass {
     internal_static_grpc_drone_ElectionAck_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_grpc_drone_ElectionAck_descriptor,
+        new java.lang.String[] { "Ack", });
+    internal_static_grpc_drone_RechargeRequest_descriptor =
+      getDescriptor().getMessageTypes().get(8);
+    internal_static_grpc_drone_RechargeRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_drone_RechargeRequest_descriptor,
+        new java.lang.String[] { "DroneId", "Timestamp", });
+    internal_static_grpc_drone_RechargeResponse_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_grpc_drone_RechargeResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_drone_RechargeResponse_descriptor,
+        new java.lang.String[] { "Response", });
+    internal_static_grpc_drone_RechargePermission_descriptor =
+      getDescriptor().getMessageTypes().get(10);
+    internal_static_grpc_drone_RechargePermission_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_drone_RechargePermission_descriptor,
+        new java.lang.String[] { "Ok", "DroneId", });
+    internal_static_grpc_drone_RechargePermissionAck_descriptor =
+      getDescriptor().getMessageTypes().get(11);
+    internal_static_grpc_drone_RechargePermissionAck_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_grpc_drone_RechargePermissionAck_descriptor,
         new java.lang.String[] { "Ack", });
   }
 

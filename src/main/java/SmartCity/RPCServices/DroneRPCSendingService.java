@@ -13,11 +13,16 @@ import grpc.drone.DroneOuterClass.PingRequest;
 import grpc.drone.DroneOuterClass.PingResponse;
 import grpc.drone.DroneOuterClass.ElectionReq;
 import grpc.drone.DroneOuterClass.ElectionAck;
+import grpc.drone.DroneOuterClass.RechargeRequest;
+import grpc.drone.DroneOuterClass.RechargeResponse;
+import grpc.drone.DroneOuterClass.RechargePermission;
+import grpc.drone.DroneOuterClass.RechargePermissionAck;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+import io.grpc.stub.StreamObserver;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -225,4 +230,50 @@ public class DroneRPCSendingService extends DroneGrpc.DroneImplBase {
         }
     }
 
+
+
+    public static boolean sendRechargeRequest(Drone sender, Drone target, String timestamp){
+
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
+                .usePlaintext()
+                .build();
+
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+
+        RechargeRequest request = RechargeRequest.newBuilder()
+                .setDroneId(sender.getId())
+                .setTimestamp(timestamp)
+                .build();
+
+        RechargeResponse response = stub.recharge(request);
+        if(response.getResponse().equals("OK")){
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean sendRechargePermission(Drone sender, Drone target){
+
+        final ManagedChannel channel = ManagedChannelBuilder
+                .forTarget(target.getLocalAddress() + ":" + target.getLocalPort())
+                .usePlaintext()
+                .build();
+
+        DroneGrpc.DroneBlockingStub stub = DroneGrpc.newBlockingStub(channel);
+
+        RechargePermission request = RechargePermission.newBuilder()
+                .setOk("OK")
+                .setDroneId(sender.getId())
+                .build();
+
+        RechargePermissionAck response = stub.rechargeOK(request);
+        if(response.getAck().equals("ack")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
+

@@ -55,9 +55,27 @@ message ElectionAck {
   bool ack = 1;
 }
 
+message RechargeRequest {
+  int32 droneId = 1;
+  string timestamp = 2;
+}
+message RechargeResponse {
+  string response = 1;
+}
+
+message RechargePermission {
+  string ok = 1;
+  int32 droneId = 2;
+}
+message RechargePermissionAck {
+  string ack = 1;
+}
+
 service Drone {
   rpc Add(AddRequest) returns (AddResponse);
   rpc SendOrder(OrderRequest) returns (OrderResponse);
   rpc Ping(PingRequest) returns (PingResponse);
   rpc Election(ElectionReq) returns (ElectionAck);
+  rpc Recharge(RechargeRequest) returns (RechargeResponse);
+  rpc RechargeOK(RechargePermission) returns (RechargePermissionAck);
 }

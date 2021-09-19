@@ -12,10 +12,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.annotation.*;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.NONE)
@@ -31,7 +29,7 @@ public class Drone {
 
     //delivery stats
     private String arrivalTime;
-    private int batteryLevel = 100;
+    private int batteryLevel = 80;
     private double kmTraveled = 0;
     private int deliveryCompleted = 0;
     private Statistics statistics = new Statistics();
@@ -53,10 +51,18 @@ public class Drone {
     private Queue<String> orderQueue = new LinkedList<>();
     private boolean delivering = false;
 
+    //recharge attributes
+    private boolean recharging = false;
+    private boolean wantsToRecharge = false;
+    private Timestamp timestampToRecharge;
+    private List<Drone> dronesToRecharge = new ArrayList<>();
+    private Queue<Drone> dronesToOkRecharge = new LinkedList<>();
+
     //locks
     private final Object deliveryLock = new Object();
     private final Object dronelistLock = new Object();
-    private final Object waitForElectionLock = new Object();
+    private final Object waitForRecharge = new Object();
+    private final Object waitForResponseRecharge = new Object();
 
 
 
@@ -227,19 +233,15 @@ public class Drone {
 
 
     //DRONELIST
-    public synchronized List<Drone> getDronelist() {
+    public List<Drone> getDronelist() {
         return dronelist;
     }
-    public void setDronelist(List<Drone> dronelist) {
-        this.dronelist = dronelist;
-    }
-    public void removeFromDronelist(Drone drone) {
+    public synchronized void removeFromDronelist(Drone drone) {
         this.dronelist.remove(drone);
     }
-    public void addToDronelist(Drone drone){
+    public synchronized void addToDronelist(Drone drone){
         this.dronelist.add(drone);
     }
-
     public Drone getById(int id){
         for(Drone d : this.dronelist){
             if(d.getId() == id){
@@ -248,7 +250,6 @@ public class Drone {
         }
         return null;
     }
-
     public void showDroneList(){
         System.out.println("\n[RING - " + this.getId() +"] SmartCity:");
         for(Drone d : this.getDronelist()){
@@ -362,6 +363,99 @@ public class Drone {
     }
 
 
+    //RECHARGE
+    public boolean isRecharging() {
+        return recharging;
+    }
+    public void setRecharging(boolean reacharging) {
+        this.recharging = reacharging;
+    }
+
+    public boolean isWantsToRecharge() {
+        return wantsToRecharge;
+    }
+    public void setWantsToRecharge(boolean wantsToRecharge) {
+        this.wantsToRecharge = wantsToRecharge;
+    }
+
+    public void rechargeDrone() throws InterruptedException {
+        this.setWantsToRecharge(true);
+        this.setTimestampToRecharge(new Timestamp(System.currentTimeMillis()));
+
+        for(Drone d : this.getDronelist()){
+            if(d.getId() != this.getId()){
+                this.addDroneToRecharge(d);
+                Thread recharger = new RechargeBattery(this, d, this.getTimestampToRecharge().toString());
+                recharger.start();
+            }
+        }
+
+        synchronized (this.getWaitForRecharge()){
+            while(this.getDronesToRecharge().size() > 0){
+                System.out.println("[BATTERY] Waiting for " + this.getDronesToRecharge().size() + " drones");
+                try {
+                    this.getWaitForRecharge().wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            this.setRecharging(true);
+            System.out.println("[BATTERY] Recharging battery");
+
+            Thread.sleep(10000);
+
+            this.setBatteryLevel(100);
+            System.out.println("[BATTERY] Battery is full");
+
+            this.setWantsToRecharge(false);
+            this.setRecharging(false);
+
+            while(this.getDronesToOkRecharge().size() > 0){
+                Thread recharger = new RechargeBatteryPermission(this, this.removeDronesToOkRecharge());
+                recharger.start();
+            }
+
+
+            synchronized (this.getWaitForResponseRecharge()){
+                while(this.getDronesToOkRecharge().size() > 0){
+                    this.getWaitForResponseRecharge().wait();
+                }
+            }
+
+        }
+    }
+
+    public synchronized List<Drone> getDronesToRecharge() {
+        return dronesToRecharge;
+    }
+    public void setDronesToRecharge(List<Drone> dronesToRecharge) {
+        this.dronesToRecharge = new ArrayList<Drone>(dronesToRecharge);
+    }
+    public synchronized void removeDroneToRecharge(Drone drone) {
+        this.dronesToRecharge.remove(drone);
+    }
+    public synchronized void addDroneToRecharge(Drone drone) {
+        this.dronesToRecharge.add(drone);
+    }
+    public Queue<Drone> getDronesToOkRecharge() {
+        return dronesToOkRecharge;
+    }
+
+    public Drone removeDronesToOkRecharge() {
+        return dronesToOkRecharge.remove();
+    }
+    public void addDroneToOkRecharge(Drone drone) {
+        this.dronesToOkRecharge.add(drone);
+    }
+
+    public Timestamp getTimestampToRecharge() {
+        return timestampToRecharge;
+    }
+    public void setTimestampToRecharge(Timestamp timestampToRecharge) {
+        this.timestampToRecharge = timestampToRecharge;
+    }
+
     //LOCKS
     public Object getDeliveryLock() {
         return deliveryLock;
@@ -369,8 +463,15 @@ public class Drone {
     public Object getDronelistLock() {
         return dronelistLock;
     }
-    public Object getWaitForElectionLock() {
-        return waitForElectionLock;
+    public Object getWaitForRecharge() {
+        return waitForRecharge;
+    }
+    public Object getWaitForResponseRecharge() {
+        return waitForResponseRecharge;
+    }
+
+    public void showDroneStatus(){
+
     }
 
     //TERMINATING DRONES

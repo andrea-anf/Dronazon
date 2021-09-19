@@ -4,12 +4,15 @@ import SmartCity.Drone;
 import SmartCity.MasterDrone.Orders.DispatchingService;
 import SmartCity.RPCServices.DroneRPCListeningService;
 
+import SmartCity.RechargeBattery;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.eclipse.paho.client.mqttv3.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MasterDrone implements Runnable{
@@ -115,8 +118,22 @@ public class MasterDrone implements Runnable{
                             topic);
 
             //waiting to break connection with broker
-            input.hasNextLine();
-            drone.quitDrone();
+            while (true) {
+                String command = input.next(); // read any token from the input as String
+                System.out.println("Command " + command); // optional message to indicate exit
+                switch (command) {
+                    case "re":
+                        drone.rechargeDrone();
+                        break;
+                    case "quit":
+                        System.out.println("Bye!"); // optional message to indicate exit
+                        drone.quitDrone();
+                        break;
+                    default:
+                        System.out.println("Invalid input");
+                        break;
+                }
+            }
 
         } catch (MqttException | InterruptedException me) {
             System.out.println(me.getStackTrace());

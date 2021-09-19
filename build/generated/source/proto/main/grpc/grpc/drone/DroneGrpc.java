@@ -151,6 +151,68 @@ public final class DroneGrpc {
     return getElectionMethod;
   }
 
+  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargeRequest,
+      grpc.drone.DroneOuterClass.RechargeResponse> getRechargeMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "Recharge",
+      requestType = grpc.drone.DroneOuterClass.RechargeRequest.class,
+      responseType = grpc.drone.DroneOuterClass.RechargeResponse.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargeRequest,
+      grpc.drone.DroneOuterClass.RechargeResponse> getRechargeMethod() {
+    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargeRequest, grpc.drone.DroneOuterClass.RechargeResponse> getRechargeMethod;
+    if ((getRechargeMethod = DroneGrpc.getRechargeMethod) == null) {
+      synchronized (DroneGrpc.class) {
+        if ((getRechargeMethod = DroneGrpc.getRechargeMethod) == null) {
+          DroneGrpc.getRechargeMethod = getRechargeMethod =
+              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.RechargeRequest, grpc.drone.DroneOuterClass.RechargeResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "Recharge"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.RechargeRequest.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.RechargeResponse.getDefaultInstance()))
+              .setSchemaDescriptor(new DroneMethodDescriptorSupplier("Recharge"))
+              .build();
+        }
+      }
+    }
+    return getRechargeMethod;
+  }
+
+  private static volatile io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargePermission,
+      grpc.drone.DroneOuterClass.RechargePermissionAck> getRechargeOKMethod;
+
+  @io.grpc.stub.annotations.RpcMethod(
+      fullMethodName = SERVICE_NAME + '/' + "RechargeOK",
+      requestType = grpc.drone.DroneOuterClass.RechargePermission.class,
+      responseType = grpc.drone.DroneOuterClass.RechargePermissionAck.class,
+      methodType = io.grpc.MethodDescriptor.MethodType.UNARY)
+  public static io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargePermission,
+      grpc.drone.DroneOuterClass.RechargePermissionAck> getRechargeOKMethod() {
+    io.grpc.MethodDescriptor<grpc.drone.DroneOuterClass.RechargePermission, grpc.drone.DroneOuterClass.RechargePermissionAck> getRechargeOKMethod;
+    if ((getRechargeOKMethod = DroneGrpc.getRechargeOKMethod) == null) {
+      synchronized (DroneGrpc.class) {
+        if ((getRechargeOKMethod = DroneGrpc.getRechargeOKMethod) == null) {
+          DroneGrpc.getRechargeOKMethod = getRechargeOKMethod =
+              io.grpc.MethodDescriptor.<grpc.drone.DroneOuterClass.RechargePermission, grpc.drone.DroneOuterClass.RechargePermissionAck>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(SERVICE_NAME, "RechargeOK"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.RechargePermission.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  grpc.drone.DroneOuterClass.RechargePermissionAck.getDefaultInstance()))
+              .setSchemaDescriptor(new DroneMethodDescriptorSupplier("RechargeOK"))
+              .build();
+        }
+      }
+    }
+    return getRechargeOKMethod;
+  }
+
   /**
    * Creates a new async stub that supports all call types for the service
    */
@@ -206,6 +268,20 @@ public final class DroneGrpc {
       asyncUnimplementedUnaryCall(getElectionMethod(), responseObserver);
     }
 
+    /**
+     */
+    public void recharge(grpc.drone.DroneOuterClass.RechargeRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargeResponse> responseObserver) {
+      asyncUnimplementedUnaryCall(getRechargeMethod(), responseObserver);
+    }
+
+    /**
+     */
+    public void rechargeOK(grpc.drone.DroneOuterClass.RechargePermission request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargePermissionAck> responseObserver) {
+      asyncUnimplementedUnaryCall(getRechargeOKMethod(), responseObserver);
+    }
+
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
@@ -236,6 +312,20 @@ public final class DroneGrpc {
                 grpc.drone.DroneOuterClass.ElectionReq,
                 grpc.drone.DroneOuterClass.ElectionAck>(
                   this, METHODID_ELECTION)))
+          .addMethod(
+            getRechargeMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.drone.DroneOuterClass.RechargeRequest,
+                grpc.drone.DroneOuterClass.RechargeResponse>(
+                  this, METHODID_RECHARGE)))
+          .addMethod(
+            getRechargeOKMethod(),
+            asyncUnaryCall(
+              new MethodHandlers<
+                grpc.drone.DroneOuterClass.RechargePermission,
+                grpc.drone.DroneOuterClass.RechargePermissionAck>(
+                  this, METHODID_RECHARGE_OK)))
           .build();
     }
   }
@@ -289,6 +379,22 @@ public final class DroneGrpc {
       asyncUnaryCall(
           getChannel().newCall(getElectionMethod(), getCallOptions()), request, responseObserver);
     }
+
+    /**
+     */
+    public void recharge(grpc.drone.DroneOuterClass.RechargeRequest request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargeResponse> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getRechargeMethod(), getCallOptions()), request, responseObserver);
+    }
+
+    /**
+     */
+    public void rechargeOK(grpc.drone.DroneOuterClass.RechargePermission request,
+        io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargePermissionAck> responseObserver) {
+      asyncUnaryCall(
+          getChannel().newCall(getRechargeOKMethod(), getCallOptions()), request, responseObserver);
+    }
   }
 
   /**
@@ -335,6 +441,20 @@ public final class DroneGrpc {
     public grpc.drone.DroneOuterClass.ElectionAck election(grpc.drone.DroneOuterClass.ElectionReq request) {
       return blockingUnaryCall(
           getChannel(), getElectionMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.drone.DroneOuterClass.RechargeResponse recharge(grpc.drone.DroneOuterClass.RechargeRequest request) {
+      return blockingUnaryCall(
+          getChannel(), getRechargeMethod(), getCallOptions(), request);
+    }
+
+    /**
+     */
+    public grpc.drone.DroneOuterClass.RechargePermissionAck rechargeOK(grpc.drone.DroneOuterClass.RechargePermission request) {
+      return blockingUnaryCall(
+          getChannel(), getRechargeOKMethod(), getCallOptions(), request);
     }
   }
 
@@ -387,12 +507,30 @@ public final class DroneGrpc {
       return futureUnaryCall(
           getChannel().newCall(getElectionMethod(), getCallOptions()), request);
     }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.RechargeResponse> recharge(
+        grpc.drone.DroneOuterClass.RechargeRequest request) {
+      return futureUnaryCall(
+          getChannel().newCall(getRechargeMethod(), getCallOptions()), request);
+    }
+
+    /**
+     */
+    public com.google.common.util.concurrent.ListenableFuture<grpc.drone.DroneOuterClass.RechargePermissionAck> rechargeOK(
+        grpc.drone.DroneOuterClass.RechargePermission request) {
+      return futureUnaryCall(
+          getChannel().newCall(getRechargeOKMethod(), getCallOptions()), request);
+    }
   }
 
   private static final int METHODID_ADD = 0;
   private static final int METHODID_SEND_ORDER = 1;
   private static final int METHODID_PING = 2;
   private static final int METHODID_ELECTION = 3;
+  private static final int METHODID_RECHARGE = 4;
+  private static final int METHODID_RECHARGE_OK = 5;
 
   private static final class MethodHandlers<Req, Resp> implements
       io.grpc.stub.ServerCalls.UnaryMethod<Req, Resp>,
@@ -426,6 +564,14 @@ public final class DroneGrpc {
         case METHODID_ELECTION:
           serviceImpl.election((grpc.drone.DroneOuterClass.ElectionReq) request,
               (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.ElectionAck>) responseObserver);
+          break;
+        case METHODID_RECHARGE:
+          serviceImpl.recharge((grpc.drone.DroneOuterClass.RechargeRequest) request,
+              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargeResponse>) responseObserver);
+          break;
+        case METHODID_RECHARGE_OK:
+          serviceImpl.rechargeOK((grpc.drone.DroneOuterClass.RechargePermission) request,
+              (io.grpc.stub.StreamObserver<grpc.drone.DroneOuterClass.RechargePermissionAck>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -492,6 +638,8 @@ public final class DroneGrpc {
               .addMethod(getSendOrderMethod())
               .addMethod(getPingMethod())
               .addMethod(getElectionMethod())
+              .addMethod(getRechargeMethod())
+              .addMethod(getRechargeOKMethod())
               .build();
         }
       }
